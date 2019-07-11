@@ -8,7 +8,7 @@ if (file_exists(__DIR__.'/host/params.php')) {
 }
 
 return [
-    'adminEmail' => 'admin@example.com',
-    'senderEmail' => 'noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'adminEmail' => 'email@fredyns.net',
+    'senderEmail' => 'email@fredyns.net',
+    'senderName' => 'Fredy mailer',
 ];
