@@ -1,4 +1,7 @@
 <?php
+/**
+ * this file responsible for common configuration that used both in console or web app
+ */
 $db = require __DIR__.'/db.php';
 $mailer = require __DIR__.'/mailer.php';
 $params = require __DIR__.'/params.php';

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * this file responsible for app parameters
+ */
 return [
     'adminEmail' => 'admin@example.com',
     'senderEmail' => 'noreply@example.com',

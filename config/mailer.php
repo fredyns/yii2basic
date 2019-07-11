@@ -1,4 +1,7 @@
 <?php
+/**
+ * this file responsible for mailer service
+ */
 return [
     'class' => 'yii\swiftmailer\Mailer',
     // send all mails to a file by default. You have to set
