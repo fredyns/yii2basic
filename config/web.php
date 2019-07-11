@@ -36,14 +36,12 @@ $config = [
                 ],
             ],
         ],
-    /* // uncomment to enable pretty-url
-      'urlManager' => [
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
-      'rules' => [
-      ],
-      ],
-      // */
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ],
+        ],
     ],
     'modules' => [
         'user' => [
