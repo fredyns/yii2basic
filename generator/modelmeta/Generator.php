@@ -29,6 +29,25 @@ class Generator extends \yii\gii\generators\model\Generator
     }
 
     /**
+     * read saved/preconfigured model namespace map
+     * configuration file as JSON format
+     *  {
+     *      'table': "namespace"
+     *  }
+     */
+    public static function readMetadata()
+    {
+        $filepath = static::getFilePath();
+
+        if (file_exists($filepath)) {
+            $content = file_get_contents($filepath);
+            return (array) json_decode($content, true);
+        }
+
+        return [];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
@@ -122,25 +141,6 @@ class Generator extends \yii\gii\generators\model\Generator
     }
 
     /**
-     * read saved/preconfigured model namespace map
-     * configuration file as JSON format
-     *  {
-     *      'table': "namespace"
-     *  }
-     */
-    public function readMetadata()
-    {
-        $filepath = static::getFilePath();
-
-        if (file_exists($filepath)) {
-            $content = file_get_contents($filepath);
-            return (array) json_decode($content, true);
-        }
-
-        return [];
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function generate()
@@ -154,7 +154,7 @@ class Generator extends \yii\gii\generators\model\Generator
     public function generateMetadata()
     {
         // read saved data
-        $this->metadata = $this->readMetadata();
+        $this->metadata = static::readMetadata();
 
         // generate modelname & namespace
         $this->generateMetaBasic();
