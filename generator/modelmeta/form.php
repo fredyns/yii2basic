@@ -18,9 +18,6 @@ echo $form->field($generator, 'generateRelations')->dropDownList([
 echo $form->field($generator, 'generateLabelsFromComments')->checkbox();
 echo $form->field($generator, 'generateHintsFromComments')->checkbox();
 echo $form->field($generator, 'generateQuery')->checkbox();
-echo $form->field($generator, 'queryNs');
-echo $form->field($generator, 'queryClass');
-echo $form->field($generator, 'queryBaseClass');
 echo $form->field($generator, 'enableI18N')->checkbox();
 echo $form->field($generator, 'singularEntities')->checkbox();
 echo $form->field($generator, 'messageCategory');
