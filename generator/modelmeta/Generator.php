@@ -180,6 +180,7 @@ class Generator extends \yii\gii\generators\model\Generator
             $className = $this->generateClassName($tableName);
             $tableSchema = $db->getTableSchema($tableName);
             $this->metadata[$tableName] = [
+                'tableName' => $tableName,
                 'db' => $this->db,
                 'nameSpace' => ArrayHelper::getValue($this->nameSpaces, $tableName, $this->ns),
                 'baseClass' => $this->baseClass,
