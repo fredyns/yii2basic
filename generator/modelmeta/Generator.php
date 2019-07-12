@@ -20,6 +20,15 @@ class Generator extends \yii\gii\generators\model\Generator
     public $metadata = [];
 
     /**
+     * filepath location
+     * @return string
+     */
+    public static function getFilePath()
+    {
+        return Yii::getAlias('@app/models').'/_metadata.json';
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
@@ -112,11 +121,6 @@ class Generator extends \yii\gii\generators\model\Generator
         return [];
     }
 
-    public function getFilePath()
-    {
-        return Yii::getAlias('@app/models').'/_metadata.json';
-    }
-
     /**
      * read saved/preconfigured model namespace map
      * configuration file as JSON format
@@ -126,7 +130,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function readMetadata()
     {
-        $filepath = $this->getFilePath();
+        $filepath = static::getFilePath();
 
         if (file_exists($filepath)) {
             $content = file_get_contents($filepath);
