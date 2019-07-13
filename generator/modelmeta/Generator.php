@@ -191,8 +191,8 @@ class Generator extends \yii\gii\generators\model\Generator
                 'nameSpace' => ArrayHelper::getValue($this->nameSpaces, $tableName, $this->ns),
                 'baseClass' => $this->baseClass,
                 'className' => $className,
-                'generateLabels' => $this->generateLabels($tableSchema),
-                'generateHints' => $this->generateHints($tableSchema),
+                'labels' => $this->generateLabels($tableSchema),
+                'hints' => $this->generateHints($tableSchema),
                 'enableI18N' => $this->enableI18N,
                 'messageCategory' => $this->messageCategory,
             ];
