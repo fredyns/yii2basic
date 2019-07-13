@@ -407,9 +407,10 @@ class Generator extends \yii\gii\generators\model\Generator
                         $code .= "->alias(static::".strtoupper($relationName).")";
                     }
                     $relation = [
-                        'code' => $code.";",
-                        'class' => $reffMetadata['className'],
                         'alias' => $alias,
+                        'nameSpace' => $reffMetadata['nameSpace'],
+                        'className' => $reffMetadata['className'],
+                        'query' => $code.";",
                     ];
                     $relations[$tableSchema->fullName][$relationName] = $relation;
                     $this->metadata[$tableSchema->fullName]['hasOne'][$relationName] = $relation;
@@ -426,9 +427,10 @@ class Generator extends \yii\gii\generators\model\Generator
                         $refCode .= "->alias(static::".strtoupper($refRelationName).")";
                     }
                     $refRelation = [
-                        'code' => $refCode.";",
-                        'class' => $metadata['className'],
                         'alias' => $refAlias,
+                        'nameSpace' => $metadata['nameSpace'],
+                        'className' => $metadata['className'],
+                        'query' => $refCode.";",
                     ];
                     $relations[$refTableSchema->fullName][$refRelationName] = $relation;
                     $this->metadata[$refTableSchema->fullName][$hasWhat][$refRelationName] = $refRelation;
@@ -496,10 +498,11 @@ class Generator extends \yii\gii\generators\model\Generator
             $relationName0 = $this->generateRelationName($relations, $table0Schema, key($secondKey), true);
 
             $rel[$table0Schema->fullName][$relationName0] = [
-                'code' => "return \$this->hasMany($className1::class, $link0)"
-                ."->viaTable('".$this->generateTableName($table->name)."', $viaLink0);",
-                'class' => $metadata1['className'],
                 'alias' => FALSE,
+                'nameSpace' => $metadata1['nameSpace'],
+                'className' => $metadata1['className'],
+                'query' => "return \$this->hasMany($className1::class, $link0)"
+                ."->viaTable('".$this->generateTableName($table->name)."', $viaLink0);",
             ];
 
             $link1 = $this->generateRelationLink(array_flip($firstKey));
@@ -507,10 +510,11 @@ class Generator extends \yii\gii\generators\model\Generator
             $relationName1 = $this->generateRelationName($relations, $table1Schema, key($firstKey), true);
 
             $rel[$table1Schema->fullName][$relationName1] = [
-                'code' => "return \$this->hasMany($className0::class, $link1)->viaTable('"
-                .$this->generateTableName($table->name)."', $viaLink1);",
-                'class' => $metadata0['className'],
                 'alias' => FALSE,
+                'nameSpace' => $metadata0['nameSpace'],
+                'className' => $metadata0['className'],
+                'query' => "return \$this->hasMany($className0::class, $link1)->viaTable('"
+                .$this->generateTableName($table->name)."', $viaLink1);",
             ];
         }
 
