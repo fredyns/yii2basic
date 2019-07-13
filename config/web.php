@@ -98,6 +98,9 @@ if (YII_ENV_DEV) {
             'my-modelmeta' => [
                 'class' => 'app\generator\modelmeta\Generator',
             ],
+            'my-model' => [
+                'class' => 'app\generator\model\Generator',
+            ],
         ],
     ];
 
