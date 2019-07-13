@@ -3,6 +3,9 @@
 namespace app\generator\modelmeta;
 
 use Yii;
+use yii\base\NotSupportedException;
+use yii\db\mysql\ColumnSchema;
+use yii\db\Schema;
 use yii\gii\CodeFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
@@ -158,6 +161,9 @@ class Generator extends \yii\gii\generators\model\Generator
 
         // generate modelname & namespace
         $this->generateMetaBasic();
+
+        // generate model rulse regarding related model namespace
+        $this->generateMetaRules();
 
         // generate relation regarding namespace (previously specified)
         $this->generateRelations();
