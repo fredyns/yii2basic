@@ -22,7 +22,7 @@
         },
         "hints": [],
         "enableI18N": "1",
-        "messageCategory": "models",
+        "messageCategory": "sample",
         "rules": [
             "# filter",
             "[\r\n                ['title', 'description'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
@@ -71,7 +71,7 @@
         },
         "hints": [],
         "enableI18N": "1",
-        "messageCategory": "models",
+        "messageCategory": "sample",
         "rules": [
             "# filter",
             "[\r\n                ['name'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
