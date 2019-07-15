@@ -443,18 +443,18 @@ class Generator extends \yii\gii\generators\model\Generator
                     $refLink = $this->generateRelationLink($refs);
                     $refRelationName = $this->generateRelationName($relations, $refTableSchema, $metadata['className'], $hasMany, $fk);
                     $refAlias = $this->isNeedAlias($hasMany, $refTable, $fk);
-                    $refCode = "return \$this\n            ->".$hasWhat."($className::class, $refLink)\n";
+                    $refCode = "return \$this\n                ->".$hasWhat."($className::class, $refLink)\n";
                     if ($refAlias) {
-                        $refCode .= "            ->alias(static::".strtoupper($refRelationName).")\n";
+                        $refCode .= "                ->alias(static::".strtoupper($refRelationName).")\n";
                     }
                     if ($hasMany && $tableSchema->getColumn('is_deleted') !== null) {
-                        $refCode .= "            ->andFilterWhere(\$filter)";
+                        $refCode .= "                ->andFilterWhere(\$filter)";
                     }
                     $refRelation = [
                         'alias' => $refAlias,
                         'nameSpace' => $metadata['nameSpace'],
                         'className' => $metadata['className'],
-                        'query' => $refCode."        ;",
+                        'query' => $refCode."\n        ;",
                     ];
                     $relations[$refTableSchema->fullName][$refRelationName] = $relation;
                     $this->metadata[$refTableSchema->fullName][$hasWhat][$refRelationName] = $refRelation;
