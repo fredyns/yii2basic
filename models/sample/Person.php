@@ -57,7 +57,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function modelLabel($plural = false)
     {
-        return $plural ? 'People' : 'Person';
+        return $plural ? Yii::t('sample', 'People') : Yii::t('sample', 'Person');
     }
 
     /**
@@ -66,15 +66,15 @@ class Person extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-            'is_deleted' => 'Is Deleted',
-            'deleted_at' => 'Deleted At',
-            'deleted_by' => 'Deleted By',
-            'name' => 'Name',
+            'id' => Yii::t('sample', 'ID'),
+            'created_at' => Yii::t('sample', 'Created At'),
+            'created_by' => Yii::t('sample', 'Created By'),
+            'updated_at' => Yii::t('sample', 'Updated At'),
+            'updated_by' => Yii::t('sample', 'Updated By'),
+            'is_deleted' => Yii::t('sample', 'Is Deleted'),
+            'deleted_at' => Yii::t('sample', 'Deleted At'),
+            'deleted_by' => Yii::t('sample', 'Deleted By'),
+            'name' => Yii::t('sample', 'Name'),
         ];
     }
     ##

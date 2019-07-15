@@ -63,7 +63,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function modelLabel($plural = false)
     {
-        return $plural ? 'Books' : 'Book';
+        return $plural ? Yii::t('sample', 'Books') : Yii::t('sample', 'Book');
     }
 
     /**
@@ -72,19 +72,19 @@ class Book extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-            'is_deleted' => 'Is Deleted',
-            'deleted_at' => 'Deleted At',
-            'deleted_by' => 'Deleted By',
-            'title' => 'Title',
-            'description' => 'Description',
-            'author_id' => 'Author',
-            'editor_id' => 'Editor',
-            'released_date' => 'Released Date',
+            'id' => Yii::t('sample', 'ID'),
+            'created_at' => Yii::t('sample', 'Created At'),
+            'created_by' => Yii::t('sample', 'Created By'),
+            'updated_at' => Yii::t('sample', 'Updated At'),
+            'updated_by' => Yii::t('sample', 'Updated By'),
+            'is_deleted' => Yii::t('sample', 'Is Deleted'),
+            'deleted_at' => Yii::t('sample', 'Deleted At'),
+            'deleted_by' => Yii::t('sample', 'Deleted By'),
+            'title' => Yii::t('sample', 'Title'),
+            'description' => Yii::t('sample', 'Description'),
+            'author_id' => Yii::t('sample', 'Author'),
+            'editor_id' => Yii::t('sample', 'Editor'),
+            'released_date' => Yii::t('sample', 'Released Date'),
         ];
     }
     ##
