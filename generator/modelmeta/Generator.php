@@ -210,7 +210,9 @@ class Generator extends \yii\gii\generators\model\Generator
 
         foreach (array_keys($this->metadata) as $tableName) {
             $tableSchema = $db->getTableSchema($tableName);
-            $this->metadata[$tableName]['rules'] = $this->generateRules($tableSchema);
+            if ($tableSchema) {
+                $this->metadata[$tableName]['rules'] = $this->generateRules($tableSchema);
+            }
         }
     }
 
