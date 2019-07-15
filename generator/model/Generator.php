@@ -18,6 +18,8 @@ use yii\helpers\StringHelper;
  */
 class Generator extends \yii\gii\Generator
 {
+    public $enableI18N = true;
+    public $messageCategory = 'models';
 
     /**
      * {@inheritdoc}
@@ -52,6 +54,8 @@ class Generator extends \yii\gii\Generator
         $files = [];
 
         foreach ($metadata as $tableName => $params) {
+            $this->enableI18N = $params['enableI18N'];
+            $this->messageCategory = $params['messageCategory'];
             $db = $this->getDbConnection($params['db']);
             $tableSchema = $db->getTableSchema($tableName);
             $params['tableSchema'] = $tableSchema;
