@@ -272,7 +272,11 @@ foreach ($labels as $name => $label) {
     /**
      * @return \yii\db\ActiveQuery
      */
+<?php if (strpos($relation['code'], '\$filter')!==FALSE): ?>
+    public function get<?= $name ?>($filter = ['is_deleted' => FALSE])
+<?php else: ?>
     public function get<?= $name ?>()
+<?php endif; ?>
     {
         <?= $relation['query'] . "\n" ?>
     }
