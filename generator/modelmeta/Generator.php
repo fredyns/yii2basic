@@ -83,7 +83,7 @@ class Generator extends \yii\gii\generators\model\Generator
                 'boolean',
             ],
             [['tablePrefix'], 'safe'],
-            ['nameSpaces', 'each', 'rule' => ['safe']],
+            ['nameSpaces', 'each', 'rule' => ['string']],
             ]
         );
     }
@@ -159,6 +159,8 @@ class Generator extends \yii\gii\generators\model\Generator
         // read saved data
         $this->metadata = static::readMetadata();
 
+        Yii::debug("namespaces ".print_r($this->nameSpaces, TRUE));
+
         // generate modelname & namespace
         $this->generateMetaBasic();
 
@@ -183,12 +185,16 @@ class Generator extends \yii\gii\generators\model\Generator
         $db = $this->getDbConnection();
 
         foreach ($this->getTableNames() as $tableName) {
-            $className = $this->generateClassName($tableName);
+            $nameSpace = ArrayHelper::getValue($this->nameSpaces, $tableName, $this->ns);
+            $className = $this->generateClassName($tableName, NULL, $nameSpace);
             $tableSchema = $db->getTableSchema($tableName);
+            Yii::debug("table: ".$tableName);
+            Yii::debug("nameSpace: ".$nameSpace);
+            Yii::debug("className: ".$className);
             $this->metadata[$tableName] = [
                 'tableName' => $tableName,
                 'db' => $this->db,
-                'nameSpace' => ArrayHelper::getValue($this->nameSpaces, $tableName, $this->ns),
+                'nameSpace' => $nameSpace,
                 'baseClass' => $this->baseClass,
                 'className' => $className,
                 'labels' => $this->generateLabels($tableSchema),
@@ -246,11 +252,15 @@ class Generator extends \yii\gii\generators\model\Generator
      *
      * @return string the generated class name
      */
-    public function generateClassName($tableName, $useSchemaName = null)
+    public function generateClassName($tableName, $useSchemaName = null, $nameSpace = null)
     {
-        if (isset($this->metadata[$tableName])) {
-            return $this->metadata[$tableName]['className'];
+        Yii::debug("generateClassName: ".$tableName.' of '.$nameSpace);
+
+        $lastPath = substr(strrchr($nameSpace, "\\"), 1);
+        if (strpos($tableName, $lastPath) === 0) {
+            $tableName = str_replace($lastPath, '', $tableName);
         }
+
 
         if (($pos = strrpos($tableName, '.')) !== false) {
             $tableName = substr($tableName, $pos + 1);
