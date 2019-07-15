@@ -49,6 +49,18 @@ class Generator extends \yii\gii\generators\model\Generator
 
         return [];
     }
+    
+    public function init()
+    {
+        parent::init();
+        
+        // read saved data
+        $this->metadata = static::readMetadata();
+        foreach ($this->metadata as $tableName => $info) {
+            $this->nameSpaces[$tableName] = $info['nameSpace'];
+        }
+
+    }
 
     /**
      * {@inheritdoc}
@@ -156,9 +168,6 @@ class Generator extends \yii\gii\generators\model\Generator
 
     public function generateMetadata()
     {
-        // read saved data
-        $this->metadata = static::readMetadata();
-
         Yii::debug("namespaces ".print_r($this->nameSpaces, TRUE));
 
         // generate modelname & namespace
