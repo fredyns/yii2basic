@@ -89,13 +89,13 @@
                 "alias": false,
                 "nameSpace": "app\\models\\sample",
                 "className": "Book",
-                "query": "return $this\n            ->hasMany(Book::class, ['author_id' => 'id'])\n            ->andFilterWhere($filter)        ;"
+                "query": "return $this\n                ->hasMany(Book::class, ['author_id' => 'id'])\n                ->andFilterWhere($filter)\n        ;"
             },
             "BooksAsEditor": {
                 "alias": false,
                 "nameSpace": "app\\models\\sample",
                 "className": "Book",
-                "query": "return $this\n            ->hasMany(Book::class, ['editor_id' => 'id'])\n            ->andFilterWhere($filter)        ;"
+                "query": "return $this\n                ->hasMany(Book::class, ['editor_id' => 'id'])\n                ->andFilterWhere($filter)\n        ;"
             }
         }
     }
