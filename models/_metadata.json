@@ -1,0 +1,102 @@
+{
+    "sample_book": {
+        "tableName": "sample_book",
+        "db": "db",
+        "nameSpace": "app\\models\\sample",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "Book",
+        "labels": {
+            "id": "ID",
+            "created_at": "Created At",
+            "created_by": "Created By",
+            "updated_at": "Updated At",
+            "updated_by": "Updated By",
+            "is_deleted": "Is Deleted",
+            "deleted_at": "Deleted At",
+            "deleted_by": "Deleted By",
+            "title": "Title",
+            "description": "Description",
+            "author_id": "Author",
+            "editor_id": "Editor",
+            "released_date": "Released Date"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "models",
+        "rules": [
+            "# filter",
+            "[\r\n                ['title', 'description'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['title', 'description'], 'string']",
+            "[['author_id', 'editor_id'], 'integer']",
+            "# format",
+            "[['released_date'], 'date', 'format' => 'yyyy-MM-dd']",
+            "# restriction",
+            "# constraint",
+            "# safe"
+        ],
+        "hasOne": {
+            "Author": {
+                "alias": true,
+                "nameSpace": "app\\models\\sample",
+                "className": "Person",
+                "query": "return $this->hasOne(Person::class, ['id' => 'author_id'])->alias(static::AUTHOR);"
+            },
+            "Editor": {
+                "alias": true,
+                "nameSpace": "app\\models\\sample",
+                "className": "Person",
+                "query": "return $this->hasOne(Person::class, ['id' => 'editor_id'])->alias(static::EDITOR);"
+            }
+        }
+    },
+    "sample_person": {
+        "tableName": "sample_person",
+        "db": "db",
+        "nameSpace": "app\\models\\sample",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "Person",
+        "labels": {
+            "id": "ID",
+            "created_at": "Created At",
+            "created_by": "Created By",
+            "updated_at": "Updated At",
+            "updated_by": "Updated By",
+            "is_deleted": "Is Deleted",
+            "deleted_at": "Deleted At",
+            "deleted_by": "Deleted By",
+            "name": "Name"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "models",
+        "rules": [
+            "# filter",
+            "[\r\n                ['name'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['name'], 'string', 'max' => 255]",
+            "# format",
+            "# restriction",
+            "# constraint",
+            "# safe"
+        ],
+        "hasMany": {
+            "BooksAsAuthor": {
+                "alias": false,
+                "nameSpace": "app\\models\\sample",
+                "className": "Book",
+                "query": "return $this\n            ->hasMany(Book::class, ['author_id' => 'id'])\n            ->andFilterWhere($filter)        ;"
+            },
+            "BooksAsEditor": {
+                "alias": false,
+                "nameSpace": "app\\models\\sample",
+                "className": "Book",
+                "query": "return $this\n            ->hasMany(Book::class, ['editor_id' => 'id'])\n            ->andFilterWhere($filter)        ;"
+            }
+        }
+    }
+}
