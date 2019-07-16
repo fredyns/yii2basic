@@ -101,6 +101,9 @@ if (YII_ENV_DEV) {
             'my-model' => [
                 'class' => 'app\generators\model\Generator',
             ],
+            'my-crud' => [
+                'class' => 'app\generators\crud\Generator',
+            ],
         ],
     ];
 
