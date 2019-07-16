@@ -52,17 +52,19 @@ use app\models\User;
  * @property User $deletedBy
 <?php endif; ?>
 <?php if (isset($hasOne) && !empty($hasOne)): ?>
+ *
 <?php foreach ($hasOne as $name => $relation): ?>
  * @property \<?= $relation['nameSpace'].'\\'.$relation['className'].' $'.lcfirst($name)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
- *
 <?php if (isset($hasMany) && !empty($hasMany)): ?>
+ *
 <?php foreach ($hasMany as $name => $relation): ?>
  * @property \<?= $relation['nameSpace'].'\\'.$relation['className'].'[] $'.lcfirst($name)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
 <?php if (isset($hasJunction) && !empty($hasJunction)): ?>
+ *
 <?php foreach ($hasJunction as $name => $relation): ?>
  * @property \<?= $relation['nameSpace'].'\\'.$relation['className'].'[] $'.lcfirst($name)."\n" ?>
 <?php endforeach; ?>
