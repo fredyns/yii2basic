@@ -96,10 +96,10 @@ if (YII_ENV_DEV) {
         //'allowedIPs' => ['127.0.0.1', '::1'],
         'generators' => [
             'my-modelmeta' => [
-                'class' => 'app\generator\modelmeta\Generator',
+                'class' => 'app\generators\modelmeta\Generator',
             ],
             'my-model' => [
-                'class' => 'app\generator\model\Generator',
+                'class' => 'app\generators\model\Generator',
             ],
         ],
     ];
