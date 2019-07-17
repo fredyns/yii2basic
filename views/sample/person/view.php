@@ -1,5 +1,7 @@
 <?php
 
+use yii\bootstrap\ButtonDropdown;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -20,7 +22,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
             <h1 style="margin-top: 0;">
-                <?= $model->aliasModel ?>
+                <?= $model->modelLabel() ?>
                 <small>
                     #<?= $model->id ?>
                     <?php if ($model->is_deleted): ?>
@@ -101,5 +103,26 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     
     <hr/>
 
+
+    <hr/>
+
+    <div style="font-size: 75%; font-style: italic;">
+        <?= Yii::t('timestamp', 'Created') ?>
+        <?= Yii::$app->formatter->asDate($model->created_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+        <?= Yii::t('timestamp', 'by') ?>
+        <?= ArrayHelper::getValue($model, 'createdBy.username', '-') ?>
+        <br/>
+        <?= Yii::t('timestamp', 'Updated') ?>
+        <?= Yii::$app->formatter->asDate($model->updated_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+        <?= Yii::t('timestamp', 'by') ?>
+        <?= ArrayHelper::getValue($model, 'updatedBy.username', '-') ?>
+        <?php if ($model->is_deleted): ?>
+            <br/>
+            <?= Yii::t('timestamp', 'Deleted') ?>
+            <?= Yii::$app->formatter->asDate($model->deleted_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+            <?= Yii::t('timestamp', 'by') ?>
+            <?= ArrayHelper::getValue($model, 'deletedBy.username', '-') ?>
+        <?php endif; ?>
+    </div>
 
 </div>
