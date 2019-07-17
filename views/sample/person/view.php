@@ -97,13 +97,56 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
         'attributes' => [
             'name',
         ],
-    ]); 
+    ]);
     ?>
 
     
     <hr/>
-
-
+    <br/>
+    <h3><?= Yii::t('sample', 'Books As Author') ?></h3>
+    <div class="table-responsive">
+        <?=
+        \kartik\grid\GridView::widget([
+            'layout' => '{summary}{pager}<br/>{items}{pager}',
+            'dataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => $model->getBooksAsAuthor(),
+                'pagination' => [
+                    'pageSize' => 20,
+                    'pageParam' => 'page-requestitems',
+                ],
+            ]),
+            'columns' => [
+                [
+                    'class' => 'kartik\grid\SerialColumn',
+                ],
+                'name',
+            ],
+        ]);
+        ?>
+    </div>
+    <br/>
+    <h3><?= Yii::t('sample', 'Books As Editor') ?></h3>
+    <div class="table-responsive">
+        <?=
+        \kartik\grid\GridView::widget([
+            'layout' => '{summary}{pager}<br/>{items}{pager}',
+            'dataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => $model->getBooksAsEditor(),
+                'pagination' => [
+                    'pageSize' => 20,
+                    'pageParam' => 'page-requestitems',
+                ],
+            ]),
+            'columns' => [
+                [
+                    'class' => 'kartik\grid\SerialColumn',
+                ],
+                'name',
+            ],
+        ]);
+        ?>
+    </div>
+    <br/>
     <hr/>
 
     <div style="font-size: 75%; font-style: italic;">
