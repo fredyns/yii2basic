@@ -1,34 +1,35 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
-/**
-* @var yii\web\View $this
-* @var app\models\sample\Person $model
-*/
+/* @var $this yii\web\View  */
+/* @var $model app\models\sample\Person  */
 
-$this->title = Yii::t('sample', 'Person');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('sample', 'Person'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->name, 'url' => ['view', 'id' => $model->id]];
+$this->title = $model->modelLabel();
+$this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Edit');
 ?>
 <div class="giiant-crud person-update">
 
-    <h1>
-        <?= Yii::t('sample', 'Person') ?>
-        <small>
-                        <?= Html::encode($model->name) ?>
-        </small>
-    </h1>
-
-    <div class="crud-navigation">
-        <?= Html::a('<span class="glyphicon glyphicon-file"></span> ' . Yii::t('cruds', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+    <div class="clearfix crud-navigation" style="padding-top: 30px;">
+        <div class="pull-left">
+            <h1 style="margin-top: 0;">
+                <?= $model->modelLabel() ?>
+                <small>
+                    #<?= $model->id ?>
+                </small>
+            </h1>
+        </div>
+        <div class="pull-right">
+            <?= Html::a('<span class="glyphicon glyphicon-file"></span> '.Yii::t('cruds', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-remove"></span> '.Yii::t('cruds', 'Cancel'), Url::previous(), ['class' => 'btn btn-default']) ?>
+        </div>
     </div>
 
     <hr />
 
-    <?php echo $this->render('_form', [
-    'model' => $model,
-    ]); ?>
+    <?= $this->render('_form', ['model' => $model]); ?>
 
 </div>
