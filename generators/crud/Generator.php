@@ -79,6 +79,26 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             $files[] = new CodeFile($controllerFile, $this->render('controller.php', $params));
         }
 
+        // access control
+        $action_list = ['index', 'create', 'view', 'update', 'delete'];
+
+        if ($this->getTableSchema()->getColumn('is_deleted')) {
+            $action_list[] = 'restore';
+        }
+
+        foreach ($action_list as $action) {
+            $control_namespace = str_replace('controllers', 'lib', $this->controllerNs)
+                .'\\'.Inflector::camel2id(str_replace('Controller', '', $params['controllerClassName']), '_')
+                .'\\'.$action;
+            $control_file = Yii::getAlias('@'.str_replace('\\', '/', ltrim($control_namespace, '\\'))
+                    .'/AccessControl.php');
+            pathinfo($control_file);
+            $files[] = new CodeFile(
+                $control_file
+                , $this->render('access_control.php', ['nameSpace' => $control_namespace])
+            );
+        }
+
         // API
 
         $restControllerFile = str_replace('controllers', 'controllers/api', StringHelper::dirname($controllerFile)).'/'.StringHelper::basename($controllerFile);
