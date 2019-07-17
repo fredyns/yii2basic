@@ -1,0 +1,65 @@
+{
+    "modelclass": {
+        "value": "app\\models\\sample\\Person",
+        "name": "modelClass"
+    },
+    "searchmodelclass": {
+        "value": "app\\lib\\sample\\person\\index\\PersonSearch",
+        "name": "searchModelClass"
+    },
+    "controllerclass": {
+        "value": "app\\controllers\\sample\\PersonController",
+        "name": "controllerClass"
+    },
+    "basecontrollerclass": {
+        "value": "yii\\web\\Controller",
+        "name": "baseControllerClass"
+    },
+    "viewpath": {
+        "value": "@app\/views\/sample",
+        "name": "viewPath"
+    },
+    "pathprefix": {
+        "value": "",
+        "name": "pathPrefix"
+    },
+    "enablei18n": {
+        "value": "1",
+        "name": "enableI18N"
+    },
+    "singularentities": {
+        "value": "0",
+        "name": "singularEntities"
+    },
+    "indexwidgettype": {
+        "value": "grid",
+        "name": "indexWidgetType"
+    },
+    "formlayout": {
+        "value": "horizontal",
+        "name": "formLayout"
+    },
+    "actionbuttonclass": {
+        "value": "yii\\grid\\ActionColumn",
+        "name": "actionButtonClass"
+    },
+    "providerlist": {
+        "value": [
+            "app\\generators\\crud\\providers\\CallbackProvider",
+            "app\\generators\\crud\\providers\\RelationProvider"
+        ],
+        "name": "providerList"
+    },
+    "template": {
+        "value": "default",
+        "name": "template"
+    },
+    "accessfilter": {
+        "value": "0",
+        "name": "accessFilter"
+    },
+    "modelmessagecategory": {
+        "value": "models",
+        "name": "modelMessageCategory"
+    }
+}
