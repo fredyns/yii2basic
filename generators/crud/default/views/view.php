@@ -29,6 +29,8 @@ $softdelete = ($tableSchema->getColumn('is_deleted') !== null) && ($tableSchema-
 echo "<?php\n";
 ?>
 
+use yii\bootstrap\ButtonDropdown;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -49,7 +51,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
             <h1 style="margin-top: 0;">
-                <?= '<?=' ?> $model->aliasModel ?>
+                <?= '<?=' ?> $model->modelLabel() ?>
                 <small>
 <?php if($haveID):?>
                     #<?= '<?='?> $model->id ?>
@@ -222,5 +224,38 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 
     }
     ?>
+
+    <hr/>
+<?php if ($tableSchema->getColumn('created_at') !== null): ?>
+
+    <div style="font-size: 75%; font-style: italic;">
+        <?= '<?=' ?> Yii::t('timestamp', 'Created') ?>
+        <?= '<?=' ?> Yii::$app->formatter->asDate($model->created_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+<?php if ($tableSchema->getColumn('created_by') !== null): ?>
+        <?= '<?=' ?> Yii::t('timestamp', 'by') ?>
+        <?= '<?=' ?> ArrayHelper::getValue($model, 'createdBy.username', '-') ?>
+<?php endif; ?>
+<?php if ($tableSchema->getColumn('updated_at') !== null): ?>
+        <br/>
+        <?= '<?=' ?> Yii::t('timestamp', 'Updated') ?>
+        <?= '<?=' ?> Yii::$app->formatter->asDate($model->updated_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+<?php if ($tableSchema->getColumn('updated_by') !== null): ?>
+        <?= '<?=' ?> Yii::t('timestamp', 'by') ?>
+        <?= '<?=' ?> ArrayHelper::getValue($model, 'updatedBy.username', '-') ?>
+<?php endif; ?>
+<?php endif; ?>
+<?php if ($tableSchema->getColumn('deleted_at') !== null): ?>
+        <?='<?php'?> if ($model->is_deleted): ?>
+            <br/>
+            <?= '<?=' ?> Yii::t('timestamp', 'Deleted') ?>
+            <?= '<?=' ?> Yii::$app->formatter->asDate($model->deleted_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+<?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
+            <?= '<?=' ?> Yii::t('timestamp', 'by') ?>
+            <?= '<?=' ?> ArrayHelper::getValue($model, 'deletedBy.username', '-') ?>
+<?php endif; ?>
+        <?='<?php'?> endif; ?>
+<?php endif; ?>
+    </div>
+<?php endif; ?>
 
 </div>
