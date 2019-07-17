@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
 class <?= $controllerClassName ?> extends \yii\rest\ActiveController
 {
     public $modelClass = '<?= $generator->modelClass ?>';
-    
+
 <?php if ($generator->accessFilter): ?>
     /**
      * @inheritdoc
@@ -38,6 +38,6 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
         ]
         );
     }
-    
+
 <?php endif; ?>
 }

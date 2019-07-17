@@ -3,13 +3,9 @@
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
-/*
- * @var yii\web\View $this
- * @var schmunk42\giiant\generators\crud\Generator $generator
- */
-
-/** @var \yii\db\ActiveRecord $model */
-/** @var $generator \schmunk42\giiant\generators\crud\Generator */
+/* @var $this \yii\web\View  */
+/* @var $generator \app\generators\crud\Generator  */
+/* @var $model \yii\db\ActiveRecord  */
 
 ## TODO: move to generator (?); cleanup
 $model = new $generator->modelClass();
@@ -26,6 +22,9 @@ if (empty($safeAttributes)) {
 $modelName = Inflector::camel2words(StringHelper::basename($model::className()));
 $className = $model::className();
 $urlParams = $generator->generateUrlParams();
+$tableSchema = $generator->getTableSchema();
+$haveID=($tableSchema->getColumn('id') !== null);
+$softdelete = ($tableSchema->getColumn('is_deleted') !== null) && ($tableSchema->getColumn('deleted_at') !== null) && ($tableSchema->getColumn('deleted_by') !== null);
 
 echo "<?php\n";
 ?>
@@ -37,118 +36,125 @@ use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use dmstr\bootstrap\Tabs;
 
-/**
-* @var yii\web\View $this
-* @var <?= ltrim($generator->modelClass, '\\') ?> $model
-*/
-$copyParams = $model->attributes;
+/* @var $this yii\web\View  */
+/* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
 
-$this->title = Yii::t('<?= $generator->modelMessageCategory ?>', '<?= $modelName ?>');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('<?= $generator->modelMessageCategory ?>', '<?= Inflector::pluralize($modelName) ?>'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
+$this->title = $model->modelLabel();
+$this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => (string) $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 ?>
 <div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-view">
 
-    <!-- flash message -->
-    <?= "<?php if (\\Yii::\$app->session->getFlash('deleteError') !== null) : ?>
-        <span class=\"alert alert-info alert-dismissible\" role=\"alert\">
-            <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
-            <span aria-hidden=\"true\">&times;</span></button>
-            <?= \\Yii::\$app->session->getFlash('deleteError') ?>
-        </span>
-    <?php endif; ?>" ?>
-
-
-    <h1>
-        <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>\n" ?>
-        <small>
-            <?= '<?= Html::encode($model->'.$generator->getModelNameAttribute($generator->modelClass).") ?>\n" ?>
-        </small>
-    </h1>
-
-
-    <div class="clearfix crud-navigation">
-
-        <!-- menu buttons -->
-        <div class='pull-left'>
-            <?= '<?= ' ?>Html::a(
-            '<span class="glyphicon glyphicon-pencil"></span> ' . <?= $generator->generateString('Edit') ?>,
-            [ 'update', <?= $urlParams ?>],
-            ['class' => 'btn btn-info']) ?>
-
-            <?= '<?= ' ?>Html::a(
-            '<span class="glyphicon glyphicon-copy"></span> ' . <?= $generator->generateString('Copy') ?>,
-            ['create', <?= $urlParams ?>, '<?= StringHelper::basename($generator->modelClass) ?>'=>$copyParams],
-            ['class' => 'btn btn-success']) ?>
-
-            <?= '<?= ' ?>Html::a(
-            '<span class="glyphicon glyphicon-plus"></span> ' . <?= $generator->generateString('New') ?>,
-            ['create'],
-            ['class' => 'btn btn-success']) ?>
+    <div class="clearfix crud-navigation" style="padding-top: 30px;">
+        <div class="pull-left">
+            <h1 style="margin-top: 0;">
+                <?= '<?=' ?> $model->aliasModel ?>
+                <small>
+<?php if($haveID):?>
+                    #<?= '<?='?> $model->id ?>
+<?php else:?>
+                    <?= '<?='?> Html::encode($model-><?= $generator->getNameAttribute() ?>) ?>
+<?php endif;?>
+<?php if($softdelete):?>
+                    <?= '<?php' ?> if ($model->is_deleted): ?>
+                        <span class="badge">deleted</span>
+                    <?= '<?php' ?> endif; ?>
+<?php endif;?>
+                </small>
+            </h1>
         </div>
-
-        <div class="pull-right">
-            <?= "<?= " ?>Html::a('<span class="glyphicon glyphicon-list"></span> '
-            . <?= $generator->generateString('Full list') ?>, ['index'], ['class'=>'btn btn-default']) ?>
+        <!-- menu buttons -->
+        <div class='pull-right'>
+            <?="<?=\n"?>
+            ButtonDropdown::widget([
+                'label' => <?= $generator->generateString('Edit') ?>,
+                'tagName' => 'a',
+                'split' => true,
+                'options' => [
+                    'href' => ['update', <?= $urlParams ?>],
+                    'class' => 'btn btn-info',
+                ],
+                'dropdown' => [
+                    'encodeLabels' => FALSE,
+                    'options' => [
+                        'class' => 'dropdown-menu-right',
+                    ],
+                    'items' => [
+                        '<li role="presentation" class="divider"></li>',
+                        [
+                            'label' => '<span class="glyphicon glyphicon-list"></span> '.<?= $generator->generateString('Full list') ?>,
+                            'url' => ['index'],
+                        ],
+                        [
+                            'label' => '<span class="glyphicon glyphicon-plus"></span> '.<?= $generator->generateString('New') ?>,
+                            'url' => ['create'],
+                        ],
+                        '<li role="presentation" class="divider"></li>',
+                        [
+                            'label' => '<span class="glyphicon glyphicon-trash"></span> '.<?= $generator->generateString('Delete') ?>,
+                            'url' => ['delete', <?= $urlParams ?>],
+                            'linkOptions' => [
+                                'data-confirm' => <?= $generator->generateString('Are you sure to delete this item?') ?>,
+                                'data-method' => 'post',
+                                'data-pjax' => FALSE,
+                                'class' => 'label label-danger',
+                            ],
+<?php if($softdelete):?>
+                            'visible' => ($model->is_deleted == FALSE),
+                        ],
+                        [
+                            'label' => '<span class="glyphicon glyphicon-floppy-open"></span> '.<?= $generator->generateString('Restore') ?>,
+                            'url' => ['delete', <?= $urlParams ?>],
+                            'linkOptions' => [
+                                'data-confirm' => <?= $generator->generateString('Are you sure to restore this item?') ?>,
+                                'data-method' => 'post',
+                                'data-pjax' => FALSE,
+                                'class' => 'label label-info',
+                            ],
+                            'visible' => ($model->is_deleted),
+<?php endif;?>
+                        ],
+                    ],
+                ],
+            ]);
+            ?>
         </div>
 
     </div>
 
     <hr/>
 
-    <?php
-    echo "<?php \$this->beginBlock('{$generator->modelClass}'); ?>\n";
-    ?>
-
     <?= $generator->partialView('detail_prepend', $model); ?>
 
-    <?= '<?= ' ?>DetailView::widget([
-    'model' => $model,
-    'attributes' => [
-    <?php
+    <?= "<?= \n" ?>
+    DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+<?php
     foreach ($safeAttributes as $attribute) {
         $format = $generator->attributeFormat($attribute);
         if (!$format) {
             continue;
         } else {
-            echo $format.",\n";
+            echo str_repeat(' ', 4).$format.",\n";
         }
     }
+?>
+        ],
+    ]); 
     ?>
-    ],
-    ]); ?>
 
     <?= $generator->partialView('detail_append', $model); ?>
 
     <hr/>
 
-    <?= '<?= ' ?>Html::a('<span class="glyphicon glyphicon-trash"></span> ' . <?= $generator->generateString(
-        'Delete'
-    ) ?>, ['delete', <?= $urlParams ?>],
-    [
-    'class' => 'btn btn-danger',
-    'data-confirm' => '' . <?= $generator->generateString('Are you sure to delete this item?') ?> . '',
-    'data-method' => 'post',
-    ]); ?>
-    <?= "<?php \$this->endBlock(); ?>\n\n"; ?>
-
-    <?php
-
+<?php
     // get relation info $ prepare add button
     $model = new $generator->modelClass();
 
-    $items = <<<EOS
-[
-    'label'   => '<b class=""># '.Html::encode(\$model->{$model->primaryKey()[0]}).'</b>',
-    'content' => \$this->blocks['{$generator->modelClass}'],
-    'active'  => true,
-],
-
-EOS;
-
-    foreach ($generator->getModelRelations($generator->modelClass, ['has_many', 'has_one']) as $name => $relation) {
-        echo "\n<?php \$this->beginBlock('$name'); ?>\n";
+    foreach ($generator->getModelRelations($generator->modelClass, ['has_many']) as $name => $relation) {
+        echo "\n    <h3>$name</h3>\n";
 
         $showAllRecords = false;
 
@@ -171,9 +177,9 @@ EOS;
         }
 
         // relation list, add, create buttons
-        echo "<div style='position: relative'>\n<div style='position:absolute; right: 0px; top: 0px;'>\n";
+        echo "    <div style='position: relative'>\n        <div style='position:absolute; right: 0px; top: 0px;'>\n";
 
-        echo "  <?= Html::a(
+        echo "    <?= Html::a(
             '<span class=\"glyphicon glyphicon-list\"></span> ' . ".$generator->generateString('List All')." . ' ".
             Inflector::camel2words($name)."',
             ['".$generator->createRelationRoute($relation, 'index')."'],
@@ -212,30 +218,9 @@ EOS;
             echo "<?php Pjax::end() ?>\n";
         endif;
 
-        echo "<?php \$this->endBlock() ?>\n\n";
+        echo "\n\n";
 
-        // build tab items
-        $label = Inflector::camel2words($name);
-        $items .= <<<EOS
-[
-    'content' => \$this->blocks['$name'],
-    'label'   => '<small>$label <span class="badge badge-default">'. \$model->get{$name}()->count() . '</span></small>',
-    'active'  => false,
-],\n
-EOS;
     }
-    ?>
-
-    <?=
-    // render tabs
-    "<?= Tabs::widget(
-                 [
-                     'id' => 'relation-tabs',
-                     'encodeLabels' => false,
-                     'items' => [\n $items ]
-                 ]
-    );
-    ?>";
     ?>
 
 </div>

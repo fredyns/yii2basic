@@ -3,55 +3,46 @@
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
-/*
- * @var yii\web\View $this
- * @var yii\gii\generators\crud\Generator $generator
- */
+/* @var $this \yii\web\View  */
+/* @var $generator \app\generators\crud\Generator  */
+/* @var $model \yii\db\ActiveRecord  */
 
 /** @var \yii\db\ActiveRecord $model */
 $model = new $generator->modelClass();
 $model->setScenario('crud');
 $modelName = Inflector::camel2words(StringHelper::basename($model::className()));
 
-
 echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
-/**
-* @var yii\web\View $this
-* @var <?= ltrim($generator->modelClass, '\\') ?> $model
-*/
+/* @var $this yii\web\View  */
+/* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
 
-$this->title = Yii::t('<?= $generator->modelMessageCategory ?>', '<?= $modelName ?>');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('<?= $generator->modelMessageCategory ?>', '<?=Inflector::pluralize($modelName) ?>'), 'url' => ['index']];
+$this->title = $model->modelLabel();
+$this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-create">
 
-    <h1>
-        <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>\n" ?>
-        <small>
-            <?php $label = StringHelper::basename($generator->modelClass); ?>
-            <?= '<?= Html::encode($model->'.$generator->getModelNameAttribute($generator->modelClass).") ?>\n" ?>
-        </small>
-    </h1>
-
-    <div class="clearfix crud-navigation">
+    <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
-            <?= '<?= ' ?>
-            Html::a(
-            <?= $generator->generateString('Cancel') ?>,
-            \yii\helpers\Url::previous(),
-            ['class' => 'btn btn-default']) ?>
+            <h1 style="margin-top: 0;">
+                <?= '<?=' ?> $model->modelLabel() ?>
+                <small>
+                    <?= '<?= '.$generator->generateString('New') ?> ?>
+                </small>
+            </h1>
+        </div>
+        <div class="pull-right">
+            <?= '<?=' ?>Html::a('<span class="glyphicon glyphicon-remove"></span> '.<?= $generator->generateString('Cancel') ?>, Url::previous(), ['class' => 'btn btn-default']) ?>
         </div>
     </div>
 
-    <hr />
+    <hr style="margin-top: 0;" />
 
-    <?= '<?= ' ?>$this->render('_form', [
-    'model' => $model,
-    ]); ?>
+    <?= '<?= ' ?>$this->render('_form', ['model' => $model]); ?>
 
 </div>
