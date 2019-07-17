@@ -144,87 +144,64 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
     }
 ?>
         ],
-    ]); 
+    ]);
     ?>
 
     <?= $generator->partialView('detail_append', $model); ?>
 
     <hr/>
-
+<?php $modelMeta = \app\generators\modelmeta\Generator::readMetadata(); ?>
+<?php if (isset($modelMeta[$model::tableName()]['hasMany'])): ?>
+<?php $subinfo_list = $modelMeta[$model::tableName()]['hasMany']; ?>
+<?php $i18n_category = yii\helpers\ArrayHelper::getValue($modelMeta, $model::tableName().'.messageCategory', 'models'); ?>
+<?php foreach ($subinfo_list as $rel_key => $rel_info): ?>
+    <br/>
+    <h3><?= '<?= ' ?>Yii::t('<?= $i18n_category ?>', '<?= Inflector::camel2words($rel_key, TRUE) ?>') ?></h3>
+    <div class="table-responsive">
+        <?= "<?=\n" ?>
+        \kartik\grid\GridView::widget([
+            'layout' => '{summary}{pager}<br/>{items}{pager}',
+            'dataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => $model->get<?=$rel_key?>(),
+                'pagination' => [
+                    'pageSize' => 20,
+                    'pageParam' => 'page-requestitems',
+                ],
+            ]),
+            'columns' => [
+                [
+                    'class' => 'kartik\grid\SerialColumn',
+                ],
 <?php
-    // get relation info $ prepare add button
-    $model = new $generator->modelClass();
+$rel_modelclass = $rel_info['nameSpace'].'\\'.$rel_info['className'];
+$rel_model = new $rel_modelclass;
+$allAttributes = $model->safeAttributes();
+$skipCols = ['id', 'created_at', 'created_by', 'updated_at', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by'];
+$safeAttributes = array_diff($allAttributes, $skipCols);
 
-    foreach ($generator->getModelRelations($generator->modelClass, ['has_many']) as $name => $relation) {
-        echo "\n    <h3>$name</h3>\n";
-
-        $showAllRecords = false;
-
-        if ($relation->via !== null) {
-            $pivotName = Inflector::pluralize($generator->getModelByTableName($relation->via->from[0]));
-            $pivotRelation = $model->{'get'.$pivotName}();
-            $pivotPk = key($pivotRelation->link);
-
-            $addButton = "  <?= Html::a(
-            '<span class=\"glyphicon glyphicon-link\"></span> ' . ".$generator->generateString('Attach')." . ' ".
-                Inflector::singularize(Inflector::camel2words($name)).
-                "', ['".$generator->createRelationRoute($pivotRelation, 'create')."', '".
-                Inflector::singularize($pivotName)."'=>['".key(
-                    $pivotRelation->link
-                )."'=>\$model->{$model->primaryKey()[0]}]],
-            ['class'=>'btn btn-info btn-xs']
-        ) ?>\n";
-        } else {
-            $addButton = '';
-        }
-
-        // relation list, add, create buttons
-        echo "    <div style='position: relative'>\n        <div style='position:absolute; right: 0px; top: 0px;'>\n";
-
-        echo "    <?= Html::a(
-            '<span class=\"glyphicon glyphicon-list\"></span> ' . ".$generator->generateString('List All')." . ' ".
-            Inflector::camel2words($name)."',
-            ['".$generator->createRelationRoute($relation, 'index')."'],
-            ['class'=>'btn text-muted btn-xs']
-        ) ?>\n";
-        // TODO: support multiple PKs
-        echo "  <?= Html::a(
-            '<span class=\"glyphicon glyphicon-plus\"></span> ' . ".$generator->generateString('New')." . ' ".
-            Inflector::singularize(Inflector::camel2words($name))."',
-            ['".$generator->createRelationRoute($relation, 'create')."', '".
-            Inflector::id2camel($generator->generateRelationTo($relation),
-                '-',
-                true)."' => ['".key($relation->link)."' => \$model->".$model->primaryKey()[0]."]],
-            ['class'=>'btn btn-success btn-xs']
-        ); ?>\n";
-        echo $addButton;
-
-        echo "</div>\n</div>\n"; #<div class='clearfix'></div>\n";
-        // render pivot grid
-        if ($relation->via !== null) {
-            $pjaxId = "pjax-{$pivotName}";
-            $gridRelation = $pivotRelation;
-            $gridName = $pivotName;
-        } else {
-            $pjaxId = "pjax-{$name}";
-            $gridRelation = $relation;
-            $gridName = $name;
-        }
-
-        $output = $generator->relationGrid($gridName, $gridRelation, $showAllRecords);
-
-        // render relation grid
-        if (!empty($output)):
-            echo "<?php Pjax::begin(['id'=>'pjax-{$name}', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-{$name} ul.pagination a, th a']) ?>\n";
-            echo "<?=\n ".$output."\n?>\n";
-            echo "<?php Pjax::end() ?>\n";
-        endif;
-
-        echo "\n\n";
-
+$max_columns = 12;
+$count = 0;
+foreach ($safeAttributes as $attribute) {
+    $format = trim($generator->columnFormat($attribute, $rel_model));
+    if ($format == false) {
+        $format = "'$attribute'";
     }
-    ?>
-
+    if (++$count < $max_columns) {
+        echo str_repeat(' ', 16).str_replace("\n", "\n".str_repeat(' ', 16), $format) . ",\n";
+    } else {
+        echo str_repeat(' ', 16)."/* //\n"
+            .str_repeat(' ', 16).str_replace("\n", "\n".str_repeat(' ', 16), $format).",\n"
+            .str_repeat(' ', 16)."// */\n";
+    }
+}
+?>
+            ],
+        ]);
+        ?>
+    </div>
+<?php endforeach; ?>
+<?php endif; ?>
+    <br/>
     <hr/>
 <?php if ($tableSchema->getColumn('created_at') !== null): ?>
 
