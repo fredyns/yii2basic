@@ -41,7 +41,7 @@ class ModelAction extends BaseAction
     public $scenario;
 
     /**
-     * @var Filter action filter before execution
+     * @var AccessControl action access control before execution
      */
     public $filter;
 
@@ -79,8 +79,8 @@ class ModelAction extends BaseAction
         if (is_array($this->filter)) {
             $this->filter = Yii::createObject($this->filter);
 
-            if (($this->filter instanceof ActionFilter) === FALSE) {
-                throw new InvalidConfigException('Filter must extend from '.ActionFilter::class.'.');
+            if (($this->filter instanceof AccessControl) === FALSE) {
+                throw new InvalidConfigException('Filter must extend from '.AccessControl::class.'.');
             }
         }
 
@@ -109,7 +109,7 @@ class ModelAction extends BaseAction
         /**
          * running action filter to check whether user has priviledges to run action
          */
-        if ($this->filter && $this->filter instanceof ActionFilter) {
+        if ($this->filter && $this->filter instanceof AccessControl) {
             $permitted = $this->filter->run();
 
             if ($permitted === FALSE) {

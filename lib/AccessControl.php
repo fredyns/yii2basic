@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActionFilter extends \yii\base\Component
+class AccessControl extends \yii\base\Component
 {
     public $model;
     public $permitted = FALSE;
