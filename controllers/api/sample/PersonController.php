@@ -11,5 +11,5 @@ use yii\helpers\ArrayHelper;
 class PersonController extends \yii\rest\ActiveController
 {
     public $modelClass = 'app\models\sample\Person';
-    
+
 }
