@@ -23,6 +23,21 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
     public $viewPath = '@app/views';
 
     /**
+     * @var bool whether to overwrite extended controller classes
+     */
+    public $overwriteControllerClass = true;
+
+    /**
+     * @var bool whether to overwrite rest/api controller classes
+     */
+    public $overwriteRestControllerClass = true;
+
+    /**
+     * @var bool whether to overwrite search classes
+     */
+    public $overwriteSearchModelClass = true;
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
