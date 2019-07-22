@@ -26,7 +26,7 @@ class AccessControl extends \yii\base\Component
      * @param ActiveRecord $model
      * @return Boolean
      */
-    public static function assess($model)
+    public static function check($model)
     {
         $access_control = new static($model);
 
