@@ -50,7 +50,7 @@ class AccessControl extends \yii\base\Component
      */
     protected function resetState()
     {
-        $this->pass = FALSE;
+        $this->pass = NULL;
         $this->messages = [];
     }
 
@@ -70,9 +70,29 @@ class AccessControl extends \yii\base\Component
     public function run()
     {
         $this->resetState();
-        $this->pass = TRUE;
 
-        return $this->pass;
+        return $this->passed();
+    }
+
+    /**
+     * set access control to be true
+     * @return Boolean
+     */
+    public function passed()
+    {
+        return $this->pass = TRUE;
+    }
+
+    /**
+     * set access control to be false
+     * and save message
+     * @return Boolean
+     */
+    public function blocked($message)
+    {
+        $this->messages[] = $message;
+
+        return $this->pass = FALSE;
     }
 
 }
