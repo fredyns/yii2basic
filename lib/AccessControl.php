@@ -24,11 +24,9 @@ class AccessControl extends \yii\base\Component
     /**
      * @inheritdoc
      */
-    public function __construct($config = array())
+    public function __construct($config_or_model = array())
     {
-        if ($config instanceof ActiveRecord) {
-            $config['model'] = $config;
-        }
+        $config = ($config_or_model instanceof ActiveRecord) ? ['model' => $config_or_model] : $config;
 
         return parent::__construct($config);
     }
