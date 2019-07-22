@@ -22,6 +22,20 @@ class AccessControl extends \yii\base\Component
     public $messages = [];
 
     /**
+     * run access control and return pass or not
+     * @param ActiveRecord $model
+     * @return Boolean
+     */
+    public static function assess($model)
+    {
+        $access_control = new static($model);
+
+        $access_control->run();
+
+        return $access_control->permitted;
+    }
+
+    /**
      * @inheritdoc
      */
     public function __construct($config_or_model = array())
