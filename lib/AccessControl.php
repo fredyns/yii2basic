@@ -22,6 +22,18 @@ class AccessControl extends \yii\base\Component
     public $messages = [];
 
     /**
+     * @inheritdoc
+     */
+    public function __construct($config = array())
+    {
+        if ($config instanceof ActiveRecord) {
+            $config['model'] = $config;
+        }
+
+        return parent::__construct($config);
+    }
+
+    /**
      * reset checking state
      */
     protected function resetState()
