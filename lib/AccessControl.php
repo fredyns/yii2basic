@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
  * regarding user log in status & all situation
  * 
  * @property ActiveRecord $model particular model
- * @property Boolean $permitted whether action is executable
+ * @property Boolean $pass whether action is executable
  * @property String[] $messages error messages produced on checking process
  * @property-read array $redirectUrl redirect url when error occur
  *
@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
 class AccessControl extends \yii\base\Component
 {
     public $model;
-    public $permitted = FALSE;
+    public $pass = FALSE;
     public $messages = [];
 
     /**
@@ -32,7 +32,7 @@ class AccessControl extends \yii\base\Component
 
         $access_control->run();
 
-        return $access_control->permitted;
+        return $access_control->pass;
     }
 
     /**
@@ -50,7 +50,7 @@ class AccessControl extends \yii\base\Component
      */
     protected function resetState()
     {
-        $this->permitted = FALSE;
+        $this->pass = FALSE;
         $this->messages = [];
     }
 
@@ -70,8 +70,9 @@ class AccessControl extends \yii\base\Component
     public function run()
     {
         $this->resetState();
+        $this->pass = TRUE;
 
-        return TRUE;
+        return $this->pass;
     }
 
 }
