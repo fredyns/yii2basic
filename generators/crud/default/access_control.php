@@ -16,8 +16,9 @@ class ActionFilter extends \app\lib\AccessControl
     public function run()
     {
         $this->resetState();
+        $this->pass = TRUE;
 
-        return TRUE;
+        return $this->pass;
     }
 
 }
