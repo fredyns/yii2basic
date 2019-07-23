@@ -110,15 +110,17 @@ class BaseAction extends \yii\base\Action
      */
     protected function resolveUrl($url, $model = NULL)
     {
-        if ($url && (is_array($url) OR is_string($url))) {
-            return $url;
-        }
+        if ($url) {
+            if (is_array($url) OR is_string($url)) {
+                return $url;
+            }
 
-        if (is_callable($url) && $model) {
-            if ($model) {
-                return call_user_func($url, $model);
-            } else {
-                return call_user_func($url);
+            if (is_callable($url) && $model) {
+                if ($model) {
+                    return call_user_func($url, $model);
+                } else {
+                    return call_user_func($url);
+                }
             }
         }
 
