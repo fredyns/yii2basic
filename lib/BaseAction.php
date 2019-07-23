@@ -7,7 +7,6 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\UserException;
 use yii\db\ActiveRecord;
-use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use cornernote\returnurl\ReturnUrl;
 
@@ -124,7 +123,7 @@ class BaseAction extends \yii\base\Action
             }
         }
 
-        return ReturnUrl::getUrl(Url::previous());
+        return ReturnUrl::getUrl();
     }
 
     /**
