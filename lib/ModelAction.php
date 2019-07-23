@@ -9,6 +9,7 @@ use yii\base\UserException;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
+use cornernote\returnurl\ReturnUrl;
 
 /**
  * Generic action for model operation
@@ -16,10 +17,10 @@ use yii\web\NotFoundHttpException;
  *  - model 'id' as parameter
  *  - model function name to execute (optional)
  *  - 'redirect' url after execution success (optional)
- *  - 'fallback' url after execution failed/error (optional)
+ *  - 'fallback' url if user has no access or error occured (optional)
  *  - 'view' to display 
  *
- * @property Filter $filter action filter
+ * @property AccessControl $accessControl action accessControl
  * 
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
@@ -43,7 +44,7 @@ class ModelAction extends BaseAction
     /**
      * @var AccessControl action access control before execution
      */
-    public $filter;
+    public $accessControl;
 
     /**
      * @var String|Callable then function name on model or inline function to execute
@@ -51,14 +52,19 @@ class ModelAction extends BaseAction
     public $operation;
 
     /**
-     * @var array redirect url after operation succeed
+     * @var array redirect url when error occur while executing operation
      */
-    public $redirect;
+    public $fallbackUrl;
 
     /**
      * @var array redirect url when error occur while executing operation
      */
-    public $fallback;
+    public $errorUrl;
+
+    /**
+     * @var array redirect url after operation succeed
+     */
+    public $redirectUrl;
 
     /**
      * @var string view to be rendered
@@ -76,12 +82,8 @@ class ModelAction extends BaseAction
             throw new InvalidConfigException('Model class must be defined.');
         }
 
-        if (is_array($this->filter)) {
-            $this->filter = Yii::createObject($this->filter);
-
-            if (($this->filter instanceof AccessControl) === FALSE) {
-                throw new InvalidConfigException('Filter must extend from '.AccessControl::class.'.');
-            }
+        if ($this->accessControl && (is_array($this->accessControl) === FALSE OR is_string($this->accessControl) === FALSE)) {
+            throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
         }
 
         if ($this->operation) {
@@ -107,26 +109,12 @@ class ModelAction extends BaseAction
         $model = $this->resolveModel();
 
         /**
-         * running action filter to check whether user has priviledges to run action
+         * running action accessControl to check whether user has priviledges to run action
          */
-        if ($this->filter && $this->filter instanceof AccessControl) {
-            $permitted = $this->filter->run();
+        $passed = $this->accessControlFilter($model);
 
-            if ($permitted === FALSE) {
-                if ($this->fallback) {
-                    foreach ($this->filter->messages as $msg) {
-                        Yii::$app->getSession()->addFlash('error', $msg);
-                    }
-
-                    $url = $this->resolveFallback($model);
-                    return $this->controller->redirect($url);
-                } elseif (count($this->filter->messages) > 0) {
-                    $msg = implode("\n", $this->filter->messages);
-                    throw new NotFoundHttpException($msg);
-                } else {
-                    throw new NotFoundHttpException(Yii::t('app', 'Operation is forbidden for unknown reason.'));
-                }
-            }
+        if ($passed === FALSE) {
+            return $this->fallbackPage($model);
         }
 
         /**
@@ -136,21 +124,20 @@ class ModelAction extends BaseAction
         try {
             $result = $this->startOperation($model);
 
-            if ($result && $this->redirect) {
-                $url = $this->resolveRedirect($model);
+            if ($result && $this->redirectUrl) {
+                $url = $this->resolveRedirectUrl($model);
                 return $this->controller->redirect($url);
             }
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            $url = $this->resolveErrorUrl($model);
 
-            if (empty($this->fallback)) {
-                $model->addError('_exception', $msg);
-            } else {
+            if ($url) {
                 Yii::$app->getSession()->addFlash('error', $msg);
-
-                $url = $this->resolveFallback($model);
                 return $this->controller->redirect($url);
             }
+
+            $model->addError('_exception', $msg);
         }
 
         /**
@@ -186,6 +173,59 @@ class ModelAction extends BaseAction
     }
 
     /**
+     * run access controll filter
+     * and return answer whether user has access to run action
+     * @param ActiveRecord $model
+     * @return boolean
+     */
+    protected function accessControlFilter(ActiveRecord $model)
+    {
+        if (empty($this->accessControl)) {
+            return TRUE;
+        }
+
+        $config = is_array($this->accessControl) ? $this->accessControl : ['class' => $this->accessControl];
+        $config['model'] = $model;
+
+        $this->accessControl = Yii::createObject($config);
+
+        if (($this->accessControl instanceof AccessControl) === FALSE) {
+            throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
+        }
+
+        return $this->accessControl->isPassed;
+    }
+
+    /**
+     * display fallback page when user is not permitted to run action
+     * @param ActiveRecord $model
+     * @return Mixed
+     * @throws NotFoundHttpException
+     */
+    protected function fallbackPage(ActiveRecord $model)
+    {
+        $url = $this->resolveFallbackUrl($model);
+
+        if ($url) {
+            // set message to session and redirect to fallback url
+            foreach ($this->accessControl->messages as $msg) {
+                Yii::$app->getSession()->addFlash('error', $msg);
+            }
+
+            return $this->controller->redirect($url);
+        }
+
+        // error messages
+        if (count($this->accessControl->messages) > 0) {
+            $msg = implode("\n", $this->accessControl->messages);
+        } else {
+            $msg = Yii::t('app', 'Action is forbidden for unknown reason.');
+        }
+
+        throw new NotFoundHttpException($msg);
+    }
+
+    /**
      * executing model operation
      * 
      * @param type $model
@@ -197,15 +237,15 @@ class ModelAction extends BaseAction
             return;
         }
 
-        $function_exist = (is_scalar($this->operation) && method_exists($this->modelClass, $this->operation));
+        $is_function = (is_string($this->operation) && method_exists($this->modelClass, $this->operation));
         $is_closure = ($this->operation instanceof \Closure);
 
-        if ($function_exist) {
+        if ($is_function) {
             Yii::debug('Running operation: '.get_class($model).'::'.$this->operation.'()', __METHOD__);
 
-            return call_user_func([$model, $this->operation], $model);
+            return call_user_func([$model, $this->operation]);
         } elseif ($is_closure) {
-            Yii::debug('Running closure', __METHOD__);
+            Yii::debug('Running operation closure', __METHOD__);
 
             return call_user_func($this->operation, $model);
         } else {
@@ -221,7 +261,7 @@ class ModelAction extends BaseAction
      */
     protected function resolveUrl($url, $model)
     {
-        if ($url && is_array($url)) {
+        if ($url && (is_array($url) OR is_string($url))) {
             return $url;
         }
 
@@ -229,18 +269,7 @@ class ModelAction extends BaseAction
             return call_user_func($url, $model);
         }
 
-        return Url::previous();
-    }
-
-    /**
-     * resolve url to redirect when deletion successfull
-     * 
-     * @param \yii\db\ActiveRecord $model
-     * @return array
-     */
-    protected function resolveRedirect($model)
-    {
-        return $this->resolveUrl($this->redirect, $model);
+        return ReturnUrl::getUrl(Url::previous());
     }
 
     /**
@@ -249,9 +278,39 @@ class ModelAction extends BaseAction
      * @param \yii\db\ActiveRecord $model
      * @return array
      */
-    protected function resolveFallback($model)
+    protected function resolveFallbackUrl($model)
     {
-        return $this->resolveUrl($this->fallback, $model);
+        if (empty($this->fallbackUrl)) {
+            return NULL;
+        }
+
+        return $this->resolveUrl($this->fallbackUrl, $model);
+    }
+
+    /**
+     * resolve url to fallback when deletion failed
+     * 
+     * @param \yii\db\ActiveRecord $model
+     * @return array
+     */
+    protected function resolveErrorUrl($model)
+    {
+        if (empty($this->errorUrl)) {
+            return NULL;
+        }
+
+        return $this->resolveUrl($this->errorUrl, $model);
+    }
+
+    /**
+     * resolve url to redirect when deletion successfull
+     * 
+     * @param \yii\db\ActiveRecord $model
+     * @return array
+     */
+    protected function resolveRedirectUrl($model)
+    {
+        return $this->resolveUrl($this->redirectUrl, $model);
     }
 
 }
