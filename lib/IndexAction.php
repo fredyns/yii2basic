@@ -15,6 +15,7 @@ class IndexAction extends BaseAction
 {
     public $searchClass;
     public $is_deleted = NULL;
+    public $view = 'index';
 
     /**
      * {@inheritdoc}
@@ -52,7 +53,7 @@ class IndexAction extends BaseAction
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->controller->render('index', [
+        return $this->controller->render($this->view, [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
         ]);
