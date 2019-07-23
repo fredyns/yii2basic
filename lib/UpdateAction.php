@@ -13,7 +13,7 @@ use yii\web\NotFoundHttpException;
 class UpdateAction extends BaseAction
 {
     public $modelClass;
-    public $redirect;
+    public $redirectUrl;
 
     /**
      * execute action
@@ -38,7 +38,7 @@ class UpdateAction extends BaseAction
 
         try {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $url = $this->resolveRedirect($model);
+                $url = $this->resolveRedirectUrl($model);
                 return $this->controller->redirect($url);
             }
         } catch (\Exception $e) {
@@ -52,22 +52,18 @@ class UpdateAction extends BaseAction
     }
 
     /**
-     * resolve url to redirect
-     * 
+     * resolve url to redirect when creation successfull
+     *
      * @param \yii\db\ActiveRecord $model
      * @return array
      */
-    public function resolveRedirect($model)
+    protected function resolveRedirectUrl($model)
     {
-        if ($this->redirect && is_array($this->redirect)) {
-            return $this->redirect;
+        if (empty($this->redirectUrl)) {
+            return ['view', 'id' => $model->id];
         }
 
-        if (is_callable($this->redirect)) {
-            return call_user_func($this->redirect, $model);
-        }
-
-        return ['view', 'id' => $model->id];
+        return $this->resolveUrl($this->redirectUrl, $model);
     }
 
 }

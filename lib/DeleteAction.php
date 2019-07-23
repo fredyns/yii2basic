@@ -5,6 +5,7 @@ namespace app\lib;
 use Yii;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
+use cornernote\returnurl\ReturnUrl;
 
 /**
  * Description of ActiveAction
@@ -14,8 +15,8 @@ use yii\web\NotFoundHttpException;
 class DeleteAction extends BaseAction
 {
     public $modelClass;
-    public $redirect;
-    public $fallback;
+    public $errorUrl;
+    public $redirectUrl;
 
     /**
      * execute action
@@ -44,31 +45,12 @@ class DeleteAction extends BaseAction
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             Yii::$app->getSession()->addFlash('error', $msg);
 
-            $url = $this->resolveFallback($model);
+            $url = $this->resolveErrorUrl($model);
             return $this->controller->redirect($url);
         }
 
-        $url = $this->resolveRedirect($model);
+        $url = $this->resolveRedirectUrl($model);
         return $this->controller->redirect($url);
-    }
-
-    /**
-     * resolve url path
-     * 
-     * @param \yii\db\ActiveRecord $model
-     * @return array
-     */
-    protected function resolveUrl($url, $model)
-    {
-        if ($url && is_array($url)) {
-            return $url;
-        }
-
-        if (is_callable($url)) {
-            return call_user_func($url, $model);
-        }
-
-        return Url::previous();
     }
 
     /**
@@ -77,9 +59,9 @@ class DeleteAction extends BaseAction
      * @param \yii\db\ActiveRecord $model
      * @return array
      */
-    protected function resolveRedirect($model)
+    protected function resolveRedirectUrl($model)
     {
-        return $this->resolveUrl($this->redirect, $model);
+        return $this->resolveUrl($this->redirectUrl, $model);
     }
 
     /**
@@ -88,9 +70,9 @@ class DeleteAction extends BaseAction
      * @param \yii\db\ActiveRecord $model
      * @return array
      */
-    protected function resolveFallback($model)
+    protected function resolveErrorUrl($model)
     {
-        return $this->resolveUrl($this->fallback, $model);
+        return $this->resolveUrl($this->errorUrl, $model);
     }
 
 }
