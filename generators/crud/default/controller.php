@@ -1,4 +1,7 @@
 <?php
+$tableSchema = $generator->getTableSchema();
+$softdelete = ($tableSchema->getColumn('is_deleted') !== null);
+
 /**
  * Customizable controller class.
  */
@@ -24,7 +27,10 @@ class <?= $controllerClassName ?> extends Controller
         return [
             'index' => [
                 'class' => \app\lib\IndexAction::class,
-                'searchClass' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                'searchClass' => [
+                    'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                    'is_deleted' => 0,
+                ],
             ],
             'view' => [
                 'class' => \app\lib\ViewAction::class,
@@ -42,6 +48,27 @@ class <?= $controllerClassName ?> extends Controller
                 'class' => \app\lib\DeleteAction::class,
                 'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
             ],
+            <?php if ($softdelete): ?>
+            'restore' => [
+                'class' => \app\lib\RestoreAction::class,
+                'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
+            ],
+            'deleted' => [
+                'class' => \app\lib\IndexAction::class,
+                'searchClass' => [
+                    'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                    'is_deleted' => 1,
+                ],
+                'view' => 'deleted',
+            ],
+            'archive' => [
+                'class' => \app\lib\IndexAction::class,
+                'searchClass' => [
+                    'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                ],
+                'view' => 'deleted',
+            ],
+            <?php endif; ?>
         ];
     }
 
