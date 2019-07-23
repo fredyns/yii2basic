@@ -20,6 +20,15 @@ class CreateAction extends BaseAction
      */
     public function run()
     {
+        /**
+         * running action accessControl to check whether user has priviledges to run action
+         */
+        $passed = $this->accessControlFilter();
+
+        if ($passed === FALSE) {
+            return $this->fallbackPage();
+        }
+
         $model = Yii::createObject($this->modelClass);
 
         try {

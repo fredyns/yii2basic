@@ -27,6 +27,15 @@ class UpdateAction extends BaseAction
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
 
+        /**
+         * running action accessControl to check whether user has priviledges to run action
+         */
+        $passed = $this->accessControlFilter($model);
+
+        if ($passed === FALSE) {
+            return $this->fallbackPage($model);
+        }
+
         try {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 $url = $this->resolveRedirect($model);
