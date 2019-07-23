@@ -63,12 +63,15 @@ class AccessControl extends \yii\base\Component
 
     /**
      * chcek whether user pass access control to run action
+     * @param Boolean $force
      * @return Boolean
      */
     public function getIsPassed($force = false)
     {
         if ($this->_isPassed !== NULL && $force === FALSE) {
             return $this->_isPassed;
+        } elseif ($force) {
+            $this->resetState();
         }
 
         return $this->run();
