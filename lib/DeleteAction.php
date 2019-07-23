@@ -19,6 +19,18 @@ class DeleteAction extends BaseAction
     public $redirectUrl;
 
     /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (empty($this->modelClass)) {
+            throw new InvalidConfigException('Model class must be defined.');
+        }
+    }
+
+    /**
      * execute action
      * @return mixed
      */
@@ -55,7 +67,7 @@ class DeleteAction extends BaseAction
 
     /**
      * resolve url to redirect when deletion successfull
-     * 
+     *
      * @param \yii\db\ActiveRecord $model
      * @return array
      */
@@ -66,7 +78,7 @@ class DeleteAction extends BaseAction
 
     /**
      * resolve url to fallback when deletion failed
-     * 
+     *
      * @param \yii\db\ActiveRecord $model
      * @return array
      */

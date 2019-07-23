@@ -15,6 +15,18 @@ class ViewAction extends BaseAction
     public $modelClass;
 
     /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (empty($this->modelClass)) {
+            throw new InvalidConfigException('Model class must be defined.');
+        }
+    }
+
+    /**
      * execute action
      * @return mixed
      */

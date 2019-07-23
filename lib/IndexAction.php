@@ -14,6 +14,18 @@ class IndexAction extends BaseAction
     public $searchClass;
 
     /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (empty($this->searchClass)) {
+            throw new InvalidConfigException('Search class must be defined.');
+        }
+    }
+
+    /**
      * execute action
      * @return mixed
      */
