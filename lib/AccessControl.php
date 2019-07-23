@@ -78,7 +78,7 @@ class AccessControl extends \yii\base\Component
     }
 
     /**
-     * all logic to check whether action is executable
+     * all assessment logic to check whether user granted to run action
      * @return boolean
      */
     public function run()
