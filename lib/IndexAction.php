@@ -5,6 +5,7 @@ namespace app\lib;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 
 /**
  * Generic action to index/browse models
@@ -47,8 +48,12 @@ class IndexAction extends BaseAction
         /* @var $searchModel ActiveRecord */
         $searchModel = Yii::createObject($this->searchClass);
 
-        if (is_bool($this->is_deleted) && $searchModel->hasAttribute('is_deleted')) {
-            $searchModel->setAttribute('is_deleted', $this->is_deleted);
+        if (is_bool($this->is_deleted)) {
+            if ($searchModel->hasAttribute('is_deleted')) {
+                $searchModel->setAttribute('is_deleted', $this->is_deleted);
+            } else {
+                throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+            }
         }
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
