@@ -8,17 +8,29 @@ use yii\db\ActiveRecord;
  * base class to check whether an action is executable
  * regarding user log in status & all situation
  * 
- * @property ActiveRecord $model particular model
- * @property Boolean $pass whether action is executable
+ * How to use:
+ *  $control = new AccessControl($model);
+ * 
+ *  if ($control->isPassed) {
+ *      // run action
+ *  }
+ * 
+ * Or:
+ *  if (AccessControl::check($model)) {
+ *      // run action
+ *  }
+ * 
+ * inherited access control must overide run() function to define assessment
+ * 
+ * @property ActiveRecord $model particular model to check
+ * @property Boolean $isPassed whether user passed access control to run action
  * @property String[] $messages error messages produced on checking process
- * @property-read array $redirectUrl redirect url when error occur
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
 class AccessControl extends \yii\base\Component
 {
     public $model;
-    public $pass = FALSE;
     public $messages = [];
 
     /**
@@ -32,7 +44,7 @@ class AccessControl extends \yii\base\Component
 
         $access_control->run();
 
-        return $access_control->pass;
+        return $access_control->isPassed;
     }
 
     /**
@@ -44,23 +56,22 @@ class AccessControl extends \yii\base\Component
 
         return parent::__construct($config);
     }
+    /**
+     * @var Boolean
+     */
+    private $_isPassed;
 
     /**
-     * reset checking state
+     * chcek whether user pass access control to run action
+     * @return Boolean
      */
-    protected function resetState()
+    public function getIsPassed($force = false)
     {
-        $this->pass = NULL;
-        $this->messages = [];
-    }
+        if ($this->_isPassed !== NULL && $force === FALSE) {
+            return $this->_isPassed;
+        }
 
-    /**
-     * compose redirect url when error occur
-     * @return array
-     */
-    public function getRedirectUrl()
-    {
-        return ['/'];
+        return $this->run();
     }
 
     /**
@@ -69,9 +80,16 @@ class AccessControl extends \yii\base\Component
      */
     public function run()
     {
-        $this->resetState();
-
         return $this->passed();
+    }
+
+    /**
+     * reset checking state
+     */
+    protected function resetState()
+    {
+        $this->_isPassed = NULL;
+        $this->messages = [];
     }
 
     /**
@@ -80,7 +98,7 @@ class AccessControl extends \yii\base\Component
      */
     public function passed()
     {
-        return $this->pass = TRUE;
+        return $this->_isPassed = TRUE;
     }
 
     /**
@@ -92,7 +110,7 @@ class AccessControl extends \yii\base\Component
     {
         $this->messages[] = $message;
 
-        return $this->pass = FALSE;
+        return $this->_isPassed = FALSE;
     }
 
 }
