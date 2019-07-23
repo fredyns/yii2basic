@@ -20,8 +20,6 @@ use cornernote\returnurl\ReturnUrl;
  *  - 'fallback' url if user has no access or error occured (optional)
  *  - 'view' to display 
  *
- * @property AccessControl $accessControl action accessControl
- * 
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
 class ModelAction extends BaseAction
@@ -42,19 +40,9 @@ class ModelAction extends BaseAction
     public $scenario;
 
     /**
-     * @var AccessControl action access control before execution
-     */
-    public $accessControl;
-
-    /**
      * @var String|Callable then function name on model or inline function to execute
      */
     public $operation;
-
-    /**
-     * @var array redirect url when error occur while executing operation
-     */
-    public $fallbackUrl;
 
     /**
      * @var array redirect url when error occur while executing operation
@@ -80,10 +68,6 @@ class ModelAction extends BaseAction
 
         if (empty($this->modelClass)) {
             throw new InvalidConfigException('Model class must be defined.');
-        }
-
-        if ($this->accessControl && (is_array($this->accessControl) === FALSE OR is_string($this->accessControl) === FALSE)) {
-            throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
         }
 
         if ($this->operation) {
@@ -173,59 +157,6 @@ class ModelAction extends BaseAction
     }
 
     /**
-     * run access controll filter
-     * and return answer whether user has access to run action
-     * @param ActiveRecord $model
-     * @return boolean
-     */
-    protected function accessControlFilter(ActiveRecord $model)
-    {
-        if (empty($this->accessControl)) {
-            return TRUE;
-        }
-
-        $config = is_array($this->accessControl) ? $this->accessControl : ['class' => $this->accessControl];
-        $config['model'] = $model;
-
-        $this->accessControl = Yii::createObject($config);
-
-        if (($this->accessControl instanceof AccessControl) === FALSE) {
-            throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
-        }
-
-        return $this->accessControl->isPassed;
-    }
-
-    /**
-     * display fallback page when user is not permitted to run action
-     * @param ActiveRecord $model
-     * @return Mixed
-     * @throws NotFoundHttpException
-     */
-    protected function fallbackPage(ActiveRecord $model)
-    {
-        $url = $this->resolveFallbackUrl($model);
-
-        if ($url) {
-            // set message to session and redirect to fallback url
-            foreach ($this->accessControl->messages as $msg) {
-                Yii::$app->getSession()->addFlash('error', $msg);
-            }
-
-            return $this->controller->redirect($url);
-        }
-
-        // error messages
-        if (count($this->accessControl->messages) > 0) {
-            $msg = implode("\n", $this->accessControl->messages);
-        } else {
-            $msg = Yii::t('app', 'Action is forbidden for unknown reason.');
-        }
-
-        throw new NotFoundHttpException($msg);
-    }
-
-    /**
      * executing model operation
      * 
      * @param type $model
@@ -251,40 +182,6 @@ class ModelAction extends BaseAction
         } else {
             throw new InvalidConfigException("Operation is not executable.");
         }
-    }
-
-    /**
-     * resolve url path
-     * 
-     * @param \yii\db\ActiveRecord $model
-     * @return array
-     */
-    protected function resolveUrl($url, $model)
-    {
-        if ($url && (is_array($url) OR is_string($url))) {
-            return $url;
-        }
-
-        if (is_callable($url)) {
-            return call_user_func($url, $model);
-        }
-
-        return ReturnUrl::getUrl(Url::previous());
-    }
-
-    /**
-     * resolve url to fallback when deletion failed
-     * 
-     * @param \yii\db\ActiveRecord $model
-     * @return array
-     */
-    protected function resolveFallbackUrl($model)
-    {
-        if (empty($this->fallbackUrl)) {
-            return NULL;
-        }
-
-        return $this->resolveUrl($this->fallbackUrl, $model);
     }
 
     /**
