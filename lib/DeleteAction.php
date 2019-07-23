@@ -3,6 +3,7 @@
 namespace app\lib;
 
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use cornernote\returnurl\ReturnUrl;

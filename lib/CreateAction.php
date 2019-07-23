@@ -3,6 +3,7 @@
 namespace app\lib;
 
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * generic action to create new model
