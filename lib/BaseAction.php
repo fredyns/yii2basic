@@ -15,7 +15,7 @@ use cornernote\returnurl\ReturnUrl;
  * Description of WebAction
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
- * 
+ *
  * @property AccessControl $accessControl action accessControl
  */
 class BaseAction extends \yii\base\Action
@@ -36,6 +36,10 @@ class BaseAction extends \yii\base\Action
     public function init()
     {
         parent::init();
+
+        if (empty($this->fallbackUrl)) {
+            $this->fallbackUrl = Yii::$app->homeUrl;
+        }
 
         if ($this->accessControl && (is_array($this->accessControl) === FALSE OR is_string($this->accessControl) === FALSE)) {
             throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
@@ -100,7 +104,7 @@ class BaseAction extends \yii\base\Action
 
     /**
      * resolve url path
-     * 
+     *
      * @param ActiveRecord $model
      * @return array
      */
@@ -123,7 +127,7 @@ class BaseAction extends \yii\base\Action
 
     /**
      * resolve url to fallback when deletion failed
-     * 
+     *
      * @param \yii\db\ActiveRecord $model
      * @return array
      */
