@@ -4,6 +4,7 @@ namespace app\generators\crud;
 
 use Yii;
 use yii\gii\CodeFile;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
@@ -73,16 +74,15 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
 
         // Controller
 
-        $controllerFile = Yii::getAlias('@'.str_replace('\\', '/', ltrim($this->controllerClass, '\\')).'.php');
-
-        if ($this->overwriteControllerClass || !is_file($controllerFile)) {
-            $files[] = new CodeFile($controllerFile, $this->render('controller.php', $params));
-        }
+        $controllerFile = $this->generatePath($this->controllerClass.'.php');
+        $files[] = new CodeFile($controllerFile, $this->render('controller.php', $params));
 
         // access control
+
         $action_list = ['index', 'create', 'view', 'update', 'delete'];
 
         if ($this->getTableSchema()->getColumn('is_deleted')) {
+            //$action_list = ArrayHelper::merge($action_list, ['restore', 'deleted', 'archive']);
             $action_list[] = 'restore';
         }
 
@@ -90,9 +90,8 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             $control_namespace = str_replace('controllers', 'actions', $this->controllerNs)
                 .'\\'.Inflector::camel2id(str_replace('Controller', '', $params['controllerClassName']), '_')
                 .'\\'.$action;
-            $control_file = Yii::getAlias('@'.str_replace('\\', '/', ltrim($control_namespace, '\\'))
-                    .'/AccessControl.php');
-            pathinfo($control_file);
+            //$control_file = Yii::getAlias('@'.str_replace('\\', '/', ltrim($control_namespace, '\\'))                    .'/AccessControl.php');
+            $control_file = $this->generatePath($control_namespace.'/AccessControl.php');
             $files[] = new CodeFile(
                 $control_file
                 , $this->render('access_control.php', ['nameSpace' => $control_namespace])
@@ -120,7 +119,8 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         // search model
 
         if (!empty($this->searchModelClass)) {
-            $searchModel = Yii::getAlias('@'.str_replace('\\', '/', ltrim($this->searchModelClass, '\\').'.php'));
+            //$searchModel = Yii::getAlias('@'.str_replace('\\', '/', ltrim($this->searchModelClass, '\\').'.php'));
+            $searchModel = $this->searchModelClass.'.php';
             if ($this->overwriteSearchModelClass || !is_file($searchModel)) {
                 $files[] = new CodeFile($searchModel, $this->render('search_model.php'));
             }
@@ -151,9 +151,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             /*
              * access roles translation
              */
-            $forRoleTranslationFile = StringHelper::dirname(StringHelper::dirname($controllerFile))
-                .'/messages/for-translation/'
-                .$controllerName.'.php';
+            $forRoleTranslationFile = $this->generatePath('/messages/for-translation/'.$controllerName.'.php');
             $files[] = new CodeFile($forRoleTranslationFile, $this->render('roles_translation.php', ['accessDefinitions' => $accessDefinitions]));
         }
 
@@ -168,6 +166,32 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $files[] = new CodeFile($formDataFile, $formData);
 
         return $files;
+    }
+
+    /**
+     * generate & create path
+     * @param string $namespaced_path
+     * @return string
+     */
+    public function generatePath($namespaced_path)
+    {
+        $namespace_separator = "\\";
+        $namespaced_path = ltrim($namespaced_path, $namespace_separator);
+
+        if (DIRECTORY_SEPARATOR != $namespace_separator) {
+            $namespaced_path = str_replace($namespace_separator, DIRECTORY_SEPARATOR, $namespaced_path);
+        }
+
+        $path = Yii::getAlias('@app')
+            .DIRECTORY_SEPARATOR
+            .str_replace('app'.DIRECTORY_SEPARATOR, '', $namespaced_path);
+
+        $directory = pathinfo($path, PATHINFO_EXTENSION) ? StringHelper::dirname($path) : $path;
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        return $path;
     }
 
     public function generateSearchRules()
