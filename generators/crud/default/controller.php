@@ -48,7 +48,7 @@ class <?= $controllerClassName ?> extends Controller
                 'class' => \app\lib\DeleteAction::class,
                 'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
             ],
-            <?php if ($softdelete): ?>
+<?php if ($softdelete): ?>
             'restore' => [
                 'class' => \app\lib\RestoreAction::class,
                 'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
@@ -68,7 +68,7 @@ class <?= $controllerClassName ?> extends Controller
                 ],
                 'view' => 'deleted',
             ],
-            <?php endif; ?>
+<?php endif; ?>
         ];
     }
 
