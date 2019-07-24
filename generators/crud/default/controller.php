@@ -66,7 +66,7 @@ class <?= $controllerClassName ?> extends Controller
                 'searchClass' => [
                     'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
                 ],
-                'view' => 'deleted',
+                'view' => 'archive',
             ],
 <?php endif; ?>
         ];
