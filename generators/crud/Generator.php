@@ -82,15 +82,13 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $action_list = ['index', 'create', 'view', 'update', 'delete'];
 
         if ($this->getTableSchema()->getColumn('is_deleted')) {
-            //$action_list = ArrayHelper::merge($action_list, ['restore', 'deleted', 'archive']);
-            $action_list[] = 'restore';
+            $action_list = ArrayHelper::merge($action_list, ['restore', 'deleted', 'archive']);
         }
 
         foreach ($action_list as $action) {
             $control_namespace = str_replace('controllers', 'actions', $this->controllerNs)
                 .'\\'.Inflector::camel2id(str_replace('Controller', '', $params['controllerClassName']), '_')
                 .'\\'.$action;
-            //$control_file = Yii::getAlias('@'.str_replace('\\', '/', ltrim($control_namespace, '\\'))                    .'/AccessControl.php');
             $control_file = $this->generatePath($control_namespace.'/AccessControl.php');
             $files[] = new CodeFile(
                 $control_file
@@ -101,10 +99,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         // API
 
         $restControllerFile = str_replace('controllers', 'controllers/api', StringHelper::dirname($controllerFile)).'/'.StringHelper::basename($controllerFile);
-
-        if ($this->overwriteRestControllerClass || !is_file($restControllerFile)) {
-            $files[] = new CodeFile($restControllerFile, $this->render('controller-rest.php', $params));
-        }
+        $files[] = new CodeFile($restControllerFile, $this->render('controller-rest.php', $params));
 
         // migration
 
@@ -119,11 +114,8 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         // search model
 
         if (!empty($this->searchModelClass)) {
-            //$searchModel = Yii::getAlias('@'.str_replace('\\', '/', ltrim($this->searchModelClass, '\\').'.php'));
             $searchModel = $this->searchModelClass.'.php';
-            if ($this->overwriteSearchModelClass || !is_file($searchModel)) {
-                $files[] = new CodeFile($searchModel, $this->render('search_model.php'));
-            }
+            $files[] = new CodeFile($searchModel, $this->render('search_model.php'));
         }
 
         // views
