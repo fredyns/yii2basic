@@ -72,11 +72,6 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
 
         $params['controllerClassName'] = StringHelper::basename($this->controllerClass);
 
-        // Controller
-
-        $controllerFile = $this->generatePath($this->controllerClass.'.php');
-        $files[] = new CodeFile($controllerFile, $this->render('controller.php', $params));
-
         // access control
 
         $action_list = ['index', 'create', 'view', 'update', 'delete'];
@@ -95,6 +90,11 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
                 , $this->render('access_control.php', ['nameSpace' => $control_namespace])
             );
         }
+
+        // Controller
+
+        $controllerFile = $this->generatePath($this->controllerClass.'.php');
+        $files[] = new CodeFile($controllerFile, $this->render('controller.php', $params));
 
         // API
 
