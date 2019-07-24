@@ -87,7 +87,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         }
 
         foreach ($action_list as $action) {
-            $control_namespace = str_replace('controllers', 'lib', $this->controllerNs)
+            $control_namespace = str_replace('controllers', 'actions', $this->controllerNs)
                 .'\\'.Inflector::camel2id(str_replace('Controller', '', $params['controllerClassName']), '_')
                 .'\\'.$action;
             $control_file = Yii::getAlias('@'.str_replace('\\', '/', ltrim($control_namespace, '\\'))
