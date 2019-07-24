@@ -114,7 +114,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         // search model
 
         if (!empty($this->searchModelClass)) {
-            $searchModel = $this->searchModelClass.'.php';
+            $searchModel = $this->generatePath($this->searchModelClass.'.php');
             $files[] = new CodeFile($searchModel, $this->render('search_model.php'));
         }
 
@@ -175,8 +175,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         }
 
         $path = Yii::getAlias('@app')
-            .DIRECTORY_SEPARATOR
-            .str_replace('app'.DIRECTORY_SEPARATOR, '', $namespaced_path);
+            .str_replace('app'.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $namespaced_path);
 
         $directory = pathinfo($path, PATHINFO_EXTENSION) ? StringHelper::dirname($path) : $path;
         if (!file_exists($directory)) {
