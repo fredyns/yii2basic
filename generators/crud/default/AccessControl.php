@@ -1,6 +1,6 @@
 <?= "<?php\n" ?>
 
-namespace <?= $nameSpace ?>;
+namespace <?= $actionNameSpace ?>;
 
 /**
  * Action Access control checks all relevan condition to decide whether an action is executable

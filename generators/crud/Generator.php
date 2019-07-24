@@ -56,73 +56,55 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
 
     public function generate()
     {
-        $accessDefinitions = require $this->getTemplatePath().'/access_definition.php';
+        /**
+         * compose params
+         */
+        $params = $this->generateParams();
 
-        $this->controllerNs = StringHelper::dirname(ltrim($this->controllerClass, '\\'));
-        $this->moduleNs = StringHelper::dirname(ltrim($this->controllerNs, '\\'));
-        $controllerName = substr(StringHelper::basename($this->controllerClass), 0, -10);
-
-        if ($this->singularEntities) {
-            $this->modelClass = Inflector::singularize($this->modelClass);
-            $this->controllerClass = Inflector::singularize(
-                    substr($this->controllerClass, 0, strlen($this->controllerClass) - 10)
-                ).'Controller';
-            $this->searchModelClass = Inflector::singularize($this->searchModelClass);
-        }
-
-        $params['controllerClassName'] = StringHelper::basename($this->controllerClass);
-
-        // access control
-
+        /**
+         * define actions to generate
+         */
         $action_list = ['index', 'create', 'view', 'update', 'delete'];
 
         if ($this->getTableSchema()->getColumn('is_deleted')) {
             $action_list = ArrayHelper::merge($action_list, ['restore', 'deleted', 'archive']);
         }
 
+        /**
+         * enumerate each actions
+         */
         foreach ($action_list as $action) {
-            $control_namespace = str_replace('controllers', 'actions', $this->controllerNs)
-                .'\\'.Inflector::camel2id(str_replace('Controller', '', $params['controllerClassName']), '_')
-                .'\\'.$action;
-            $control_file = $this->generatePath($control_namespace.'/AccessControl.php');
-            $files[] = new CodeFile(
-                $control_file
-                , $this->render('access_control.php', ['nameSpace' => $control_namespace])
-            );
+            /**
+             * generate access control for current action
+             */
+            $files[] = $this->generateAccessControl($action, $params);
+
+            /**
+             * generate action class for current action
+             */
+            $files[] = $this->generateActiveAction($action, $params);
         }
 
-        // Controller
+        /**
+         * generate search
+         */
+        $files[] = $this->generateSearch($params);
 
-        $controllerFile = $this->generatePath($this->controllerClass.'.php');
-        $files[] = new CodeFile($controllerFile, $this->render('controller.php', $params));
+        /**
+         * generate controller
+         */
+        $files[] = $this->generateController($params);
 
-        // API
+        /**
+         * generate REST API
+         */
+        $files[] = $this->generateRestAPI($params);
 
-        $restControllerFile = str_replace('controllers', 'controllers/api', StringHelper::dirname($controllerFile)).'/'.StringHelper::basename($controllerFile);
-        $files[] = new CodeFile($restControllerFile, $this->render('controller-rest.php', $params));
-
-        // migration
-
-        $migrationDir = StringHelper::dirname(StringHelper::dirname($controllerFile)).'/migrations';
-
-        if (file_exists($migrationDir) && $migrationDirFiles = glob($migrationDir.'/m*_'.$controllerName.'00_access.php')) {
-            $this->migrationClass = pathinfo($migrationDirFiles[0], PATHINFO_FILENAME);
-        } else {
-            $this->migrationClass = 'm'.date('ymd_Hi').'00_'.$controllerName.'_access';
-        }
-
-        // search model
-
-        if (!empty($this->searchModelClass)) {
-            $searchModel = $this->generatePath($this->searchModelClass.'.php');
-            $files[] = new CodeFile($searchModel, $this->render('search_model.php'));
-        }
-
-        // views
-
+        /**
+         * generate view
+         */
         $viewPath = $this->getViewPath();
         $templatePath = $this->getTemplatePath().'/views';
-
         foreach (scandir($templatePath) as $file) {
             if (empty($this->searchModelClass) && $file === '_search.php') {
                 continue;
@@ -132,32 +114,54 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             }
         }
 
-        if ($this->generateAccessFilterMigrations) {
-
-            /*
-             * access migration
-             */
-            $migrationFile = $migrationDir.'/'.$this->migrationClass.'.php';
-            $files[] = new CodeFile($migrationFile, $this->render('migration_access.php', ['accessDefinitions' => $accessDefinitions]));
-
-            /*
-             * access roles translation
-             */
-            $forRoleTranslationFile = $this->generatePath('/messages/for-translation/'.$controllerName.'.php');
-            $files[] = new CodeFile($forRoleTranslationFile, $this->render('roles_translation.php', ['accessDefinitions' => $accessDefinitions]));
-        }
-
-        /*
-         * create gii/[name]GiantCRUD.json with actual form data
+        /**
+         * save form data
          */
-        $suffix = str_replace(' ', '', $this->getName());
-        $controllerFileinfo = pathinfo($controllerFile);
-        $formDataFile = Yii::getAlias('@app').'/gii/'
-            .str_replace('Controller', $suffix, $controllerFileinfo['filename']).'.json';
-        $formData = json_encode(SaveForm::getFormAttributesValues($this, $this->formAttributes()), JSON_PRETTY_PRINT);
-        $files[] = new CodeFile($formDataFile, $formData);
+        $files[] = $this->generateFormData($params);
 
+        // result
         return $files;
+    }
+
+    /**
+     * generate params to render codefile
+     * @return array
+     */
+    public function generateParams()
+    {
+        // prepare params
+        $controllerClassName = StringHelper::basename($this->controllerClass);
+        $controllerNameSpace = StringHelper::dirname(ltrim($this->controllerClass, '\\'));
+        $moduleNameSpace = StringHelper::dirname(ltrim($controllerNameSpace, '\\'));
+        $actionParent = [
+            'index' => 'IndexAction',
+            'create' => 'CreateAction',
+            'view' => 'ViewAction',
+            'update' => 'UpdateAction',
+            'delete' => 'DeleteAction',
+            'restore' => 'RestoreAction',
+            'deleted' => 'IndexAction',
+            'archive' => 'IndexAction',
+        ];
+        $actionParentNameSpace = str_replace('controllers', 'actions', $controllerNameSpace)
+            .'\\'.Inflector::camel2id(str_replace('Controller', '', $controllerClassName), '_');
+
+        /**
+         * sync vars
+         */
+        $this->controllerNs = $controllerNameSpace;
+        $this->moduleNs = $moduleNameSpace;
+
+        /**
+         * compose params as array
+         */
+        return compact(
+            'controllerClassName'
+            , 'controllerNameSpace'
+            , 'moduleNameSpace'
+            , 'actionParent'
+            , 'actionParentNameSpace'
+        );
     }
 
     /**
@@ -183,6 +187,70 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         }
 
         return $path;
+    }
+
+    /**
+     * generate access control for particular action
+     * @param array $params
+     * @return CodeFile
+     */
+    public function generateAccessControl($action, $params)
+    {
+        $params['action'] = $action;
+        $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
+        $file = $this->generatePath($params['actionNameSpace'].'/AccessControl.php');
+
+        return new CodeFile($file, $this->render('AccessControl.php', $params));
+    }
+
+    /**
+     * generate action class for particular action
+     * @param array $params
+     * @return CodeFile
+     */
+    public function generateActiveAction($action, $params)
+    {
+        $params['action'] = $action;
+        $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
+        $file = $this->generatePath($params['actionNameSpace'].'/ActiveAction.php');
+
+        return new CodeFile($file, $this->render('ActiveAction.php', $params));
+    }
+
+    public function generateSearch($params)
+    {
+        $file = $this->generatePath($this->searchModelClass.'.php');
+        return new CodeFile($file, $this->render('SearchModel.php'));
+    }
+
+    /**
+     * generate controller class
+     * @param array $params
+     * @return CodeFile
+     */
+    public function generateController($params)
+    {
+        $file = $this->generatePath($this->controllerClass.'.php');
+        return new CodeFile($file, $this->render('Controller.php', $params));
+    }
+
+    public function generateRestAPI($params)
+    {
+        $controller_directory = DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
+        $rest_directory = DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR;
+        $file = $this->generatePath($this->controllerClass.'.php');
+        $file = str_replace($controller_directory, $rest_directory, $file);
+        return new CodeFile($file, $this->render('RestAPI.php', $params));
+    }
+
+    public function generateFormData($params)
+    {
+        $suffix = str_replace(' ', '', $this->getName());
+        $file = Yii::getAlias('@app').'/gii/'
+            .str_replace('Controller', $suffix, $params['controllerClassName']).'.json';
+        $content = json_encode(SaveForm::getFormAttributesValues($this, $this->formAttributes()), JSON_PRETTY_PRINT);
+
+        return new CodeFile($file, $content);
     }
 
     public function generateSearchRules()
