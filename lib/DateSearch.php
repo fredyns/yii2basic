@@ -56,8 +56,8 @@ class DateSearch extends \yii\base\BaseObject
             return $query->andFilterWhere([
                     'between',
                     $this->field,
-                    $this->from->format($this->format),
-                    $this->to->format($this->format),
+                    $this->from->format('Y-m-d'),
+                    $this->to->format('Y-m-d'),
             ]);
         }
 
