@@ -30,6 +30,8 @@ class TimestampSearch extends \yii\base\BaseObject
     public $formatSecond = '.s';
     public $timezone; // this will overide apps timezone
     // result
+    public $value;
+
     /**
      * @var DateTime object of minimum timestamp filter
      */
@@ -54,6 +56,7 @@ class TimestampSearch extends \yii\base\BaseObject
         }
 
         if ($this->load($range)) {
+            $this->value = $range;
             return $query->andFilterWhere([
                     'between',
                     $this->field,
@@ -126,6 +129,7 @@ class TimestampSearch extends \yii\base\BaseObject
     {
         $default_options = [
             'name' => $this->attribute,
+            'value' => $this->value,
             'convertFormat' => true,
             'pluginOptions' => [
                 "opens" => "left",
