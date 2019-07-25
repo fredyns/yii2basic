@@ -231,7 +231,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
     public function generateController($params)
     {
         $file = $this->generatePath($this->controllerClass.'.php');
-        return new CodeFile($file, $this->render('Controller.php', $params));
+        return new CodeFile($file, $this->render('controller.php', $params));
     }
 
     public function generateRestAPI($params)
