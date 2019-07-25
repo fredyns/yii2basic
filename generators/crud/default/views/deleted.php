@@ -127,7 +127,7 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {re
                 ],
 <?php ++$count; ?>
 <?php continue; ?>
-<?php elseif (substr_compare($column->name, '_at', -3, 3, true) === 0):?>
+<?php elseif (substr_compare($attribute, '_at', -3, 3, true) === 0):?>
                 [
                     'attribute' => '<?= $attribute ?>',
                     'format' => [
