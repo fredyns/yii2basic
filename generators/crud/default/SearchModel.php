@@ -19,39 +19,6 @@ $searchAttributes = $generator->getSearchAttributes();
 $searchConditions = $generator->generateSearchConditions();
 $tableSchema = $generator->getTableSchema();
 
-/**
- * range search
- */
-$dateRange = [];
-$timestampRange = [];
-$skipCols = ['updated_at', 'deleted_at'];
-foreach ($tableSchema->columns as $column) {
-    if (in_array($column->name, $skipCols)) {
-        continue;
-    }
-    if ($column->type == Schema::TYPE_INTEGER && substr_compare($column->name, '_at', -3, 3, true) === 0) {
-        $filterName = substr($column->name, 0, (strlen($column->name) - 3));
-        if (!$filterName) {
-            continue;
-        }
-        $timestampRange[$filterName] = $column->name;
-        continue;
-    }
-    if ($column->type == Schema::TYPE_DATE) {
-        if (substr_compare($column->name, '_date', -5, 5, true) === 0) {
-            $filterName = substr($column->name, 0, (strlen($column->name) - 5));
-        } else {
-            $filterName = $column->name;
-        }
-        if (!$filterName) {
-            continue;
-        }
-        $dateRange[$filterName] = $column->name;
-        continue;
-    }
-}
-
-
 echo "<?php\n";
 ?>
 
@@ -100,7 +67,6 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
 <?php endforeach;?>
     }
 <?php endif;?>
-
 
     /**
      * @inheritdoc
