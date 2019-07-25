@@ -11,6 +11,7 @@ use kartik\daterange\DateRangePicker;
 
 /**
  * Description of TimestampSearch
+ * @property-read Boolean $isValid
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
@@ -41,7 +42,7 @@ class TimestampSearch extends \yii\base\BaseObject
 
     /**
      * apply timestamp filter to query
-     * 
+     *
      * @param ActiveQuery $query
      * @param string $range
      * @return ActiveQuery
@@ -49,12 +50,10 @@ class TimestampSearch extends \yii\base\BaseObject
     public function applyFilter(ActiveQuery $query, $range)
     {
         if (empty($range) OR strpos($range, $this->separator) === false) {
-            return;
+            return $query;
         }
 
-        list($this->from, $this->to) = $this->getRange($range);
-
-        if ($this->from && $this->to) {
+        if ($this->load($range)) {
             return $query->andFilterWhere([
                     'between',
                     $this->field,
@@ -81,9 +80,9 @@ class TimestampSearch extends \yii\base\BaseObject
 
     /**
      * @param string $range
-     * @return DateTime[]
+     * @return Boolean
      */
-    protected function getRange($range)
+    public function load($range)
     {
         // extract from search param
         list($from_date, $to_date) = explode($this->separator, $range);
@@ -103,10 +102,19 @@ class TimestampSearch extends \yii\base\BaseObject
         $tz = $this->getTimeZone();
 
         // date object
-        $from = DateTime::createFromFormat($format, $from_date, $tz);
-        $to = DateTime::createFromFormat($format, $to_date, $tz);
+        $this->from = DateTime::createFromFormat($format, $from_date, $tz);
+        $this->to = DateTime::createFromFormat($format, $to_date, $tz);
 
-        return [$from, $to];
+        return $this->isValid;
+    }
+
+    /**
+     * check whether range filter is valid
+     * @return Boolean
+     */
+    public function getIsValid()
+    {
+        return $this->from && $this->to;
     }
 
     /**
