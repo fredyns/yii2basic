@@ -117,6 +117,26 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {re
                 ],
 <?php ++$count; ?>
 <?php continue; ?>
+<?php elseif (substr_compare($attribute, '_date', -5, 5, true) === 0):?>
+                [
+                    'attribute' => '<?= $attribute ?>',
+                    'format' => [
+                        'datetime',
+                        'format' => 'eee, d MMM Y, H:m',
+                    ],
+                ],
+<?php ++$count; ?>
+<?php continue; ?>
+<?php elseif (substr_compare($column->name, '_at', -3, 3, true) === 0):?>
+                [
+                    'attribute' => '<?= $attribute ?>',
+                    'format' => [
+                        'datetime',
+                        'format' => 'eee, d MMM Y, H:m',
+                    ],
+                ],
+<?php ++$count; ?>
+<?php continue; ?>
 <?php endif;?>
 <?php
 $format = trim($generator->columnFormat($attribute, $model));
