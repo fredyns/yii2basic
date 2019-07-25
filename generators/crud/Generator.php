@@ -110,7 +110,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
                 continue;
             }
             if (is_file($templatePath.'/'.$file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file"));
+                $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", $params));
             }
         }
 

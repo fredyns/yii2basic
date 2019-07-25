@@ -9,7 +9,7 @@ use yii\helpers\StringHelper;
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 
-/** @var \yii\db\ActiveRecord $model */
+/* @var $model \yii\db\ActiveRecord  */
 $model = new $generator->modelClass();
 $model->setScenario('crud');
 
@@ -28,6 +28,7 @@ if (empty($safeAttributes)) {
 echo "<?php\n";
 ?>
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use <?= $generator->indexWidgetType === 'grid' ? $generator->indexGridClass : 'yii\\widgets\\ListView' ?>;
@@ -40,7 +41,7 @@ use <?= ltrim($generator->modelClass, '\\') ?>;
 $this->title = $searchModel->modelLabel(true);
 $this->params['breadcrumbs'][] = $this->title;
 $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {delete}</div>";
-<?= '?>\n';?>
+<?= "?>\n";?>
 
 <div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-index">
 
@@ -92,22 +93,43 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {de
                 [
                     'class' => 'yii\grid\SerialColumn',
                 ],
+<?php $count = 0; ?>
+<?php foreach ($safeAttributes as $attribute): ?>
+<?php if ($rangeKey = array_search($attribute, $dateRange)):?>
+                [
+                    'attribute' => '<?= $attribute ?>',
+                    'format' => [
+                        'date',
+                        'format' => 'eee, d MMM Y',
+                    ],
+                    'filter' => $searchModel-><?= $rangeKey ?>Search->filterWidget(),
+                ],
+<?php ++$count; ?>
+<?php continue; ?>
+<?php elseif ($rangeKey = array_search($attribute, $timestampRange)):?>
+                [
+                    'attribute' => '<?= $attribute ?>',
+                    'format' => [
+                        'datetime',
+                        'format' => 'eee, d MMM Y, H:m',
+                    ],
+                    'filter' => $searchModel-><?= $rangeKey ?>Search->filterWidget(),
+                ],
+<?php ++$count; ?>
+<?php continue; ?>
+<?php endif;?>
 <?php
-$count = 0;
-foreach ($safeAttributes as $attribute) {
-    $format = trim($generator->columnFormat($attribute, $model));
+$format = trim($generator->columnFormat($attribute, $model));
     if ($format == false) {
         continue;
     }
-    if (++$count < $generator->gridMaxColumns) {
-        echo str_repeat(' ', 16).str_replace("\n", "\n".str_repeat(' ', 16), $format) . ",\n";
-    } else {
-        echo str_repeat(' ', 16)."/* //\n"
-            .str_repeat(' ', 16).str_replace("\n", "\n".str_repeat(' ', 16), $format).",\n"
-            .str_repeat(' ', 16)."// */\n";
-    }
-}
 ?>
+<?php if (++$count < $generator->gridMaxColumns):?>
+                <?= str_replace("\n", "\n".str_repeat(' ', 16), $format) . ",\n" ?>
+<?php else:?>
+                <?= str_replace("\n", "\n".str_repeat(' ', 16).'//  ', $format) . ",\n" ?>
+<?php endif;?>
+<?php endforeach;?>
                 [
                     'class' => '<?= $generator->actionButtonClass ?>',
                     'template' => $actionColumnTemplateString,
