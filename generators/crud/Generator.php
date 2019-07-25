@@ -260,8 +260,12 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         }
 
         $types = [];
-        $skipCols = ['created_at', 'updated_at', 'is_deleted', 'deleted_at'];
+        $skipCols = ['updated_at', 'is_deleted', 'deleted_at'];
         foreach ($table->columns as $column) {
+            if ($column->name === 'created_at') {
+                $types['safe'][] = $column->name;
+                continue;
+            }
             if (in_array($column->name, $skipCols) OR substr_compare($column->name, 'at', -2, 2, true) === 0) {
                 // skip saveral + timestamp columns
                 continue;
@@ -283,7 +287,6 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
                     $types['number'][] = $column->name;
                     break;
                 case Schema::TYPE_DATE:
-                    $types['date'][] = $column->name;
                 case Schema::TYPE_TIME:
                     $types['safe'][] = $column->name;
                     break;
