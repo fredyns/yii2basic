@@ -270,10 +270,10 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
 
     public function generateRestAPI($params)
     {
-        $controller_directory = DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
-        $rest_directory = DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR;
-        $file = $this->generatePath($this->controllerClass.'.php');
-        $file = str_replace($controller_directory, $rest_directory, $file);
+        $controller_prefix = "\\controllers\\";
+        $api_prefix = "\\controllers\\api\\";
+        $params['restClass'] = str_replace($controller_prefix, $api_prefix, $this->controllerClass);
+        $file = $this->generatePath($params['restClass'].'.php');
         return new CodeFile($file, $this->render('RestAPI.php', $params));
     }
 

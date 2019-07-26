@@ -1,11 +1,12 @@
 <?php
+use yii\helpers\StringHelper;
 /**
  * Customizable controller class.
  */
 echo "<?php\n";
 ?>
 
-namespace <?= $generator->controllerNs ?>\api;
+namespace <?= StringHelper::dirname(ltrim($restClass, '\\')) ?>;
 
 /**
  * This is the class for REST controller "<?= $controllerClassName ?>".
