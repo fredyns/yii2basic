@@ -1,5 +1,10 @@
 <?php
+use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
+
+$modelMeta = \app\generators\modelmeta\Generator::readMetadata();
+$tableSchema = $generator->getTableSchema();
+$hasMany = ArrayHelper::getValue($modelMeta, $tableSchema->fullName.'hasMany');
 /**
  * Customizable controller class.
  */
@@ -17,8 +22,8 @@ use yii\helpers\ArrayHelper;
 class <?= $controllerClassName ?> extends \yii\rest\ActiveController
 {
     public $modelClass = '<?= $generator->modelClass ?>';
-
 <?php if ($generator->accessFilter): ?>
+
     /**
      * @inheritdoc
      */
@@ -39,6 +44,25 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
         ]
         );
     }
-
 <?php endif; ?>
+<?php if ($hasMany): ?>
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return ArrayHelper::merge(
+        parent::actions(),
+        [
+            'select2-options' => [
+                'class' => \app\lib\Select2Options::class,
+                'modelClass' => $this->modelClass,
+                'text_field' => '<?= $generator->getNameAttribute() ?>',
+            ],
+        ]
+        );
+    }
+<?php endif; ?>
+
 }
