@@ -50,6 +50,20 @@
                 "className": "Person",
                 "query": "return $this->hasOne(Person::class, ['id' => 'editor_id'])->alias(static::EDITOR);"
             }
+        },
+        "select2": {
+            "author_id": {
+                "relationName": "Author",
+                "url": [
+                    "\/api\/sample\/person\/select2-options"
+                ]
+            },
+            "editor_id": {
+                "relationName": "Editor",
+                "url": [
+                    "\/api\/sample\/person\/select2-options"
+                ]
+            }
         }
     },
     "sample_person": {
