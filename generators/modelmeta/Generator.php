@@ -28,7 +28,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public static function getFilePath()
     {
-        return Yii::getAlias('@app/models').'/_metadata.json';
+        return Yii::getAlias('@app').'/config/generator.json';
     }
 
     /**
