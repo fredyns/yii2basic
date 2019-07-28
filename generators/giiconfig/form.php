@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\ArrayHelper;
-use app\generators\modelmeta\Generator;
+use app\generators\giiconfig\Generator;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */

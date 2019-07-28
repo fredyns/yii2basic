@@ -1,6 +1,6 @@
 <?php
 
-namespace app\generators\modelmeta;
+namespace app\generators\giiconfig;
 
 use Yii;
 use yii\base\NotSupportedException;
@@ -67,7 +67,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function getName()
     {
-        return 'Model Meta';
+        return 'Gii Config';
     }
 
     /**

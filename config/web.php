@@ -95,8 +95,8 @@ if (YII_ENV_DEV) {
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
         'generators' => [
-            'my-modelmeta' => [
-                'class' => 'app\generators\modelmeta\Generator',
+            'gii-config' => [
+                'class' => \app\generators\giiconfig\Generator::class,
             ],
             'my-model' => [
                 'class' => 'app\generators\model\Generator',
