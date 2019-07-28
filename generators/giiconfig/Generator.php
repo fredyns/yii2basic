@@ -49,17 +49,16 @@ class Generator extends \yii\gii\generators\model\Generator
 
         return [];
     }
-    
+
     public function init()
     {
         parent::init();
-        
+
         // read saved data
         $this->metadata = static::readMetadata();
         foreach ($this->metadata as $tableName => $info) {
             $this->nameSpaces[$tableName] = $info['nameSpace'];
         }
-
     }
 
     /**
@@ -435,6 +434,24 @@ class Generator extends \yii\gii\generators\model\Generator
                     ];
                     $relations[$tableSchema->fullName][$relationName] = $relation;
                     $this->metadata[$tableSchema->fullName]['hasOne'][$relationName] = $relation;
+
+                    // select2 info
+                    if (count($fks) == 1) {
+                        $subNameSpace = StringHelper::basename($reffMetadata['nameSpace']);
+                        $subNameSpace = str_replace('\\', DIRECTORY_SEPARATOR, $subNameSpace);
+                        $subPath = ($subNameSpace === 'models') ? '' : Inflector::camel2id($subNameSpace).'/';
+                        $this->metadata[$tableSchema->fullName]['select2'][$fk] = [
+                            'relationName' => $relationName,
+                            //'tableName' => $refTable,
+                            //'modelClass' => $reffMetadata['nameSpace'].'\\'.$reffMetadata['className'],
+                            'url' => [
+                                '/api/'
+                                .$subPath
+                                .Inflector::camel2id($reffMetadata['className'])
+                                .'/select2-options'
+                            ],
+                        ];
+                    }
 
                     // Add relation for the referenced table
                     // tabel klien hasMany transaksi
