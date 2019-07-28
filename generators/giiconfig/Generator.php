@@ -444,12 +444,8 @@ class Generator extends \yii\gii\generators\model\Generator
                             'relationName' => $relationName,
                             //'tableName' => $refTable,
                             //'modelClass' => $reffMetadata['nameSpace'].'\\'.$reffMetadata['className'],
-                            'url' => [
-                                '/api/'
-                                .$subPath
-                                .Inflector::camel2id($reffMetadata['className'])
-                                .'/select2-options'
-                            ],
+                            'uri' => '/api/'.$subPath.Inflector::camel2id($reffMetadata['className']).'/select2-options'
+                            ,
                         ];
                     }
 
