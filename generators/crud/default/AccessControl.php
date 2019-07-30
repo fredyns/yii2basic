@@ -7,7 +7,7 @@ namespace <?= $actionNameSpace ?>;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActionFilter extends \app\lib\AccessControl
+class AccessControl extends \app\lib\AccessControl
 {
 
     /**
