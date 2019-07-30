@@ -50,7 +50,7 @@ class Generator extends \yii\gii\Generator
      */
     public function generate()
     {
-        $metadata = \app\generators\modelmeta\Generator::readMetadata();
+        $metadata = \app\generators\giiconfig\Generator::readMetadata();
         $files = [];
 
         foreach ($metadata as $tableName => $params) {
