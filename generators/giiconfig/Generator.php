@@ -441,7 +441,7 @@ class Generator extends \yii\gii\generators\model\Generator
                         $subNameSpace = str_replace('\\', DIRECTORY_SEPARATOR, $subNameSpace);
                         $subPath = ($subNameSpace === 'models') ? '' : Inflector::camel2id($subNameSpace).'/';
                         $this->metadata[$tableSchema->fullName]['select2'][$fk] = [
-                            'relationName' => $relationName,
+                            'relationName' => lcfirst($relationName),
                             //'tableName' => $refTable,
                             //'modelClass' => $reffMetadata['nameSpace'].'\\'.$reffMetadata['className'],
                             'uri' => '/api/'.$subPath.Inflector::camel2id($reffMetadata['className']).'/select2-options'
