@@ -14,6 +14,8 @@ $className = $model::className();
 $modelName = Inflector::camel2words(StringHelper::basename($model::className()));
 $tableSchema = $generator->getTableSchema();
 $haveID=($tableSchema->getColumn('id') !== null);
+$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
+$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
 
 echo "<?php\n";
 ?>
@@ -25,6 +27,9 @@ use yii\helpers\Url;
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
 
 $this->title = $model->modelLabel();
+<?php if ($subPath): ?>
+$this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
+<?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('Edit') ?>;

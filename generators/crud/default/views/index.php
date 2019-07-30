@@ -25,6 +25,9 @@ if (empty($safeAttributes)) {
     }
 }
 
+$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
+$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
+
 echo "<?php\n";
 ?>
 
@@ -39,6 +42,9 @@ use <?= ltrim($generator->modelClass, '\\') ?>;
 /* @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?> */
 
 $this->title = $searchModel->modelLabel(true);
+<?php if ($subPath): ?>
+$this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
+<?php endif; ?>
 $this->params['breadcrumbs'][] = $this->title;
 $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {delete}</div>";
 <?= "?>\n";?>
