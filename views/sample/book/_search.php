@@ -5,10 +5,10 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm  */
-/* @var $searchModel app\actions\sample\person\PersonSearch */
+/* @var $searchModel app\actions\sample\book\PersonSearch */
 ?>
 
-<div class="person-search">
+<div class="book-search">
 
     <?php
     $form = ActiveForm::begin([
@@ -33,7 +33,15 @@ use yii\widgets\ActiveForm;
 
         <?php // echo $form->field($model, 'deleted_by') ?>
 
-        <?php // echo $form->field($model, 'name') ?>
+        <?php // echo $form->field($model, 'title') ?>
+
+        <?php // echo $form->field($model, 'description') ?>
+
+        <?php // echo $form->field($model, 'author_id') ?>
+
+        <?php // echo $form->field($model, 'editor_id') ?>
+
+        <?php // echo $form->field($model, 'released_date') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cruds', 'Search'), ['class' => 'btn btn-primary']) ?>

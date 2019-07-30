@@ -7,6 +7,7 @@ use yii\helpers\Url;
 /* @var $model app\models\sample\Person  */
 
 $this->title = $model->modelLabel();
+$this->params['breadcrumbs'][] = Yii::t('app', 'sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

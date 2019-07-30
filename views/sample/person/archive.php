@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -10,12 +9,12 @@ use app\models\sample\Person;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel app\actions\sample\person\PersonSearch */
 
-$this->title = $searchModel->modelLabel(true);
+$this->title = Yii::t('cruds', 'People Archives');
 $this->params['breadcrumbs'][] = Yii::t('app', 'sample');
-$this->params['breadcrumbs'][] = $this->title;
-$actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {delete}</div>";
-?>
-
+$this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
+$this->params['breadcrumbs'][] = Yii::t('cruds', 'Archives');
+$actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update}</div>";
+?>\n
 <div class="giiant-crud person-index">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
@@ -23,7 +22,7 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {de
             <h1 style="margin-top: 0;">
                 <?= $searchModel->modelLabel(TRUE) ?>
                 <small>
-                    <?= Yii::t('cruds', 'List') ?>
+                    <?= Yii::t('cruds', 'Archives') ?>
                 </small>
             </h1>
         </div>

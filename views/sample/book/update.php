@@ -4,15 +4,15 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View  */
-/* @var $model app\models\sample\Person  */
+/* @var $model app\models\sample\Book  */
 
 $this->title = $model->modelLabel();
 $this->params['breadcrumbs'][] = Yii::t('app', 'sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => (string) $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Edit');
 ?>
-<div class="giiant-crud person-update">
+<div class="giiant-crud book-update">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
