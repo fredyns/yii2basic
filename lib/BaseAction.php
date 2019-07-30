@@ -63,11 +63,7 @@ class BaseAction extends \yii\base\Action
             $config['model'] = $model;
         }
 
-        $this->accessControl = Yii::createObject($config);
-
-        if (($this->accessControl instanceof AccessControl) === FALSE) {
-            throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
-        }
+        $this->accessControl = AccessControl::build($config);
 
         return $this->accessControl->isPassed;
     }
