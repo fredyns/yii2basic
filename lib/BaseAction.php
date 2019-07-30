@@ -84,21 +84,13 @@ class BaseAction extends \yii\base\Action
 
         if ($url) {
             // set message to session and redirect to fallback url
-            foreach ($this->accessControl->messages as $msg) {
-                Yii::$app->getSession()->addFlash('error', $msg);
-            }
+            $this->accessControl->setSessionMessages();
 
             return $this->controller->redirect($url);
         }
 
         // error messages
-        if (count($this->accessControl->messages) > 0) {
-            $msg = implode("\n", $this->accessControl->messages);
-        } else {
-            $msg = Yii::t('app', 'Action is forbidden for unknown reason.');
-        }
-
-        throw new NotFoundHttpException($msg);
+        throw $this->accessControl->exception();
     }
 
     /**
