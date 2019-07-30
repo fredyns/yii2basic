@@ -28,7 +28,7 @@ class <?= $controllerClassName ?> extends Controller
             'index' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\index\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\index\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\index\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\IndexAction::class,
@@ -40,7 +40,7 @@ class <?= $controllerClassName ?> extends Controller
             'view' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\view\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\view\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\view\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\ViewAction::class,
@@ -49,7 +49,7 @@ class <?= $controllerClassName ?> extends Controller
             'create' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\create\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\create\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\create\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\CreateAction::class,
@@ -58,7 +58,7 @@ class <?= $controllerClassName ?> extends Controller
             'update' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\update\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\update\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\update\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\UpdateAction::class,
@@ -67,7 +67,7 @@ class <?= $controllerClassName ?> extends Controller
             'delete' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\delete\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\delete\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\delete\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\DeleteAction::class,
@@ -77,7 +77,7 @@ class <?= $controllerClassName ?> extends Controller
             'restore' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\restore\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\restore\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\restore\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\RestoreAction::class,
@@ -86,7 +86,7 @@ class <?= $controllerClassName ?> extends Controller
             'deleted' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\deleted\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\deleted\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\deleted\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\IndexAction::class,
@@ -99,7 +99,7 @@ class <?= $controllerClassName ?> extends Controller
             'archive' => [
                 //  uncomment thesse for custom action & access control
                 //  'class' => \<?= $actionParentNameSpace ?>\archive\ActiveAction::class,
-                //  'accessControl' => \<?= $actionParentNameSpace ?>\archive\AccessControl::class,
+                //  'actionControl' => \<?= $actionParentNameSpace ?>\archive\ActionControl::class,
                 //
                 //  generic action
                 'class' => \app\lib\IndexAction::class,

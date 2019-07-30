@@ -12,14 +12,14 @@ use yii\web\ForbiddenHttpException;
  * regarding user log in status & all situation
  * 
  * How to use:
- *  $control = new AccessControl($model);
+ *  $control = new ActionControl($model);
  * 
  *  if ($control->isPassed) {
  *      // run action
  *  }
  * 
  * Or:
- *  if (AccessControl::check($model)) {
+ *  if (ActionControl::check($model)) {
  *      // run action
  *  }
  * 
@@ -31,7 +31,7 @@ use yii\web\ForbiddenHttpException;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class AccessControl extends \yii\base\Component
+class ActionControl extends \yii\base\Component
 {
     public $model;
     public $messages = [];
@@ -45,7 +45,7 @@ class AccessControl extends \yii\base\Component
      */
     public static function build($config)
     {
-        /* @var $access_control AccessControl */
+        /* @var $access_control ActionControl */
         $access_control = Yii::createObject($config);
         $class = static::class;
 
@@ -65,7 +65,7 @@ class AccessControl extends \yii\base\Component
      */
     public static function check($config, $throw = false)
     {
-        /* @var $access_control AccessControl */
+        /* @var $access_control ActionControl */
         $access_control = static::build($config);
 
         if (!$access_control->isPassed && $throw) {

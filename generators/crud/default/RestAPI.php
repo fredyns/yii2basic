@@ -19,7 +19,7 @@ namespace <?= StringHelper::dirname(ltrim($restClass, '\\')) ?>;
  */
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use app\lib\AccessControl as ActionControl;
+use app\lib\ActionControl;
 
 class <?= $controllerClassName ?> extends \yii\rest\ActiveController
 {
@@ -73,7 +73,7 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
     public function checkAccess($action, $model = null, $params = [])
     {
         $config = [
-            'class' => $this->accessControls($action),
+            'class' => $this->actionControls($action),
             'model' => $model,
             'params' => $params,
         ];
@@ -87,18 +87,18 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
      * @param string $action
      * @return array|string
      */
-    public function accessControls($action = null)
+    public function actionControls($action = null)
     {
         $available = [
-            'index' => \<?= $actionParentNameSpace ?>\index\AccessControl::class,
-            'view' => \<?= $actionParentNameSpace ?>\view\AccessControl::class,
-            'create' => \<?= $actionParentNameSpace ?>\create\AccessControl::class,
-            'update' => \<?= $actionParentNameSpace ?>\update\AccessControl::class,
-            'delete' => \<?= $actionParentNameSpace ?>\delete\AccessControl::class,
+            'index' => \<?= $actionParentNameSpace ?>\index\ActionControl::class,
+            'view' => \<?= $actionParentNameSpace ?>\view\ActionControl::class,
+            'create' => \<?= $actionParentNameSpace ?>\create\ActionControl::class,
+            'update' => \<?= $actionParentNameSpace ?>\update\ActionControl::class,
+            'delete' => \<?= $actionParentNameSpace ?>\delete\ActionControl::class,
 <?php if ($softdelete): ?>
-            'restore' => \<?= $actionParentNameSpace ?>\restore\AccessControl::class,
-            'deleted' => \<?= $actionParentNameSpace ?>\deleted\AccessControl::class,
-            'archive' => \<?= $actionParentNameSpace ?>\archive\AccessControl::class,
+            'restore' => \<?= $actionParentNameSpace ?>\restore\ActionControl::class,
+            'deleted' => \<?= $actionParentNameSpace ?>\deleted\ActionControl::class,
+            'archive' => \<?= $actionParentNameSpace ?>\archive\ActionControl::class,
 <?php endif; ?>
         ];
 

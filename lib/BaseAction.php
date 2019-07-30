@@ -15,14 +15,13 @@ use cornernote\returnurl\ReturnUrl;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  *
- * @property AccessControl $accessControl action accessControl
  */
 class BaseAction extends \yii\base\Action
 {
     /**
-     * @var AccessControl action access control before execution
+     * @var ActionControl action access control before execution
      */
-    public $accessControl;
+    public $actionControl;
 
     /**
      * @var array redirect url when user not able to run action
@@ -40,8 +39,8 @@ class BaseAction extends \yii\base\Action
             $this->fallbackUrl = Yii::$app->homeUrl;
         }
 
-        if ($this->accessControl && (is_array($this->accessControl) === FALSE OR is_string($this->accessControl) === FALSE)) {
-            throw new InvalidConfigException('Access control must extend from '.AccessControl::class.'.');
+        if ($this->actionControl && (is_array($this->actionControl) === FALSE OR is_string($this->actionControl) === FALSE)) {
+            throw new InvalidConfigException('Access control must extend from '.ActionControl::class.'.');
         }
     }
 
@@ -51,21 +50,21 @@ class BaseAction extends \yii\base\Action
      * @param ActiveRecord $model
      * @return boolean
      */
-    protected function accessControlFilter(ActiveRecord $model = NULL)
+    protected function actionControlFilter(ActiveRecord $model = NULL)
     {
-        if (empty($this->accessControl)) {
+        if (empty($this->actionControl)) {
             return TRUE;
         }
 
-        $config = is_array($this->accessControl) ? $this->accessControl : ['class' => $this->accessControl];
+        $config = is_array($this->actionControl) ? $this->actionControl : ['class' => $this->actionControl];
 
         if ($model) {
             $config['model'] = $model;
         }
 
-        $this->accessControl = AccessControl::build($config);
+        $this->actionControl = ActionControl::build($config);
 
-        return $this->accessControl->isPassed;
+        return $this->actionControl->isPassed;
     }
 
     /**
@@ -80,13 +79,13 @@ class BaseAction extends \yii\base\Action
 
         if ($url) {
             // set message to session and redirect to fallback url
-            $this->accessControl->setSessionMessages();
+            $this->actionControl->setSessionMessages();
 
             return $this->controller->redirect($url);
         }
 
         // error messages
-        throw $this->accessControl->exception();
+        throw $this->actionControl->exception();
     }
 
     /**

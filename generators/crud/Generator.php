@@ -77,7 +77,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             /**
              * generate access control for current action
              */
-            $files[] = $this->generateAccessControl($action, $params);
+            $files[] = $this->generateActionControl($action, $params);
 
             /**
              * generate action class for current action
@@ -228,13 +228,13 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      * @param array $params
      * @return CodeFile
      */
-    public function generateAccessControl($action, $params)
+    public function generateActionControl($action, $params)
     {
         $params['action'] = $action;
         $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
-        $file = $this->generatePath($params['actionNameSpace'].'/AccessControl.php');
+        $file = $this->generatePath($params['actionNameSpace'].'/ActionControl.php');
 
-        return new CodeFile($file, $this->render('AccessControl.php', $params));
+        return new CodeFile($file, $this->render('ActionControl.php', $params));
     }
 
     /**

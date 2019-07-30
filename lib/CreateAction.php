@@ -34,9 +34,9 @@ class CreateAction extends BaseAction
     public function run()
     {
         /**
-         * running action accessControl to check whether user has priviledges to run action
+         * running action actionControl to check whether user has priviledges to run action
          */
-        $passed = $this->accessControlFilter();
+        $passed = $this->actionControlFilter();
 
         if ($passed === FALSE) {
             return $this->fallbackPage();

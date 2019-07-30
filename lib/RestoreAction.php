@@ -44,9 +44,9 @@ class RestoreAction extends BaseAction
         }
 
         /**
-         * running action accessControl to check whether user has priviledges to run action
+         * running action actionControl to check whether user has priviledges to run action
          */
-        $passed = $this->accessControlFilter($model);
+        $passed = $this->actionControlFilter($model);
 
         if ($passed === FALSE) {
             return $this->fallbackPage($model);

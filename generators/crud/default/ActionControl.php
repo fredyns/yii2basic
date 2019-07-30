@@ -7,7 +7,7 @@ namespace <?= $actionNameSpace ?>;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class AccessControl extends \app\lib\AccessControl
+class ActionControl extends \app\lib\ActionControl
 {
 
     /**
