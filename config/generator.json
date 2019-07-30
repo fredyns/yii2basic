@@ -53,11 +53,11 @@
         },
         "select2": {
             "author_id": {
-                "relationName": "Author",
+                "relationName": "author",
                 "uri": "\/api\/sample\/person\/select2-options"
             },
             "editor_id": {
-                "relationName": "Editor",
+                "relationName": "editor",
                 "uri": "\/api\/sample\/person\/select2-options"
             }
         }
