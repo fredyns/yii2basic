@@ -2,9 +2,9 @@
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 
-$modelMeta = \app\generators\modelmeta\Generator::readMetadata();
+$modelMeta = \app\generators\giiconfig\Generator::readMetadata();
 $tableSchema = $generator->getTableSchema();
-$hasMany = ArrayHelper::getValue($modelMeta, $tableSchema->fullName.'hasMany');
+$hasMany = ArrayHelper::getValue($modelMeta, $tableSchema->fullName.'.hasMany');
 /**
  * Customizable controller class.
  */
@@ -30,18 +30,18 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
     public function behaviors()
     {
         return ArrayHelper::merge(
-        parent::behaviors(),
-        [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'matchCallback' => function ($rule, $action) {return \Yii::$app->user->can($this->module->id . '_' . $this->id . '_' . $action->id, ['route' => true]);},
+                parent::behaviors(),
+                [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'matchCallback' => function ($rule, $action) {return \Yii::$app->user->can($this->module->id . '_' . $this->id . '_' . $action->id, ['route' => true]);},
+                        ],
                     ],
                 ],
-            ],
-        ]
+                ]
         );
     }
 <?php endif; ?>
@@ -53,14 +53,14 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
     public function actions()
     {
         return ArrayHelper::merge(
-        parent::actions(),
-        [
-            'select2-options' => [
-                'class' => \app\lib\Select2Options::class,
-                'modelClass' => $this->modelClass,
-                'text_field' => '<?= $generator->getNameAttribute() ?>',
-            ],
-        ]
+                parent::actions(),
+                [
+                'select2-options' => [
+                    'class' => \app\lib\Select2Options::class,
+                    'modelClass' => $this->modelClass,
+                    'text_field' => '<?= $generator->getNameAttribute() ?>',
+                ],
+                ]
         );
     }
 <?php endif; ?>

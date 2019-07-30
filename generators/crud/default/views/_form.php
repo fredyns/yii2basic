@@ -66,7 +66,9 @@ foreach ($safeAttributes as $attribute) {
     if ($prepend) {
         echo str_repeat(' ', 12).$prepend."\n";
     }
-    if ($field) {
+    if (strpos($field,"\n")!==FALSE) {
+        echo str_repeat(' ', 12)."<?=".str_replace("\n","\n".str_repeat(' ', 12),$field).'?>'."\n";
+    } elseif ($field) {
         echo str_repeat(' ', 12)."<?= ".$field.' ?>'."\n";
     }
     if ($append) {
@@ -84,9 +86,9 @@ foreach ($safeAttributes as $attribute) {
         <?= "<?=\n" ?>
         Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> '
-            .($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Save') ?>),
-            [
-            'id' => 'save-' . $model->formName(),
+            .($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Save') ?>)
+            , [
+            'id' => 'save-'.$model->formName(),
             'class' => 'btn btn-success'
             ]
         );

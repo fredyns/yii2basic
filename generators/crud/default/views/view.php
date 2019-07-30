@@ -150,7 +150,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
     <?= $generator->partialView('detail_append', $model); ?>
 
     <hr/>
-<?php $modelMeta = \app\generators\modelmeta\Generator::readMetadata(); ?>
+<?php $modelMeta = \app\generators\giiconfig\Generator::readMetadata(); ?>
 <?php if (isset($modelMeta[$model::tableName()]['hasMany'])): ?>
 <?php $subinfo_list = $modelMeta[$model::tableName()]['hasMany']; ?>
 <?php $i18n_category = yii\helpers\ArrayHelper::getValue($modelMeta, $model::tableName().'.messageCategory', 'models'); ?>
