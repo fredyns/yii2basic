@@ -1,14 +1,14 @@
 {
     "modelclass": {
-        "value": "app\\models\\sample\\Person",
+        "value": "app\\models\\sample\\Book",
         "name": "modelClass"
     },
     "searchmodelclass": {
-        "value": "app\\actions\\sample\\person\\PersonSearch",
+        "value": "app\\actions\\sample\\book\\PersonSearch",
         "name": "searchModelClass"
     },
     "controllerclass": {
-        "value": "app\\controllers\\sample\\PersonController",
+        "value": "app\\controllers\\sample\\BookController",
         "name": "controllerClass"
     },
     "basecontrollerclass": {
