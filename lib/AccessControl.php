@@ -2,7 +2,9 @@
 
 namespace app\lib;
 
+use Yii;
 use yii\db\ActiveRecord;
+use yii\web\ForbiddenHttpException;
 
 /**
  * base class to check whether an action is executable
@@ -46,7 +48,6 @@ class AccessControl extends \yii\base\Component
 
         return $access_control->isPassed;
     }
-
     /**
      * @var Boolean
      */
@@ -105,6 +106,31 @@ class AccessControl extends \yii\base\Component
         $this->messages[] = $message;
 
         return $this->_isPassed = FALSE;
+    }
+
+    /**
+     * put messages to session
+     */
+    public function setSessionMessages($category = 'error')
+    {
+        foreach ($this->messages as $msg) {
+            Yii::$app->getSession()->addFlash($category, $msg);
+        }
+    }
+
+    /**
+     * throw messages as exception
+     * @return ForbiddenHttpException
+     */
+    public function exception()
+    {
+        if (count($this->messages) > 0) {
+            $msg = implode("\n", $this->messages);
+        } else {
+            $msg = Yii::t('app', 'Action is forbidden for unknown reason.');
+        }
+
+        return new ForbiddenHttpException($msg);
     }
 
 }
