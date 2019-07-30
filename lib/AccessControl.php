@@ -3,6 +3,7 @@
 namespace app\lib;
 
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\web\ForbiddenHttpException;
 
@@ -34,19 +35,44 @@ class AccessControl extends \yii\base\Component
 {
     public $model;
     public $messages = [];
+    public $params = [];
 
     /**
-     * run access control and return pass or not
-     * @param ActiveRecord $model
-     * @return Boolean
+     * build access control instance
+     * @param array $config
+     * @return static
+     * @throws InvalidConfigException
      */
-    public static function check($model)
+    public static function build($config)
     {
-        $access_control = new static($model);
+        /* @var $access_control AccessControl */
+        $access_control = Yii::createObject($config);
+        $class = static::class;
 
-        $access_control->run();
+        if (($access_control instanceof $class) == FALSE) {
+            throw new InvalidConfigException("Access control must extend from {$class}.");
+        }
 
-        return $access_control->isPassed;
+        return $access_control;
+    }
+
+    /**
+     * run access control check
+     * 
+     * @param array $config
+     * @throws InvalidConfigException
+     * @throws ForbiddenHttpException
+     */
+    public static function check($config, $throw = false)
+    {
+        /* @var $access_control AccessControl */
+        $access_control = static::build($config);
+
+        if (!$access_control->isPassed && $throw) {
+            throw $access_control->exception();
+        }
+
+        return $this->isPassed;
     }
     /**
      * @var Boolean
