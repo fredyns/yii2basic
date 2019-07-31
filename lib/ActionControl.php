@@ -47,7 +47,7 @@ class ActionControl extends \yii\base\Component
     {
         /* @var $access_control ActionControl */
         $access_control = Yii::createObject($config);
-        $class = static::class;
+        $class = self::class;
 
         if (($access_control instanceof $class) == FALSE) {
             throw new InvalidConfigException("Access control must extend from {$class}.");
