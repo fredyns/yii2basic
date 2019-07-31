@@ -179,7 +179,7 @@ class BaseModelMenu extends \yii\base\Component
                 'aria-label' => $called_class::labelFor($action),
                 'data-pjax' => '0',
             ];
-            return Html::a($label, $url, $options);
+            return '<li>'.Html::a($label, $url, $options).'</li>';
         };
     }
 
@@ -209,7 +209,7 @@ class BaseModelMenu extends \yii\base\Component
             return $buttons[$action];
         }
 
-        return static::DropdownButtonDefaultFor($action);
+        return static::dropdownButtonDefaultFor($action);
     }
 
     /**

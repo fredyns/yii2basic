@@ -147,7 +147,7 @@ class ModelMenu extends \app\base\BaseModelMenu
     {
         $buttons = parent::dropdownButtons();
         foreach (static::actions() as $action) {
-            $buttons[$action] = static::buttonDefaultFor($action);
+            $buttons[$action] = static::dropdownButtonDefaultFor($action);
         }
 
         return $buttons;
