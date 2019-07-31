@@ -72,7 +72,7 @@ class ActionControl extends \yii\base\Component
             throw $access_control->exception();
         }
 
-        return $this->isPassed;
+        return $access_control->isPassed;
     }
     /**
      * @var Boolean
