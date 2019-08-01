@@ -46,7 +46,6 @@ $this->title = $searchModel->modelLabel(true);
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = $this->title;
-$actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {delete}</div>";
 <?= "?>\n";?>
 
 <div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-index">
@@ -81,7 +80,7 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {de
     ?>
 
 <?php if ($generator->indexWidgetType === 'grid'): ?>
-    <div class="table-responsive">
+    <div>
         <?= "<?=\n" ?>
         GridView::widget([
             'dataProvider' => $dataProvider,
@@ -158,7 +157,6 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endforeach;?>
                 [
                     'class' => '<?= $generator->actionButtonClass ?>',
-                    'template' => $actionColumnTemplateString,
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
                             $options = [
