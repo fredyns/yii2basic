@@ -34,7 +34,6 @@ echo "<?php\n";
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use <?= $generator->indexWidgetType === 'grid' ? $generator->indexGridClass : 'yii\\widgets\\ListView' ?>;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 
 /* @var $this yii\web\View */
@@ -82,10 +81,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->indexWidgetType === 'grid'): ?>
     <div>
         <?= "<?=\n" ?>
-        GridView::widget([
+        \kartik\grid\GridView::widget([
             'dataProvider' => $dataProvider,
             'pager' => [
-                'class' => yii\widgets\LinkPager::class,
+                'class' => \yii\widgets\LinkPager::class,
                 'firstPageLabel' => <?= $generator->generateString('First') ?>,
                 'lastPageLabel' => <?= $generator->generateString('Last').",\n" ?>
             ],
@@ -96,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
                 [
-                    'class' => 'yii\grid\SerialColumn',
+                    'class' => \kartik\grid\SerialColumn:class,
                 ],
 <?php $count = 0; ?>
 <?php foreach ($safeAttributes as $attribute): ?>
@@ -156,7 +155,7 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endif;?>
 <?php endforeach;?>
                 [
-                    'class' => '<?= $generator->actionButtonClass ?>',
+                    'class' => \kartik\grid\ActionColumn::class,
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
                             $options = [
@@ -182,7 +181,7 @@ $format = trim($generator->columnFormat($attribute, $model));
 
 <?php else: ?>
     <?= "<?= \n" ?>
-    ListView::widget([
+    \yii\widgets\ListView::widget([
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
         'itemView' => function ($model, $key, $index, $widget) {

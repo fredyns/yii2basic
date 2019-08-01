@@ -33,7 +33,6 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use <?= $generator->indexWidgetType === 'grid' ? $generator->indexGridClass : 'yii\\widgets\\ListView' ?>;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 
 /* @var $this yii\web\View */
