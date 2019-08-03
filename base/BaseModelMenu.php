@@ -18,6 +18,7 @@ class BaseModelMenu extends \yii\base\Component
 {
     public static $controller = '';
     public static $softdelete = false;
+    public static $dropdownSeparator = '<li role="presentation" class="divider"></li>';
 
     /**
      * get all action available
@@ -257,6 +258,39 @@ class BaseModelMenu extends \yii\base\Component
         }
 
         return static::visibleButtonDefaultFor($action);
+    }
+
+    public static function renderButtons($actions, ActiveRecord $model = null)
+    {
+        $items = [];
+        $actions = (array) $actions;
+        foreach ($actions as $action) {
+            // ensure mentioned action
+            if (is_string($action) == FALSE) {
+                continue;
+            }
+            // action control callback
+            $control_callback = static::visibleButtonFor($action);
+            if ($control_callback) {
+                $visible = call_user_func($control_callback, $model);
+                if ($visible == FALSE) {
+                    continue;
+                }
+            }
+            // add button
+            $items[] = [
+                'label' => static::iconFor($action).' '.static::labelFor($action),
+                'url' => static::createUrlFor($action, $model),
+            ];
+        }
+
+        if (empty($items)) {
+            return NULL;
+        }
+
+        return \yii\bootstrap\Dropdown::widget([
+                'items' => $items,
+        ]);
     }
 
 }
