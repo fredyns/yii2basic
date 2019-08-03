@@ -228,8 +228,5 @@ class ModelMenu extends \app\base\BaseModelMenu
 
         return $visibilities;
     }
-    /**
-     * TODO: render dropdown
-     */
 
 }
