@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Archives')?>;
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
                 [
-                    'class' => \kartik\grid\SerialColumn:class,
+                    'class' => \kartik\grid\SerialColumn::class,
                 ],
 <?php $count = 0; ?>
 <?php foreach ($safeAttributes as $attribute): ?>
