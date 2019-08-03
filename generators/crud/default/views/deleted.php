@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Deleted')?>;
 <?php if ($generator->indexWidgetType === 'grid'): ?>
     <div>
         <?= "<?=\n" ?>
-        GridView::widget([
+        \kartik\grid\GridView::widget([
             'dataProvider' => $dataProvider,
             'pager' => [
                 'class' => yii\widgets\LinkPager::class,
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Deleted')?>;
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
                 [
-                    'class' => 'yii\grid\SerialColumn',
+                    'class' => \kartik\grid\SerialColumn::class,
                 ],
 <?php $count = 0; ?>
 <?php foreach ($safeAttributes as $attribute): ?>
