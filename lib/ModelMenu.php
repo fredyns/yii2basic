@@ -131,9 +131,40 @@ class ModelMenu extends \app\base\BaseModelMenu
      */
     public static function buttons()
     {
+        $called_class = get_called_class();
         $buttons = [];
         foreach (static::actions() as $action) {
-            $buttons[$action] = static::buttonDefaultFor($action);
+            switch ($action) {
+                case static::DELETE:
+                    $buttons[$action] = function ($url, $model = null, $key = null) use ($called_class, $action) {
+                        $options = [
+                            'title' => $called_class::labelFor($action),
+                            'aria-label' => $called_class::labelFor($action),
+                            'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
+                            'data-method' => 'post',
+                            'data-pjax' => FALSE,
+                            'class' => 'label label-danger',
+                        ];
+                        return Html::a($called_class::iconFor($action), $url, $options);
+                    };
+                    break;
+                case static::RESTORE:
+                    $buttons[$action] = function ($url, $model = null, $key = null) use ($called_class, $action) {
+                        $options = [
+                            'title' => $called_class::labelFor($action),
+                            'aria-label' => $called_class::labelFor($action),
+                            'data-confirm' => Yii::t('cruds', 'Are you sure to restore this item?'),
+                            'data-method' => 'post',
+                            'data-pjax' => FALSE,
+                            'class' => 'label label-warning',
+                        ];
+                        return Html::a($called_class::iconFor($action), $url, $options);
+                    };
+                    break;
+                default:
+                    $buttons[$action] = static::buttonDefaultFor($action);
+                    break;
+            }
         }
 
         return $buttons;
@@ -147,7 +178,39 @@ class ModelMenu extends \app\base\BaseModelMenu
     {
         $buttons = parent::dropdownButtons();
         foreach (static::actions() as $action) {
-            $buttons[$action] = static::dropdownButtonDefaultFor($action);
+            switch ($action) {
+                case static::DELETE:
+                    $buttons[$action] = function ($url, $model = null, $key = null) use ($called_class, $action) {
+                        $label = $called_class::iconFor($action).' '.$called_class::labelFor($action);
+                        $options = [
+                            'title' => $called_class::labelFor($action),
+                            'aria-label' => $called_class::labelFor($action),
+                            'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
+                            'data-method' => 'post',
+                            'data-pjax' => FALSE,
+                            'class' => 'label label-danger',
+                        ];
+                        return '<li>'.Html::a($label, $url, $options).'</li>';
+                    };
+                    break;
+                case static::RESTORE:
+                    $buttons[$action] = function ($url, $model = null, $key = null) use ($called_class, $action) {
+                        $label = $called_class::iconFor($action).' '.$called_class::labelFor($action);
+                        $options = [
+                            'title' => $called_class::labelFor($action),
+                            'aria-label' => $called_class::labelFor($action),
+                            'data-confirm' => Yii::t('cruds', 'Are you sure to restore this item?'),
+                            'data-method' => 'post',
+                            'data-pjax' => FALSE,
+                            'class' => 'label label-warning',
+                        ];
+                        return '<li>'.Html::a($label, $url, $options).'</li>';
+                    };
+                    break;
+                default:
+                    $buttons[$action] = static::dropdownButtonDefaultFor($action);
+                    break;
+            }
         }
 
         return $buttons;
@@ -165,8 +228,8 @@ class ModelMenu extends \app\base\BaseModelMenu
 
         return $visibilities;
     }
-
     /**
      * TODO: render dropdown
      */
+
 }
