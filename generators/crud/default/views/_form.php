@@ -64,7 +64,7 @@ foreach ($safeAttributes as $attribute) {
     $append = $generator->appendActiveField($attribute, $model);
 
     if ($prepend) {
-        echo str_repeat(' ', 12).$prepend."\n";
+        echo str_repeat(' ', 12).str_replace("\n","\n".str_repeat(' ', 12),$prepend)."\n";
     }
     if (strpos($field,"\n")!==FALSE) {
         echo str_repeat(' ', 12)."<?=".str_replace("\n","\n".str_repeat(' ', 12),$field).'?>'."\n";
@@ -72,7 +72,7 @@ foreach ($safeAttributes as $attribute) {
         echo str_repeat(' ', 12)."<?= ".$field.' ?>'."\n";
     }
     if ($append) {
-        echo str_repeat(' ', 12).$append."\n";
+        echo str_repeat(' ', 12).str_replace("\n","\n".str_repeat(' ', 12),$append)."\n";
     }
 }
 ?>
