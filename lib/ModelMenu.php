@@ -127,7 +127,6 @@ class ModelMenu extends \app\base\BaseModelMenu
                         'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
                         'data-method' => 'post',
                         'data-pjax' => FALSE,
-                        'bootstrap-color' => 'danger',
                     ];
                     break;
                 case static::RESTORE:
@@ -137,7 +136,6 @@ class ModelMenu extends \app\base\BaseModelMenu
                         'data-confirm' => Yii::t('cruds', 'Are you sure to restore this item?'),
                         'data-method' => 'post',
                         'data-pjax' => FALSE,
-                        'bootstrap-color' => 'warning',
                     ];
                     break;
                 default:

@@ -150,22 +150,15 @@ class BaseModelMenu extends \yii\base\Component
      * @param string$action
      * @return \closure
      */
-    public static function linkOptionsFor($action, $color_prefix = null)
+    public static function linkOptionsFor($action)
     {
         $linkOptions_list = static::linkOptions();
 
         if (isset($linkOptions_list[$action])) {
-            $linkOptions = $linkOptions_list[$action];
-        } else{
-            $linkOptions = static::linkOptionsDefaultFor($action);
+            return $linkOptions_list[$action];
         }
 
-        if (isset($linkOptions['bootstrap-color']) && $color_prefix) {
-            $color = ArrayHelper::remove($linkOptions, 'bootstrap-color');
-            $linkOptions['class'] = "{$color_prefix} {$color_prefix}-{$color}";
-        }
-
-        return $linkOptions;
+        return static::linkOptionsDefaultFor($action);
     }
 
     /**
@@ -177,7 +170,7 @@ class BaseModelMenu extends \yii\base\Component
     {
         return function ($url, $model = null, $key = null) use ($action) {
             $label = static::iconFor($action).' '.static::labelFor($action);
-            $options = static::linkOptionsFor($action, 'btn');
+            $options = static::linkOptionsFor($action);
             return Html::a($label, $url, $options);
         };
     }
@@ -216,7 +209,7 @@ class BaseModelMenu extends \yii\base\Component
     {
         return function ($url, $model = null, $key = null) use ($action) {
             $label = static::iconFor($action);
-            $options = static::linkOptionsFor($action, 'btn');
+            $options = static::linkOptionsFor($action);
             return Html::a($label, $url, $options);
         };
     }
@@ -256,7 +249,7 @@ class BaseModelMenu extends \yii\base\Component
         $called_class = get_called_class();
         return function ($url, $model = null, $key = null) use ($called_class, $action) {
             $label = $called_class::iconFor($action).' '.$called_class::labelFor($action);
-            $options = static::linkOptionsFor($action, 'label');
+            $options = static::linkOptionsFor($action);
             return '<li>'.Html::a($label, $url, $options).'</li>';
         };
     }
