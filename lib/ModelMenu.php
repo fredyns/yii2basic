@@ -176,20 +176,6 @@ class ModelMenu extends \app\base\BaseModelMenu
     }
 
     /**
-     * default tool generator for each actions available
-     * @return array
-     */
-    public static function tools()
-    {
-        $buttons = [];
-        foreach (static::actions() as $action) {
-            $buttons[$action] = static::toolDefaultFor($action);
-        }
-
-        return $buttons;
-    }
-
-    /**
      * default dropdown button generator for each actions available
      * @return array
      */
