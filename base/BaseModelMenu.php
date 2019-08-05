@@ -337,15 +337,22 @@ class BaseModelMenu extends \yii\base\Component
         return static::visibleButtonDefaultFor($action);
     }
 
+    /**
+     * 
+     * @param string $actions
+     * @param ActiveRecord $model
+     * @return string the rendering result of the widget.
+     */
     public static function renderButtons($actions, ActiveRecord $model = null)
     {
-        $items = [];
+        $html = '\n';
         $actions = (array) $actions;
         foreach ($actions as $action) {
             // ensure mentioned action
             if (is_string($action) == FALSE) {
                 continue;
             }
+
             // action control callback
             $control_callback = static::visibleButtonFor($action);
             if ($control_callback) {
@@ -354,6 +361,89 @@ class BaseModelMenu extends \yii\base\Component
                     continue;
                 }
             }
+
+            // button generator
+            $generator = static::buttonFor($action);
+            if (empty($generator) OR is_callable($generator) === FALSE) {
+                continue;
+            }
+
+            // url
+            $url = static::createUrlFor($action, $model);
+
+            // render button
+            $html .= call_user_func($generator, $url, $model).'\n';
+        }
+
+        return $html;
+    }
+
+    /**
+     * 
+     * @param string $actions
+     * @param ActiveRecord $model
+     * @return string the rendering result of the widget.
+     */
+    public static function renderToolbar($actions, ActiveRecord $model = null)
+    {
+        $html = '\n';
+        $actions = (array) $actions;
+        foreach ($actions as $action) {
+            // ensure mentioned action
+            if (is_string($action) == FALSE) {
+                continue;
+            }
+
+            // action control callback
+            $control_callback = static::visibleButtonFor($action);
+            if ($control_callback) {
+                $visible = call_user_func($control_callback, $model);
+                if ($visible == FALSE) {
+                    continue;
+                }
+            }
+
+            // button generator
+            $generator = static::toolFor($action);
+            if (empty($generator) OR is_callable($generator) === FALSE) {
+                continue;
+            }
+
+            // url
+            $url = static::createUrlFor($action, $model);
+
+            // render button
+            $html .= call_user_func($generator, $url, $model);
+        }
+
+        return $html;
+    }
+
+    /**
+     * 
+     * @param string $actions
+     * @param ActiveRecord $model
+     * @return string the rendering result of the widget.
+     */
+    public static function renderDropdown($actions, ActiveRecord $model = null)
+    {
+        $items = [];
+        $actions = (array) $actions;
+        foreach ($actions as $action) {
+            // ensure mentioned action
+            if (is_string($action) == FALSE) {
+                continue;
+            }
+
+            // action control callback
+            $control_callback = static::visibleButtonFor($action);
+            if ($control_callback) {
+                $visible = call_user_func($control_callback, $model);
+                if ($visible == FALSE) {
+                    continue;
+                }
+            }
+
             // add button
             $items[] = [
                 'label' => static::iconFor($action).' '.static::labelFor($action),
