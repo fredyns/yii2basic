@@ -145,6 +145,8 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         ];
         $actionParentNameSpace = str_replace('controllers', 'actions', $controllerNameSpace)
             .'\\'.Inflector::camel2id(str_replace('Controller', '', $controllerClassName), '_');
+        $subNameSpace = StringHelper::basename($controllerNameSpace);
+        $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace);
 
         /**
          * range search params
@@ -195,6 +197,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             , 'actionParentNameSpace'
             , 'dateRange'
             , 'timestampRange'
+            , 'subPath'
         );
     }
 
