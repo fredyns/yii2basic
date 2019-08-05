@@ -123,20 +123,62 @@ class BaseModelMenu extends \yii\base\Component
     }
 
     /**
+     * default link options
+     * @param string $action
+     * @return array
+     */
+    public static function linkOptionsDefaultFor($action)
+    {
+        return [
+            'title' => static::labelFor($action),
+            'aria-label' => static::labelFor($action),
+            'data-pjax' => '0',
+        ];
+    }
+
+    /**
+     * list of link options for each actions available
+     * @return array
+     */
+    public static function linkOptions()
+    {
+        return [];
+    }
+
+    /**
+     * get closure/function for button generator
+     * @param string$action
+     * @return \closure
+     */
+    public static function linkOptionsFor($action, $color_prefix = null)
+    {
+        $linkOptions_list = static::linkOptions();
+
+        if (isset($linkOptions_list[$action])) {
+            $linkOptions = $linkOptions_list[$action];
+        } else{
+            $linkOptions = static::linkOptionsDefaultFor($action);
+        }
+
+        if (isset($linkOptions['bootstrap-color']) && $color_prefix) {
+            $color = ArrayHelper::remove($linkOptions, 'bootstrap-color');
+            $linkOptions['class'] = "{$color_prefix} {$color_prefix}-{$color}";
+        }
+
+        return $linkOptions;
+    }
+
+    /**
      * create default closure/function for button generator
      * @param string $action
      * @return \Closure
      */
     public static function buttonDefaultFor($action)
     {
-        $called_class = get_called_class();
-        return function ($url, $model = null, $key = null) use ($called_class, $action) {
-            $options = [
-                'title' => $called_class::labelFor($action),
-                'aria-label' => $called_class::labelFor($action),
-                'data-pjax' => '0',
-            ];
-            return Html::a($called_class::iconFor($action), $url, $options);
+        return function ($url, $model = null, $key = null) use ($action) {
+            $label = static::iconFor($action).' '.static::labelFor($action);
+            $options = static::linkOptionsFor($action, 'btn');
+            return Html::a($label, $url, $options);
         };
     }
 
@@ -166,6 +208,45 @@ class BaseModelMenu extends \yii\base\Component
     }
 
     /**
+     * create default closure/function for tool generator
+     * @param string $action
+     * @return \Closure
+     */
+    public static function toolDefaultFor($action)
+    {
+        return function ($url, $model = null, $key = null) use ($action) {
+            $label = static::iconFor($action);
+            $options = static::linkOptionsFor($action, 'btn');
+            return Html::a($label, $url, $options);
+        };
+    }
+
+    /**
+     * default tool generator for each actions available
+     * @return array
+     */
+    public static function tools()
+    {
+        return [];
+    }
+
+    /**
+     * get closure/function for tool generator
+     * @param string$action
+     * @return \closure
+     */
+    public static function toolFor($action)
+    {
+        $buttons = static::tools();
+
+        if (isset($buttons[$action])) {
+            return $buttons[$action];
+        }
+
+        return static::toolDefaultFor($action);
+    }
+
+    /**
      * create default closure/function for dropdown button generator
      * @param string $action
      * @return \Closure
@@ -175,11 +256,7 @@ class BaseModelMenu extends \yii\base\Component
         $called_class = get_called_class();
         return function ($url, $model = null, $key = null) use ($called_class, $action) {
             $label = $called_class::iconFor($action).' '.$called_class::labelFor($action);
-            $options = [
-                'title' => $called_class::labelFor($action),
-                'aria-label' => $called_class::labelFor($action),
-                'data-pjax' => '0',
-            ];
+            $options = static::linkOptionsFor($action, 'label');
             return '<li>'.Html::a($label, $url, $options).'</li>';
         };
     }
