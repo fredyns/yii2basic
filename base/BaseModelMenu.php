@@ -18,7 +18,7 @@ class BaseModelMenu extends \yii\base\Component
 {
     public static $controller = '';
     public static $softdelete = false;
-    public static $dropdownSeparator = '<li role="presentation" class="divider"></li>';
+    public static $divider = '<li role="presentation" class="divider"></li>';
 
     /**
      * get all action available
@@ -223,7 +223,7 @@ class BaseModelMenu extends \yii\base\Component
     {
         return [
             'divider' => function ($url = NULL, $model = null, $key = null) {
-                return '<li class="divider"></li>';
+                return static::$divider;
             },
         ];
     }
