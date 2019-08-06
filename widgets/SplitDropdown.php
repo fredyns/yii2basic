@@ -213,7 +213,7 @@ class SplitDropdown extends \yii\bootstrap\ButtonDropdown
                 $last_item = 'action';
             }
 
-            if ($not_last && $is_grouped) {
+            if ($not_last && $is_grouped && $last_item !== 'divider') {
                 $dropdown_items[] = $this->divider;
                 $last_item = 'divider';
             }
