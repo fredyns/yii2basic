@@ -209,7 +209,7 @@ class BaseModelMenu extends \yii\base\Component
     {
         $called_class = get_called_class();
         return function ($url, $model = null, $key = null) use ($called_class, $action) {
-            $label = $called_class::iconFor($action).' '.$called_class::labelFor($action);
+            $label = $called_class::iconFor($action).'&nbsp; '.$called_class::labelFor($action);
             $options = static::linkOptionsFor($action);
             return '<li>'.Html::a($label, $url, $options).'</li>';
         };
