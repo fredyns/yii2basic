@@ -197,7 +197,7 @@ foreach ($safeAttributes as $attribute) {
         <?= '<?=' ?> Yii::$app->formatter->asDate($model->created_at, "eeee, d MMMM Y '".Yii::t('record-info', 'at')."' HH:mm") ?>
 <?php if ($tableSchema->getColumn('created_by') !== null): ?>
         <?= '<?=' ?> Yii::t('record-info', 'by') ?>
-        <?= '<?=' ?> ArrayHelper::getValue($model, 'createdBy.username', '-') ?>
+        <?= '<?=' ?> ArrayHelper::getValue($model, 'createdBy.username', Yii::t('app', 'Guest')) ?>
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('updated_at') !== null): ?>
         <br/>
@@ -205,7 +205,7 @@ foreach ($safeAttributes as $attribute) {
         <?= '<?=' ?> Yii::$app->formatter->asDate($model->updated_at, "eeee, d MMMM Y '".Yii::t('record-info', 'at')."' HH:mm") ?>
 <?php if ($tableSchema->getColumn('updated_by') !== null): ?>
         <?= '<?=' ?> Yii::t('record-info', 'by') ?>
-        <?= '<?=' ?> ArrayHelper::getValue($model, 'updatedBy.username', '-') ?>
+        <?= '<?=' ?> ArrayHelper::getValue($model, 'updatedBy.username', Yii::t('app', 'Guest')) ?>
 <?php endif; ?>
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('deleted_at') !== null): ?>
@@ -215,7 +215,7 @@ foreach ($safeAttributes as $attribute) {
             <?= '<?=' ?> Yii::$app->formatter->asDate($model->deleted_at, "eeee, d MMMM Y '".Yii::t('record-info', 'at')."' HH:mm") ?>
 <?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
             <?= '<?=' ?> Yii::t('record-info', 'by') ?>
-            <?= '<?=' ?> ArrayHelper::getValue($model, 'deletedBy.username', '-') ?>
+            <?= '<?=' ?> ArrayHelper::getValue($model, 'deletedBy.username', Yii::t('app', 'Guest')) ?>
 <?php endif; ?>
         <?='<?php'?> endif; ?>
 <?php endif; ?>
