@@ -34,7 +34,7 @@ use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use dmstr\bootstrap\Tabs;
+use app\components\Tabs;
 
 /* @var $this yii\web\View  */
 /* @var $form yii\widgets\ActiveForm  */

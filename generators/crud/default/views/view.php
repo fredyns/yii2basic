@@ -42,8 +42,8 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-use dmstr\bootstrap\Tabs;
 use <?= $menuNameSpace."\\".$menuClassName ?>;
+use app\components\Tabs;
 use <?= $generator->modelClass ?>;
 use app\widgets\SplitDropdown;
 
