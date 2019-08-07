@@ -225,9 +225,8 @@ class BaseModelMenu2 extends \yii\base\Component
      */
     public static function visibleButtonDefaultFor($action)
     {
-        $called_class = get_called_class();
-        return function ($model, $key = null, $index = null) use ($called_class, $action) {
-            $action_control_class = $called_class::actionControlFor($action);
+        return function ($model, $key = null, $index = null) use ($action) {
+            $action_control_class = static::actionControlFor($action);
 
             if ($action_control_class && class_exists($action_control_class)) {
                 return ActionControl::check([

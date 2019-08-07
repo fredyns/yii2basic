@@ -207,9 +207,8 @@ class BaseModelMenu extends \yii\base\Component
      */
     public static function dropdownButtonDefaultFor($action)
     {
-        $called_class = get_called_class();
-        return function ($url, $model = null, $key = null) use ($called_class, $action) {
-            $label = $called_class::iconFor($action).'&nbsp; '.$called_class::labelFor($action);
+        return function ($url, $model = null, $key = null) use ($action) {
+            $label = static::iconFor($action).'&nbsp; '.static::labelFor($action);
             $options = static::linkOptionsFor($action);
             return '<li>'.Html::a($label, $url, $options).'</li>';
         };
@@ -251,9 +250,8 @@ class BaseModelMenu extends \yii\base\Component
      */
     public static function visibleButtonDefaultFor($action)
     {
-        $called_class = get_called_class();
-        return function ($model, $key = null, $index = null) use ($called_class, $action) {
-            $action_control_class = $called_class::actionControlFor($action);
+        return function ($model, $key = null, $index = null) use ($action) {
+            $action_control_class = static::actionControlFor($action);
 
             if ($action_control_class && class_exists($action_control_class)) {
                 return ActionControl::check([
