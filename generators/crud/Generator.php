@@ -285,8 +285,8 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generateActionControl($action, $params)
     {
-        $file = $this->generatePath($params['actionNameSpace'].'\ActionControl.php');
-        return new CodeFile($file, $this->render('ActionControl.php', $params));
+        $file = $this->generatePath($params['actionNameSpace']."\ActionControl.php");
+        return new CodeFile($file, $this->render("action-control\\{$action}.php", $params));
     }
 
     /**
