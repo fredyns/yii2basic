@@ -23,6 +23,7 @@ use yii\helpers\StringHelper;
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
+$menuClassName = $modelClassName.'Menu';
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 $safeAttributes = $model->safeAttributes();
@@ -37,7 +38,9 @@ echo "<?php\n";
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use <?= $menuNameSpace."\\".$menuClassName ?>;
 use <?= $generator->modelClass ?>;
+use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -94,6 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->searchModelClass !== ''): ?>
             'filterModel' => $searchModel,
 <?php endif; ?>
+            'responsive' => false,
             'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
@@ -158,20 +162,25 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endif;?>
 <?php endforeach;?>
                 [
-                    'class' => \kartik\grid\ActionColumn::class,
-                    'dropdown' => TRUE,
-                    'dropdownButton' => ['label' => ''],
-                    'dropdownMenu' => [
-                        'class' => 'dropdown-menu-right',
-                    ],
-                    'dropdownOptions' => [
-                        'title' => Yii::t('cruds', 'actions for this record'),
-                    ],
-                    'buttons' => BookMenu::dropdownButtons(),
-                    'urlCreator' => function($action, $model, $key, $index) {
-                        return BookMenu::createUrlFor($action, $model);
+                    'class' => \app\components\ActionColumn::class,
+                    'contentRenderer' => function($model, $key, $index) {
+                        return SplitDropdown::widget([
+                                'model' => $model,
+                                'label' => <?= $menuClassName ?>::iconFor('view').' '.<?= $menuClassName ?>::labelFor('view'),
+                                'buttonAction' => 'view',
+                                'dropdownActions' => [
+                                    'view',
+                                    [
+                                        'delete',
+                                        'restore',
+                                    ],
+                                ],
+                                'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
+                                'urlCreator' => function($action, $model) {
+                                    return <?= $menuClassName ?>::createUrlFor($action, $model);
+                                },
+                        ]);
                     },
-                    'contentOptions' => ['nowrap' => 'nowrap'],
                 ],
             ],
         ]);
