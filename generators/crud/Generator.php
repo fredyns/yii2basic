@@ -101,6 +101,11 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $files[] = $this->generateRestAPI($params);
 
         /**
+         * generate model menu
+         */
+        $files[] = $this->generateModelMenu($params);
+
+        /**
          * generate view
          */
         $viewPath = $this->getViewPath();
@@ -278,6 +283,14 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $params['restClass'] = str_replace($controller_prefix, $api_prefix, $this->controllerClass);
         $file = $this->generatePath($params['restClass'].'.php');
         return new CodeFile($file, $this->render('RestAPI.php', $params));
+    }
+
+    public function generateModelMenu($params)
+    {
+        $dir = StringHelper::dirname($this->searchModelClass);
+        $path = $dir.'\\'.StringHelper::basename($this->modelClass);
+        $file = $this->generatePath($path.'Menu.php');
+        return new CodeFile($file, $this->render('SearchModel.php', $params));
     }
 
     public function generateFormData($params)
