@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Archives')?>;
             'pager' => [
                 'class' => \yii\widgets\LinkPager::class,
                 'firstPageLabel' => <?= $generator->generateString('First') ?>,
-                'lastPageLabel' => <?= $generator->generateString('Last').',\n' ?>
+                'lastPageLabel' => <?= $generator->generateString('Last').",\n" ?>
             ],
 <?php if ($generator->searchModelClass !== ''): ?>
             'filterModel' => $searchModel,
