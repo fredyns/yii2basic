@@ -151,6 +151,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
          */
         $this->modelClass = ltrim($this->modelClass, '\\');
         $this->searchModelClass = ltrim($this->searchModelClass, '\\');
+        $this->controllerClass = ltrim($this->controllerClass, '\\');
         // global
         $tableSchema = $this->getTableSchema();
         $giiConfigs = \app\generators\giiconfig\Generator::readMetadata();
@@ -161,9 +162,9 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $model = new $this->modelClass;
         // controller
         $controllerClassName = StringHelper::basename($this->controllerClass);
-        $controllerNameSpace = StringHelper::dirname(ltrim($this->controllerClass, '\\'));
+        $controllerNameSpace = StringHelper::dirname($this->controllerClass);
         // parent scope
-        $moduleNameSpace = StringHelper::dirname(ltrim($controllerNameSpace, '\\'));
+        $moduleNameSpace = StringHelper::dirname($controllerNameSpace);
         $subNameSpace = StringHelper::basename($controllerNameSpace);
         $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace);
         // actions
