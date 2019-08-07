@@ -46,7 +46,7 @@ use <?= $generator->modelClass ?>;
 /**
  * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
  */
-class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
+class <?= $searchModelClass ?> extends <?= $modelClassName ?>
 
 {
 <?php if($dateRange OR $timestampRange): ?>
@@ -116,7 +116,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function search($params)
     {
-        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
+        $query = <?= $modelClassName ?>::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
