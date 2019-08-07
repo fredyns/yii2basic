@@ -55,14 +55,13 @@ EOS;
         }
 
         return <<<EOS
-
-[
-    'attribute' => '{$attribute}',
-    'format' => [
-        'datetime',
-        'format' => 'eeee, d MMMM Y',
-    ],
-]
+        [
+                'attribute' => '{$attribute}',
+                'format' => [
+                    'datetime',
+                    'format' => 'eeee, d MMMM Y',
+                ],
+            ]
 EOS;
     }
 
