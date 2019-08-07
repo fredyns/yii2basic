@@ -23,6 +23,7 @@ use yii\helpers\StringHelper;
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
+$menuClassName = $modelClassName.'Menu';
 $urlParams = $generator->generateUrlParams();
 $haveID = ($tableSchema->getColumn('id') !== null);
 $safeAttributes = $model->safeAttributes();
@@ -42,9 +43,12 @@ use yii\grid\GridView;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use dmstr\bootstrap\Tabs;
+use <?= $menuNameSpace."\\".$menuClassName ?>;
+use <?= $generator->modelClass ?>;
+use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View  */
-/* @var $model <?= $generator->modelClass ?>  */
+/* @var $model <?= $modelClassName ?>  */
 
 <?php if ($haveID): ?>
 $this->title = <?=$generator->generateString('View '.$modelName)?>.' #'.$model->id;
@@ -78,61 +82,32 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
                 </small>
             </h1>
         </div>
+
         <!-- menu buttons -->
         <div class='pull-right'>
-            <?="<?=\n"?>
-            ButtonDropdown::widget([
-                'label' => <?= $generator->generateString('Edit') ?>,
-                'tagName' => 'a',
-                'split' => true,
-                'options' => [
-                    'href' => ['update', <?= $urlParams ?>],
-                    'class' => 'btn btn-info',
-                ],
-                'dropdown' => [
-                    'encodeLabels' => FALSE,
-                    'options' => [
-                        'class' => 'dropdown-menu-right',
-                    ],
-                    'items' => [
-                        '<li role="presentation" class="divider"></li>',
+            <div>
+                <?= "<?=\n" ?>
+                SplitDropdown::widget([
+                    'model' => $model,
+                    'label' => <?= $menuClassName ?>::iconFor('update').'&nbsp; '.BookMenu::labelFor('update'),
+                    'encodeLabel' => FALSE,
+                    'buttonAction' => 'update',
+                    'dropdownActions' => [
+                        'view',
                         [
-                            'label' => '<span class="glyphicon glyphicon-list"></span> '.<?= $generator->generateString('Full list') ?>,
-                            'url' => ['index'],
-                        ],
-                        [
-                            'label' => '<span class="glyphicon glyphicon-plus"></span> '.<?= $generator->generateString('New') ?>,
-                            'url' => ['create'],
-                        ],
-                        '<li role="presentation" class="divider"></li>',
-                        [
-                            'label' => '<span class="glyphicon glyphicon-trash"></span> '.<?= $generator->generateString('Delete') ?>,
-                            'url' => ['delete', <?= $urlParams ?>],
-                            'linkOptions' => [
-                                'data-confirm' => <?= $generator->generateString('Are you sure to delete this item?') ?>,
-                                'data-method' => 'post',
-                                'data-pjax' => FALSE,
-                                'class' => 'label label-danger',
-                            ],
+                            'delete',
 <?php if($softdelete):?>
-                            'visible' => ($model->is_deleted == FALSE),
-                        ],
-                        [
-                            'label' => '<span class="glyphicon glyphicon-floppy-open"></span> '.<?= $generator->generateString('Restore') ?>,
-                            'url' => ['delete', <?= $urlParams ?>],
-                            'linkOptions' => [
-                                'data-confirm' => <?= $generator->generateString('Are you sure to restore this item?') ?>,
-                                'data-method' => 'post',
-                                'data-pjax' => FALSE,
-                                'class' => 'label label-info',
-                            ],
-                            'visible' => ($model->is_deleted),
+                            'restore',
 <?php endif;?>
                         ],
                     ],
-                ],
-            ]);
-            ?>
+                    'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
+                    'urlCreator' => function($action, $model) {
+                        return <?= $menuClassName ?>::createUrlFor($action, $model);
+                    },
+                ]);
+                ?>
+            </div>
         </div>
 
     </div>
@@ -219,7 +194,7 @@ foreach ($safeAttributes as $attribute) {
 
     <div style="font-size: 75%; font-style: italic;">
         <?= '<?=' ?> Yii::t('timestamp', 'Created') ?>
-        <?= '<?=' ?> Yii::$app->formatter->asDate($model->created_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+        <?= '<?=' ?> Yii::$app->formatter->asDate($model->created_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
 <?php if ($tableSchema->getColumn('created_by') !== null): ?>
         <?= '<?=' ?> Yii::t('timestamp', 'by') ?>
         <?= '<?=' ?> ArrayHelper::getValue($model, 'createdBy.username', '-') ?>
@@ -227,7 +202,7 @@ foreach ($safeAttributes as $attribute) {
 <?php if ($tableSchema->getColumn('updated_at') !== null): ?>
         <br/>
         <?= '<?=' ?> Yii::t('timestamp', 'Updated') ?>
-        <?= '<?=' ?> Yii::$app->formatter->asDate($model->updated_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+        <?= '<?=' ?> Yii::$app->formatter->asDate($model->updated_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
 <?php if ($tableSchema->getColumn('updated_by') !== null): ?>
         <?= '<?=' ?> Yii::t('timestamp', 'by') ?>
         <?= '<?=' ?> ArrayHelper::getValue($model, 'updatedBy.username', '-') ?>
@@ -237,7 +212,7 @@ foreach ($safeAttributes as $attribute) {
         <?='<?php'?> if ($model->is_deleted): ?>
             <br/>
             <?= '<?=' ?> Yii::t('timestamp', 'Deleted') ?>
-            <?= '<?=' ?> Yii::$app->formatter->asDate($model->deleted_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+            <?= '<?=' ?> Yii::$app->formatter->asDate($model->deleted_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
 <?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
             <?= '<?=' ?> Yii::t('timestamp', 'by') ?>
             <?= '<?=' ?> ArrayHelper::getValue($model, 'deletedBy.username', '-') ?>
