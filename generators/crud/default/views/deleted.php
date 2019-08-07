@@ -23,6 +23,7 @@ use yii\helpers\StringHelper;
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
+$menuClassName = $modelClassName.'Menu';
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 $safeAttributes = $model->safeAttributes();
@@ -36,7 +37,9 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use <?= $menuNameSpace."\\".$menuClassName ?>;
 use <?= $generator->modelClass ?>;
+use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -62,7 +65,26 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Deleted')?>;
             </h1>
         </div>
         <div class="pull-right">
-            <?= '<?= ' ?>Html::a('<span class="glyphicon glyphicon-plus"></span> '.<?=$generator->generateString('New')?>, ['create'], ['class' => 'btn btn-success']) ?>
+            <div>
+                <?= "<?=\n" ?>
+                SplitDropdown::widget([
+                    'label' => <?= $menuClassName ?>::iconFor('create').'&nbsp; '.BookMenu::labelFor('create'),
+                    'encodeLabel' => FALSE,
+                    'buttonAction' => 'create',
+                    'options' => [
+                        'class' => 'btn btn-primary',
+                    ],
+                    'dropdownActions' => [
+                        'index',
+                        'archive',
+                    ],
+                    'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
+                    'urlCreator' => function($action, $model) {
+                        return <?= $menuClassName ?>::createUrlFor($action, $model);
+                    },
+                ]);
+                ?>
+            </div>
         </div>
     </div>
 
@@ -94,6 +116,7 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Deleted')?>;
 <?php if ($generator->searchModelClass !== ''): ?>
             'filterModel' => $searchModel,
 <?php endif; ?>
+            'responsive' => false,
             'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
@@ -158,24 +181,24 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endif;?>
 <?php endforeach;?>
                 [
-                    'class' => '<?= $generator->actionButtonClass ?>',
-                    'buttons' => [
-                        'view' => function ($url, $model, $key) {
-                            $options = [
-                                'title' => Yii::t('<?=$generator->messageCategory?>', 'View'),
-                                'aria-label' => Yii::t('<?=$generator->messageCategory?>', 'View'),
-                                'data-pjax' => '0',
-                            ];
-                            return Html::a('<span class="glyphicon glyphicon-file"></span>', $url, $options);
-                        }
-                    ],
-                    'urlCreator' => function($action, $model, $key, $index) {
-                        // using the column name as key, not mapping to 'id' like the standard generator
-                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
-                        $params[0] = Yii::$app->controller->id ? Yii::$app->controller->id.'/'.$action : $action;
-                        return Url::toRoute($params);
+                    'class' => \app\components\ActionColumn::class,
+                    'contentRenderer' => function($model, $key, $index) {
+                        return SplitDropdown::widget([
+                                'model' => $model,
+                                'label' => <?= $menuClassName ?>::iconFor('view').' '.<?= $menuClassName ?>::labelFor('view'),
+                                'buttonAction' => 'view',
+                                'dropdownActions' => [
+                                    'view',
+                                    [
+                                        'restore',
+                                    ],
+                                ],
+                                'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
+                                'urlCreator' => function($action, $model) {
+                                    return <?= $menuClassName ?>::createUrlFor($action, $model);
+                                },
+                        ]);
                     },
-                    'contentOptions' => ['nowrap' => 'nowrap']
                 ],
             ],
         ]);
