@@ -158,7 +158,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $softdelete = ($tableSchema->getColumn('is_deleted') !== null);
         $modelClassName = StringHelper::basename($this->modelClass);
         $modelSlug = Inflector::camel2id($modelClassName, '-', true);
-        $modelName = Inflector::camel2words(Inflector::pluralize($modelClassName));
+        $modelName = Inflector::camel2words($modelClassName);
         $model = new $this->modelClass;
         // controller
         $controllerClassName = StringHelper::basename($this->controllerClass);
