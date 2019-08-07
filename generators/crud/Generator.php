@@ -168,8 +168,9 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $subNameSpace = StringHelper::basename($controllerNameSpace);
         $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace);
         // actions
-        $actionParentNameSpace = str_replace('controllers', 'actions', $controllerNameSpace)
-            .'\\'.Inflector::camel2id(str_replace('Controller', '', $controllerClassName), '_');
+        $actionParentNameSpace = 'app\\actions'
+            .($subPath ? '\\'.$subPath : '')
+            .'\\'.Inflector::camel2id($modelClassName, '_');
         $actionParent = [
             'index' => 'IndexAction',
             'create' => 'CreateAction',
@@ -251,6 +252,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generatePath($namespaced_path)
     {
+        $input = $namespaced_path;
         $namespace_separator = "\\";
         $namespaced_path = ltrim($namespaced_path, $namespace_separator);
 
@@ -259,8 +261,11 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         }
 
         // trim 'app' prefix
-        if (strpos('app'.DIRECTORY_SEPARATOR, $namespaced_path) === 0) {
-            $namespaced_path = substr($namespaced_path, 4);
+        $to_trim = 'app'.DIRECTORY_SEPARATOR;
+        $trim_len = strlen($to_trim);
+        $find_trim = strpos($namespaced_path, $to_trim);
+        if ($find_trim === 0) {
+            $namespaced_path = substr($namespaced_path, $trim_len);
         }
 
         $path = Yii::getAlias('@app').DIRECTORY_SEPARATOR.$namespaced_path;
@@ -269,6 +274,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             mkdir($directory, 0777, true);
         }
 
+        Yii::debug('info', "source:\n{$input}\n\noutput:\n{$path}");
         return $path;
     }
 
@@ -279,7 +285,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generateActionControl($action, $params)
     {
-        $file = $this->generatePath($params['actionNameSpace'].'/ActionControl.php');
+        $file = $this->generatePath($params['actionNameSpace'].'\ActionControl.php');
         return new CodeFile($file, $this->render('ActionControl.php', $params));
     }
 
@@ -290,7 +296,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generateActiveAction($action, $params)
     {
-        $file = $this->generatePath($params['actionNameSpace'].'/ActiveAction.php');
+        $file = $this->generatePath($params['actionNameSpace'].'\ActiveAction.php');
         return new CodeFile($file, $this->render('ActiveAction.php', $params));
     }
 
