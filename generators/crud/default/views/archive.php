@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = <?=$generator->generateString('Archives')?>;
-<?= '?>\n';?>
+?>
 
 <div class="giiant-crud <?= $modelSlug ?>-archive">
 

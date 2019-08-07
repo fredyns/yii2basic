@@ -48,7 +48,7 @@ $this->title = $searchModel->modelLabel(true);
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = $this->title;
-<?= "?>\n";?>
+?>
 
 <div class="giiant-crud <?= $modelSlug ?>-index">
 
