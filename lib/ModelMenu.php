@@ -34,18 +34,10 @@ class ModelMenu extends \app\base\BaseModelMenu
      */
     public static function actions()
     {
-        $actions = [
-            static::INDEX,
-            static::VIEW,
-            static::CREATE,
-            static::UPDATE,
-            static::DELETE,
-        ];
+        $actions = [static::INDEX, static::VIEW, static::CREATE, static::UPDATE, static::DELETE];
 
         if (static::$softdelete) {
-            $actions[] = static::DELETED;
-            $actions[] = static::RESTORE;
-            $actions[] = static::ARCHIVE;
+            $actions = ArrayHelper::merge($actions, [static::DELETED, static::RESTORE, static::ARCHIVE]);
         }
 
         return $actions;
