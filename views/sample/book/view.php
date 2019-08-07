@@ -101,21 +101,21 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <hr/>
 
     <div style="font-size: 75%; font-style: italic;">
-        <?= Yii::t('timestamp', 'Created') ?>
-        <?= Yii::$app->formatter->asDate($model->created_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
-        <?= Yii::t('timestamp', 'by') ?>
-        <?= ArrayHelper::getValue($model, 'createdBy.username', '-') ?>
+        <?= Yii::t('record-info', 'Created') ?>
+        <?= Yii::$app->formatter->asDate($model->created_at, "eeee, d MMMM Y '".Yii::t('record-info', 'at')."' HH:mm") ?>
+        <?= Yii::t('record-info', 'by') ?>
+        <?= ArrayHelper::getValue($model, 'createdBy.username', Yii::t('app', 'Guest')) ?>
         <br/>
-        <?= Yii::t('timestamp', 'Updated') ?>
-        <?= Yii::$app->formatter->asDate($model->updated_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
-        <?= Yii::t('timestamp', 'by') ?>
-        <?= ArrayHelper::getValue($model, 'updatedBy.username', '-') ?>
+        <?= Yii::t('record-info', 'Updated') ?>
+        <?= Yii::$app->formatter->asDate($model->updated_at, "eeee, d MMMM Y '".Yii::t('record-info', 'at')."' HH:mm") ?>
+        <?= Yii::t('record-info', 'by') ?>
+        <?= ArrayHelper::getValue($model, 'updatedBy.username', Yii::t('app', 'Guest')) ?>
         <?php if ($model->is_deleted): ?>
             <br/>
-            <?= Yii::t('timestamp', 'Deleted') ?>
-            <?= Yii::$app->formatter->asDate($model->deleted_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
-            <?= Yii::t('timestamp', 'by') ?>
-            <?= ArrayHelper::getValue($model, 'deletedBy.username', '-') ?>
+            <?= Yii::t('record-info', 'Deleted') ?>
+            <?= Yii::$app->formatter->asDate($model->deleted_at, "eeee, d MMMM Y '".Yii::t('record-info', 'at')."' HH:mm") ?>
+            <?= Yii::t('record-info', 'by') ?>
+            <?= ArrayHelper::getValue($model, 'deletedBy.username', Yii::t('app', 'Guest')) ?>
         <?php endif; ?>
     </div>
 
