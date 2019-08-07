@@ -36,7 +36,7 @@ class SplitDropdown extends \yii\bootstrap\ButtonDropdown
      */
     public $encodeLabel = false;
     public $buttonAction = 'view';
-    public $options = ['class' => 'btn btn-info'];
+    public $options = ['class' => 'btn btn-sm btn-info'];
 
     /**
      * @var array of actions to display in dropdown 
