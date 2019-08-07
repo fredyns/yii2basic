@@ -31,7 +31,7 @@ if (empty($safeAttributes)) {
     $safeAttributes = $tableSchema->columnNames;
 }
 
-echo '<?php\n';
+echo "<?php\n";
 ?>
 
 use yii\helpers\Html;

@@ -27,7 +27,7 @@ $modelClassName = StringHelper::basename($generator->modelClass);
 $route = ($subPath ? "/{$subPath}/" : "/")
     .Inflector::camel2id(str_replace('Controller', '', $controllerClassName));
 
-echo '<?php\n';
+echo "<?php\n";
 ?>
 
 namespace <?= StringHelper::dirname($generator->searchModelClass) ?>;

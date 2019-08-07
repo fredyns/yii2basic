@@ -25,7 +25,7 @@ use yii\helpers\StringHelper;
 
 $hasMany = ArrayHelper::getValue($giiConfigs, $tableSchema->fullName.'.hasMany');
 
-echo '<?php\n';
+echo "<?php\n";
 ?>
 
 namespace <?= $apiNameSpace ?>;

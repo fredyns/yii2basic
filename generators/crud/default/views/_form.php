@@ -27,7 +27,7 @@ if (empty($safeAttributes)) {
     $safeAttributes = $tableSchema->columnNames;
 }
 
-echo '<?php\n';
+echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
@@ -43,7 +43,7 @@ use dmstr\bootstrap\Tabs;
 
 <div class="<?= Inflector::camel2id($modelClassName, '-', true) ?>-form">
 
-    <?= '<?php\n' ?>
+    <?= "<?php\n" ?>
     $form = ActiveForm::begin([
             'id' => '<?= $model->formName() ?>',
             'layout' => '<?= $generator->formLayout ?>',

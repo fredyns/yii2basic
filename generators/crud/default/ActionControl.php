@@ -19,7 +19,7 @@
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
-echo '<?php\n';
+echo "<?php\n";
 ?>
 
 namespace <?= $actionNameSpace ?>;

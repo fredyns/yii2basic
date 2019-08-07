@@ -23,7 +23,7 @@ use yii\helpers\StringHelper;
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
-echo '<?php\n';
+echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
