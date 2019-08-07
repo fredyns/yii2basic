@@ -258,9 +258,12 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             $namespaced_path = str_replace($namespace_separator, DIRECTORY_SEPARATOR, $namespaced_path);
         }
 
-        $path = Yii::getAlias('@app')
-            .str_replace('app'.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $namespaced_path);
+        // trim 'app' prefix
+        if (strpos('app'.DIRECTORY_SEPARATOR, $namespaced_path) === 0) {
+            $namespaced_path = substr($namespaced_path, 4);
+        }
 
+        $path = Yii::getAlias('@app').DIRECTORY_SEPARATOR.$namespaced_path;
         $directory = pathinfo($path, PATHINFO_EXTENSION) ? StringHelper::dirname($path) : $path;
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
