@@ -15,7 +15,7 @@ use app\widgets\SplitDropdown;
 /* @var $this yii\web\View  */
 /* @var $model Book  */
 
-$this->title = Yii::t('cruds', 'View Book').' #'.$model->id;
+$this->title = Yii::t('sample','View Book').' #'.$model->id;
 $this->params['breadcrumbs'][] = Yii::t('app', 'sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->title, 'url' => ['view', 'id' => $model->id]];

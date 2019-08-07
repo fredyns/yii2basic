@@ -10,7 +10,7 @@ use app\widgets\SplitDropdown;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel app\actions\sample\person\PersonSearch */
 
-$this->title = Yii::t('cruds', 'Person Archives');
+$this->title = Yii::t('sample','Person Archives');
 $this->params['breadcrumbs'][] = Yii::t('app', 'sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Archives');
