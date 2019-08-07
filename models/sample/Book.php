@@ -28,9 +28,9 @@ use app\models\User;
  * @property User $createdBy
  * @property User $updatedBy
  * @property User $deletedBy
+ *
  * @property \app\models\sample\Person $author
  * @property \app\models\sample\Person $editor
- *
  *
  * @method void softDelete() move to trash
  * @method void restore() bring back form trash
@@ -72,14 +72,14 @@ class Book extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('sample', 'ID'),
-            'created_at' => Yii::t('sample', 'Created At'),
-            'created_by' => Yii::t('sample', 'Created By'),
-            'updated_at' => Yii::t('sample', 'Updated At'),
-            'updated_by' => Yii::t('sample', 'Updated By'),
-            'is_deleted' => Yii::t('sample', 'Is Deleted'),
-            'deleted_at' => Yii::t('sample', 'Deleted At'),
-            'deleted_by' => Yii::t('sample', 'Deleted By'),
+            'id' => Yii::t('record-info', 'ID'),
+            'created_at' => Yii::t('record-info', 'Created At'),
+            'created_by' => Yii::t('record-info', 'Created By'),
+            'updated_at' => Yii::t('record-info', 'Updated At'),
+            'updated_by' => Yii::t('record-info', 'Updated By'),
+            'is_deleted' => Yii::t('record-info', 'Is Deleted'),
+            'deleted_at' => Yii::t('record-info', 'Deleted At'),
+            'deleted_by' => Yii::t('record-info', 'Deleted By'),
             'title' => Yii::t('sample', 'Title'),
             'description' => Yii::t('sample', 'Description'),
             'author_id' => Yii::t('sample', 'Author'),
