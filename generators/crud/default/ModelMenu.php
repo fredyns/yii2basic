@@ -44,7 +44,7 @@ class <?= $modelClassName ?>Menu extends \app\lib\ModelMenu
 
     public static function actionControls()
     {
-        $classes = [
+        return [
             static::INDEX => \<?= $actionParentNameSpace ?>\index\ActionControl::class,
             static::VIEW => \<?= $actionParentNameSpace ?>\view\ActionControl::class,
             static::CREATE => \<?= $actionParentNameSpace ?>\create\ActionControl::class,
@@ -56,10 +56,6 @@ class <?= $modelClassName ?>Menu extends \app\lib\ModelMenu
             static::ARCHIVE => \<?= $actionParentNameSpace ?>\archive\ActionControl::class,
 <?php endif; ?>
         ];
-        // remove this line to disable default action controls
-        $classes = parent::actionControls();
-
-        return $classes;
     }
 
 }
