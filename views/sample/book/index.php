@@ -3,8 +3,9 @@
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
+use app\actions\sample\book\BookMenu;
 use app\models\sample\Book;
+use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,7 +14,6 @@ use app\models\sample\Book;
 $this->title = $searchModel->modelLabel(true);
 $this->params['breadcrumbs'][] = Yii::t('app', 'sample');
 $this->params['breadcrumbs'][] = $this->title;
-$actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {delete}</div>";
 ?>
 
 <div class="giiant-crud book-index">
@@ -28,7 +28,29 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {de
             </h1>
         </div>
         <div class="pull-right">
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
+            <div>
+                <?=
+                SplitDropdown::widget([
+                    'label' => BookMenu::iconFor('create').'&nbsp; '.BookMenu::labelFor('create'),
+                    'encodeLabel' => FALSE,
+                    'buttonAction' => 'create',
+                    'options' => [
+                        'class' => 'btn btn-primary',
+                    ],
+                    'dropdownActions' => [
+                        'create',
+                        [
+                            'deleted',
+                            'archive',
+                        ],
+                    ],
+                    'dropdownButtons' => BookMenu::dropdownButtons(),
+                    'urlCreator' => function($action, $model) {
+                        return BookMenu::createUrlFor($action, $model);
+                    },
+                ]);
+                ?>
+            </div>
         </div>
     </div>
 
@@ -47,21 +69,22 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {de
     ]);
     ?>
 
-    <div class="table-responsive">
+    <div>
         <?=
-        GridView::widget([
+        \kartik\grid\GridView::widget([
             'dataProvider' => $dataProvider,
             'pager' => [
-                'class' => yii\widgets\LinkPager::class,
+                'class' => \yii\widgets\LinkPager::class,
                 'firstPageLabel' => Yii::t('cruds', 'First'),
                 'lastPageLabel' => Yii::t('cruds', 'Last'),
             ],
             'filterModel' => $searchModel,
+            'responsive' => false,
             'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
                 [
-                    'class' => 'yii\grid\SerialColumn',
+                    'class' => \kartik\grid\SerialColumn::class,
                 ],
                 'title:ntext',
                 'description:ntext',
@@ -92,25 +115,25 @@ $actionColumnTemplateString = "<div class=\"action-buttons\">{view} {update} {de
                     'filter' => $searchModel->releasedSearch->filterWidget(),
                 ],
                 [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => $actionColumnTemplateString,
-                    'buttons' => [
-                        'view' => function ($url, $model, $key) {
-                            $options = [
-                                'title' => Yii::t('cruds', 'View'),
-                                'aria-label' => Yii::t('cruds', 'View'),
-                                'data-pjax' => '0',
-                            ];
-                            return Html::a('<span class="glyphicon glyphicon-file"></span>', $url, $options);
-                        }
-                    ],
-                    'urlCreator' => function($action, $model, $key, $index) {
-                        // using the column name as key, not mapping to 'id' like the standard generator
-                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
-                        $params[0] = Yii::$app->controller->id ? Yii::$app->controller->id.'/'.$action : $action;
-                        return Url::toRoute($params);
+                    'class' => \app\components\ActionColumn::class,
+                    'contentRenderer' => function($model, $key, $index) {
+                        return SplitDropdown::widget([
+                                'model' => $model,
+                                'label' => BookMenu::iconFor('view').' '.BookMenu::labelFor('view'),
+                                'buttonAction' => 'view',
+                                'dropdownActions' => [
+                                    'view',
+                                    'update',
+                                    [
+                                        'delete',
+                                    ],
+                                ],
+                                'dropdownButtons' => BookMenu::dropdownButtons(),
+                                'urlCreator' => function($action, $model) {
+                                    return BookMenu::createUrlFor($action, $model);
+                                },
+                        ]);
                     },
-                    'contentOptions' => ['nowrap' => 'nowrap']
                 ],
             ],
         ]);

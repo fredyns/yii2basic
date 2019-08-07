@@ -7,12 +7,15 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-use dmstr\bootstrap\Tabs;
+use app\actions\sample\book\BookMenu;
+use app\components\Tabs;
+use app\models\sample\Book;
+use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View  */
-/* @var $model app\models\sample\Book  */
+/* @var $model Book  */
 
-$this->title = $model->modelLabel();
+$this->title = Yii::t('cruds', 'View Book').' #'.$model->id;
 $this->params['breadcrumbs'][] = Yii::t('app', 'sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->title, 'url' => ['view', 'id' => $model->id]];
@@ -32,59 +35,30 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
                 </small>
             </h1>
         </div>
+
         <!-- menu buttons -->
         <div class='pull-right'>
-            <?=
-            ButtonDropdown::widget([
-                'label' => Yii::t('cruds', 'Edit'),
-                'tagName' => 'a',
-                'split' => true,
-                'options' => [
-                    'href' => ['update', 'id' => $model->id],
-                    'class' => 'btn btn-info',
-                ],
-                'dropdown' => [
-                    'encodeLabels' => FALSE,
-                    'options' => [
-                        'class' => 'dropdown-menu-right',
-                    ],
-                    'items' => [
-                        '<li role="presentation" class="divider"></li>',
+            <div>
+                <?=
+                SplitDropdown::widget([
+                    'model' => $model,
+                    'label' => BookMenu::iconFor('update').'&nbsp; '.BookMenu::labelFor('update'),
+                    'encodeLabel' => FALSE,
+                    'buttonAction' => 'update',
+                    'dropdownActions' => [
+                        'view',
                         [
-                            'label' => '<span class="glyphicon glyphicon-list"></span> '.Yii::t('cruds', 'Full list'),
-                            'url' => ['index'],
-                        ],
-                        [
-                            'label' => '<span class="glyphicon glyphicon-plus"></span> '.Yii::t('cruds', 'New'),
-                            'url' => ['create'],
-                        ],
-                        '<li role="presentation" class="divider"></li>',
-                        [
-                            'label' => '<span class="glyphicon glyphicon-trash"></span> '.Yii::t('cruds', 'Delete'),
-                            'url' => ['delete', 'id' => $model->id],
-                            'linkOptions' => [
-                                'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
-                                'data-method' => 'post',
-                                'data-pjax' => FALSE,
-                                'class' => 'label label-danger',
-                            ],
-                            'visible' => ($model->is_deleted == FALSE),
-                        ],
-                        [
-                            'label' => '<span class="glyphicon glyphicon-floppy-open"></span> '.Yii::t('cruds', 'Restore'),
-                            'url' => ['delete', 'id' => $model->id],
-                            'linkOptions' => [
-                                'data-confirm' => Yii::t('cruds', 'Are you sure to restore this item?'),
-                                'data-method' => 'post',
-                                'data-pjax' => FALSE,
-                                'class' => 'label label-info',
-                            ],
-                            'visible' => ($model->is_deleted),
+                            'delete',
+                            'restore',
                         ],
                     ],
-                ],
-            ]);
-            ?>
+                    'dropdownButtons' => BookMenu::dropdownButtons(),
+                    'urlCreator' => function($action, $model) {
+                        return BookMenu::createUrlFor($action, $model);
+                    },
+                ]);
+                ?>
+            </div>
         </div>
 
     </div>
@@ -110,7 +84,13 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
                 'format' => 'html',
                 'value' => ArrayHelper::getValue($model, 'editor.name', '<span class="label label-warning">?</span>'),
             ],
-            'released_date',
+            [
+                'attribute' => 'released_date',
+                'format' => [
+                    'datetime',
+                    'format' => 'eeee, d MMMM Y',
+                ],
+            ],
         ],
     ]);
     ?>
@@ -122,18 +102,18 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 
     <div style="font-size: 75%; font-style: italic;">
         <?= Yii::t('timestamp', 'Created') ?>
-        <?= Yii::$app->formatter->asDate($model->created_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+        <?= Yii::$app->formatter->asDate($model->created_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
         <?= Yii::t('timestamp', 'by') ?>
         <?= ArrayHelper::getValue($model, 'createdBy.username', '-') ?>
         <br/>
         <?= Yii::t('timestamp', 'Updated') ?>
-        <?= Yii::$app->formatter->asDate($model->updated_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+        <?= Yii::$app->formatter->asDate($model->updated_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
         <?= Yii::t('timestamp', 'by') ?>
         <?= ArrayHelper::getValue($model, 'updatedBy.username', '-') ?>
         <?php if ($model->is_deleted): ?>
             <br/>
             <?= Yii::t('timestamp', 'Deleted') ?>
-            <?= Yii::$app->formatter->asDate($model->deleted_at, "d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
+            <?= Yii::$app->formatter->asDate($model->deleted_at, "eeee, d MMMM Y '".Yii::t('timestamp', 'at')."' HH:mm") ?>
             <?= Yii::t('timestamp', 'by') ?>
             <?= ArrayHelper::getValue($model, 'deletedBy.username', '-') ?>
         <?php endif; ?>

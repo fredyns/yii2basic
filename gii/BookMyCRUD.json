@@ -46,7 +46,9 @@
     "providerlist": {
         "value": [
             "app\\generators\\crud\\providers\\CallbackProvider",
-            "app\\generators\\crud\\providers\\RelationProvider"
+            "app\\generators\\crud\\providers\\DateProvider",
+            "app\\generators\\crud\\providers\\RelationProvider",
+            "app\\generators\\crud\\providers\\TimestampProvider"
         ],
         "name": "providerList"
     },

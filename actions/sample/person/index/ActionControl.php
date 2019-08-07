@@ -2,6 +2,9 @@
 
 namespace app\actions\sample\person\index;
 
+use Yii;
+use yii\db\ActiveRecord;
+
 /**
  * Action Access control checks all relevan condition to decide whether an action is executable
  *
