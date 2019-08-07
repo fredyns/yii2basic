@@ -192,9 +192,9 @@ $format = trim($generator->columnFormat($attribute, $model));
                                 'buttonAction' => 'view',
                                 'dropdownActions' => [
                                     'view',
+                                    'update',
                                     [
                                         'delete',
-                                        'restore',
                                     ],
                                 ],
                                 'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
