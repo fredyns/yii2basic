@@ -5,41 +5,44 @@ use yii\helpers\StringHelper;
 
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
+/* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
-
-/** @var \yii\db\ActiveRecord $model */
-$model = new $generator->modelClass();
-$model->setScenario('crud');
-
-$modelName = Inflector::camel2words(Inflector::pluralize(StringHelper::basename($model::className())));
-
 $safeAttributes = $model->safeAttributes();
+
 if (empty($safeAttributes)) {
-    /** @var \yii\db\ActiveRecord $model */
-    $model = new $generator->modelClass();
-    $safeAttributes = $model->safeAttributes();
-    if (empty($safeAttributes)) {
-        $safeAttributes = $model->getTableSchema()->columnNames;
-    }
+    $safeAttributes = $tableSchema->columnNames;
 }
 
-$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
-$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
-
-echo "<?php\n";
+echo '<?php\n';
 ?>
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use <?= ltrim($generator->modelClass, '\\') ?>;
+use <?= $generator->modelClass ?>;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?> */
+/* @var $searchModel <?= $generator->searchModelClass ?> */
 
-$this->title = <?=$generator->generateString($modelName.' Archives')?>;
+$this->title = <?= $generator->generateString($modelName.' Archives') ?>;
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
@@ -47,7 +50,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => 
 $this->params['breadcrumbs'][] = <?=$generator->generateString('Archives')?>;
 <?= '?>\n';?>
 
-<div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-index">
+<div class="giiant-crud <?= $modelSlug ?>-archive">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
@@ -86,7 +89,7 @@ $this->params['breadcrumbs'][] = <?=$generator->generateString('Archives')?>;
             'pager' => [
                 'class' => \yii\widgets\LinkPager::class,
                 'firstPageLabel' => <?= $generator->generateString('First') ?>,
-                'lastPageLabel' => <?= $generator->generateString('Last').",\n" ?>
+                'lastPageLabel' => <?= $generator->generateString('Last').',\n' ?>
             ],
 <?php if ($generator->searchModelClass !== ''): ?>
             'filterModel' => $searchModel,

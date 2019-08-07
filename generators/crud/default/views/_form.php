@@ -1,25 +1,33 @@
 <?php
 
+use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
-/** @var \yii\db\ActiveRecord $model */
-## TODO: move to generator (?); cleanup
-$model = new $generator->modelClass();
-$model->setScenario('crud');
 $safeAttributes = $model->safeAttributes();
 if (empty($safeAttributes)) {
-    $model->setScenario('default');
-    $safeAttributes = $model->safeAttributes();
-}
-if (empty($safeAttributes)) {
-    $safeAttributes = $model->getTableSchema()->columnNames;
+    $safeAttributes = $tableSchema->columnNames;
 }
 
-echo "<?php\n";
+echo '<?php\n';
 ?>
 
 use yii\helpers\Html;
@@ -30,12 +38,12 @@ use dmstr\bootstrap\Tabs;
 
 /* @var $this yii\web\View  */
 /* @var $form yii\widgets\ActiveForm  */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
+/* @var $model <?= $generator->modelClass ?>  */
 ?>
 
-<div class="<?= \yii\helpers\Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-form">
+<div class="<?= Inflector::camel2id($modelClassName, '-', true) ?>-form">
 
-    <?= "<?php\n" ?>
+    <?= '<?php\n' ?>
     $form = ActiveForm::begin([
             'id' => '<?= $model->formName() ?>',
             'layout' => '<?= $generator->formLayout ?>',
@@ -94,7 +102,7 @@ foreach ($safeAttributes as $attribute) {
         );
         ?>
 
-        <?= '<?php ' ?>ActiveForm::end(); ?>
+        <?= '<?php' ?> ActiveForm::end(); ?>
 
     </div>
 

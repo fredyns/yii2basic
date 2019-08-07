@@ -5,31 +5,43 @@
 use yii\db\Schema;
 use yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator app\generators\crud\Generator */
+/* @var $this \yii\web\View  */
+/* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
+/* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
-$modelClass = StringHelper::basename($generator->modelClass);
 $searchModelClass = StringHelper::basename($generator->searchModelClass);
-if ($modelClass === $searchModelClass) {
-    $modelAlias = $modelClass.'Model';
-}
 $rules = $generator->generateSearchRules();
 $labels = $generator->generateSearchLabels();
 $searchAttributes = $generator->getSearchAttributes();
 $searchConditions = $generator->generateSearchConditions();
-$tableSchema = $generator->getTableSchema();
 
 echo "<?php\n";
 ?>
 
-namespace <?= StringHelper::dirname(ltrim($generator->searchModelClass, '\\')) ?>;
+namespace <?= StringHelper::dirname($generator->searchModelClass) ?>;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\lib\DateSearch;
 use app\lib\TimestampSearch;
-use <?= ltrim($generator->modelClass, '\\').(isset($modelAlias) ? " as $modelAlias" : '') ?>;
+use <?= $generator->modelClass ?>;
 
 /**
  * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.

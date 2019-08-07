@@ -1,18 +1,34 @@
 <?php
+
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 
-$modelMeta = \app\generators\giiconfig\Generator::readMetadata();
-$tableSchema = $generator->getTableSchema();
-$softdelete = ($tableSchema->getColumn('is_deleted') !== null);
-$hasMany = ArrayHelper::getValue($modelMeta, $tableSchema->fullName.'.hasMany');
-/**
- * Customizable controller class.
- */
-echo "<?php\n";
+/* @var $this \yii\web\View  */
+/* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
+/* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
+
+$hasMany = ArrayHelper::getValue($giiConfigs, $tableSchema->fullName.'.hasMany');
+
+echo '<?php\n';
 ?>
 
-namespace <?= StringHelper::dirname(ltrim($restClass, '\\')) ?>;
+namespace <?= $apiNameSpace ?>;
 
 /**
  * This is the class for REST controller "<?= $controllerClassName ?>".

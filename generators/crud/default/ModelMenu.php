@@ -8,6 +8,9 @@ use yii\helpers\Inflector;
 /* @var $tableSchema \yii\db\TableSchema  */
 /* @var $giiConfigs array  */
 /* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
 /* @var $controllerClassName string  */
 /* @var $controllerNameSpace string  */
@@ -15,6 +18,8 @@ use yii\helpers\Inflector;
 /* @var $subPath string  */
 /* @var $actionParentNameSpace string  */
 /* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 

@@ -5,17 +5,26 @@ use yii\helpers\StringHelper;
 
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
 $urlParams = $generator->generateUrlParams();
-$model = new $generator->modelClass();
-$model->setScenario('crud');
-$className = $model::className();
-$modelName = Inflector::camel2words(StringHelper::basename($model::className()));
-$tableSchema = $generator->getTableSchema();
-$haveID=($tableSchema->getColumn('id') !== null);
-$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
-$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
+$haveID = ($tableSchema->getColumn('id') !== null);
 
 echo "<?php\n";
 ?>
@@ -24,9 +33,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View  */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
+/* @var $model <?= $generator->modelClass ?>  */
 
-$this->title = $model->modelLabel();
+<?php if ($haveID): ?>
+$this->title = <?=$generator->generateString('Update '.$modelName)?>.' #'.$model->id;
+<?php else: ?>
+$this->title = <?=$generator->generateString('Update '.$modelName)?>.' #'.$model-><?= $generator->getModelNameAttribute() ?>;
+<?php endif; ?>
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
@@ -34,7 +47,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => 
 $this->params['breadcrumbs'][] = ['label' => (string) $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('Edit') ?>;
 ?>
-<div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-update">
+<div class="giiant-crud <?= $modelSlug ?>-update">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">

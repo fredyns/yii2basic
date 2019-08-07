@@ -5,15 +5,23 @@ use yii\helpers\StringHelper;
 
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
-
-/** @var \yii\db\ActiveRecord $model */
-$model = new $generator->modelClass();
-$model->setScenario('crud');
-$modelName = Inflector::camel2words(StringHelper::basename($model::className()));
-
-$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
-$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
 echo "<?php\n";
 ?>
@@ -22,16 +30,16 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View  */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
+/* @var $model <?= $generator->modelClass ?>  */
 
-$this->title = $model->modelLabel();
+$this->title = <?= $generator->generateString('New '.$modelName) ?>;
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-create">
+<div class="giiant-crud <?= $modelSlug ?>-create">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">

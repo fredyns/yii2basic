@@ -66,7 +66,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
          */
         $action_list = ['index', 'create', 'view', 'update', 'delete'];
 
-        if ($this->getTableSchema()->getColumn('is_deleted')) {
+        if ($params['softdelete']) {
             $action_list = ArrayHelper::merge($action_list, ['restore', 'deleted', 'archive']);
         }
 
@@ -74,6 +74,12 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
          * enumerate each actions
          */
         foreach ($action_list as $action) {
+            /**
+             * add action params
+             */
+            $params['action'] = $action;
+            $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
+
             /**
              * generate access control for current action
              */
@@ -83,6 +89,12 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
              * generate action class for current action
              */
             $files[] = $this->generateActiveAction($action, $params);
+
+            /**
+             * remove action params
+             */
+            unset($params['action']);
+            unset($params['actionNameSpace']);
         }
 
         /**
@@ -134,10 +146,29 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generateParams()
     {
-        // prepare params
+        /**
+         * prepare params
+         */
+        $this->modelClass = ltrim($this->modelClass, '\\');
+        $this->searchModelClass = ltrim($this->searchModelClass, '\\');
+        // global
+        $tableSchema = $this->getTableSchema();
+        $giiConfigs = \app\generators\giiconfig\Generator::readMetadata();
+        $softdelete = ($tableSchema->getColumn('is_deleted') !== null);
+        $modelClassName = StringHelper::basename($this->modelClass);
+        $modelSlug = Inflector::camel2id($modelClassName, '-', true);
+        $modelName = Inflector::camel2words(Inflector::pluralize($modelClassName));
+        $model = new $this->modelClass;
+        // controller
         $controllerClassName = StringHelper::basename($this->controllerClass);
         $controllerNameSpace = StringHelper::dirname(ltrim($this->controllerClass, '\\'));
+        // parent scope
         $moduleNameSpace = StringHelper::dirname(ltrim($controllerNameSpace, '\\'));
+        $subNameSpace = StringHelper::basename($controllerNameSpace);
+        $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace);
+        // actions
+        $actionParentNameSpace = str_replace('controllers', 'actions', $controllerNameSpace)
+            .'\\'.Inflector::camel2id(str_replace('Controller', '', $controllerClassName), '_');
         $actionParent = [
             'index' => 'IndexAction',
             'create' => 'CreateAction',
@@ -148,18 +179,15 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             'deleted' => 'IndexAction',
             'archive' => 'IndexAction',
         ];
-        $actionParentNameSpace = str_replace('controllers', 'actions', $controllerNameSpace)
-            .'\\'.Inflector::camel2id(str_replace('Controller', '', $controllerClassName), '_');
-        $subNameSpace = StringHelper::basename($controllerNameSpace);
-        $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace);
-
-        /**
-         * range search params
-         */
+        $apiNameSpace = 'app\\controllers\\api'.($subPath ? '\\'.$subPath : '');
+        $menuNameSpace = 'actions\\'                        // parent name space
+            .($subPath ? $subPath.'\\' : '')                // subpath, if any
+            .Inflector::camel2id($modelClassName, '_');     // model dir
+        //range search params
         $dateRange = [];
         $timestampRange = [];
         $skipCols = ['updated_at', 'deleted_at'];
-        foreach ($this->getTableSchema()->columns as $column) {
+        foreach ($tableSchema->columns as $column) {
             if (in_array($column->name, $skipCols)) {
                 continue;
             }
@@ -195,14 +223,23 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
          * compose params as array
          */
         return compact(
-            'controllerClassName'
+            'tableSchema'
+            , 'giiConfigs'
+            , 'softdelete'
+            , 'modelClassName'
+            , 'modelSlug'
+            , 'modelName'
+            , 'model'
+            , 'controllerClassName'
             , 'controllerNameSpace'
             , 'moduleNameSpace'
-            , 'actionParent'
+            , 'subPath'
             , 'actionParentNameSpace'
+            , 'actionParent'
+            , 'apiNameSpace'
+            , 'menuNameSpace'
             , 'dateRange'
             , 'timestampRange'
-            , 'subPath'
         );
     }
 
@@ -238,10 +275,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generateActionControl($action, $params)
     {
-        $params['action'] = $action;
-        $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
         $file = $this->generatePath($params['actionNameSpace'].'/ActionControl.php');
-
         return new CodeFile($file, $this->render('ActionControl.php', $params));
     }
 
@@ -252,10 +286,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
      */
     public function generateActiveAction($action, $params)
     {
-        $params['action'] = $action;
-        $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
         $file = $this->generatePath($params['actionNameSpace'].'/ActiveAction.php');
-
         return new CodeFile($file, $this->render('ActiveAction.php', $params));
     }
 
@@ -278,19 +309,16 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
 
     public function generateRestAPI($params)
     {
-        $controller_prefix = "\\controllers\\";
-        $api_prefix = "\\controllers\\api\\";
-        $params['restClass'] = str_replace($controller_prefix, $api_prefix, $this->controllerClass);
-        $file = $this->generatePath($params['restClass'].'.php');
+        $nameSpacedPath = $params['apiNameSpace'].'\\'.$params['controllerClassName'].'.php';
+        $file = $this->generatePath($nameSpacedPath);
         return new CodeFile($file, $this->render('RestAPI.php', $params));
     }
 
     public function generateModelMenu($params)
     {
-        $dir = StringHelper::dirname($this->searchModelClass);
-        $path = $dir.'\\'.StringHelper::basename($this->modelClass);
-        $file = $this->generatePath($path.'Menu.php');
-        return new CodeFile($file, $this->render('SearchModel.php', $params));
+        $nameSpacedPath = $params['menuNameSpace'].'\\'.$params['modelClassName'].'Menu.php';
+        $file = $this->generatePath($nameSpacedPath);
+        return new CodeFile($file, $this->render('ModelMenu.php', $params));
     }
 
     public function generateFormData($params)

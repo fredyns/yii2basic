@@ -5,28 +5,31 @@ use yii\helpers\StringHelper;
 
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
-## TODO: move to generator (?); cleanup
-$model = new $generator->modelClass();
-$model->setScenario('crud');
-$safeAttributes = $model->safeAttributes();
-if (empty($safeAttributes)) {
-    $model->setScenario('default');
-    $safeAttributes = $model->safeAttributes();
-}
-if (empty($safeAttributes)) {
-    $safeAttributes = $model->getTableSchema()->columnNames;
-}
-
-$modelName = Inflector::camel2words(StringHelper::basename($model::className()));
-$className = $model::className();
 $urlParams = $generator->generateUrlParams();
-$tableSchema = $generator->getTableSchema();
-$haveID=($tableSchema->getColumn('id') !== null);
-$softdelete = ($tableSchema->getColumn('is_deleted') !== null) && ($tableSchema->getColumn('deleted_at') !== null) && ($tableSchema->getColumn('deleted_by') !== null);
-$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
-$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
+$haveID = ($tableSchema->getColumn('id') !== null);
+$safeAttributes = $model->safeAttributes();
+
+if (empty($safeAttributes)) {
+    $safeAttributes = $tableSchema->columnNames;
+}
 
 echo "<?php\n";
 ?>
@@ -41,9 +44,13 @@ use yii\widgets\Pjax;
 use dmstr\bootstrap\Tabs;
 
 /* @var $this yii\web\View  */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?>  */
+/* @var $model <?= $generator->modelClass ?>  */
 
-$this->title = $model->modelLabel();
+<?php if ($haveID): ?>
+$this->title = <?=$generator->generateString('View '.$modelName)?>.' #'.$model->id;
+<?php else: ?>
+$this->title = <?=$generator->generateString('View '.$modelName)?>.' #'.$model-><?= $generator->getModelNameAttribute() ?>;
+<?php endif; ?>
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
@@ -51,7 +58,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => 
 $this->params['breadcrumbs'][] = ['label' => (string) $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 ?>
-<div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-view">
+<div class="giiant-crud <?= $modelSlug ?>-view">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">

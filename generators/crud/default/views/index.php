@@ -5,28 +5,31 @@ use yii\helpers\StringHelper;
 
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
+/* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
-
-/* @var $model \yii\db\ActiveRecord  */
-$model = new $generator->modelClass();
-$model->setScenario('crud');
-
-$modelName = Inflector::camel2words(Inflector::pluralize(StringHelper::basename($model::className())));
-
 $safeAttributes = $model->safeAttributes();
-if (empty($safeAttributes)) {
-    /** @var \yii\db\ActiveRecord $model */
-    $model = new $generator->modelClass();
-    $safeAttributes = $model->safeAttributes();
-    if (empty($safeAttributes)) {
-        $safeAttributes = $model->getTableSchema()->columnNames;
-    }
-}
 
-$subNameSpace = StringHelper::basename(StringHelper::dirname($model::className()));
-$subPath = ($subNameSpace === 'models') ? FALSE : Inflector::camel2id($subNameSpace);
+if (empty($safeAttributes)) {
+    $safeAttributes = $tableSchema->columnNames;
+}
 
 echo "<?php\n";
 ?>
@@ -34,11 +37,11 @@ echo "<?php\n";
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use <?= ltrim($generator->modelClass, '\\') ?>;
+use <?= $generator->modelClass ?>;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?> */
+/* @var $searchModel <?= $generator->searchModelClass ?> */
 
 $this->title = $searchModel->modelLabel(true);
 <?php if ($subPath): ?>
@@ -47,7 +50,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 $this->params['breadcrumbs'][] = $this->title;
 <?= "?>\n";?>
 
-<div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-index">
+<div class="giiant-crud <?= $modelSlug ?>-index">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
@@ -156,23 +159,19 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endforeach;?>
                 [
                     'class' => \kartik\grid\ActionColumn::class,
-                    'buttons' => [
-                        'view' => function ($url, $model, $key) {
-                            $options = [
-                                'title' => Yii::t('<?=$generator->messageCategory?>', 'View'),
-                                'aria-label' => Yii::t('<?=$generator->messageCategory?>', 'View'),
-                                'data-pjax' => '0',
-                            ];
-                            return Html::a('<span class="glyphicon glyphicon-file"></span>', $url, $options);
-                        }
+                    'dropdown' => TRUE,
+                    'dropdownButton' => ['label' => ''],
+                    'dropdownMenu' => [
+                        'class' => 'dropdown-menu-right',
                     ],
+                    'dropdownOptions' => [
+                        'title' => Yii::t('cruds', 'actions for this record'),
+                    ],
+                    'buttons' => BookMenu::dropdownButtons(),
                     'urlCreator' => function($action, $model, $key, $index) {
-                        // using the column name as key, not mapping to 'id' like the standard generator
-                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
-                        $params[0] = Yii::$app->controller->id ? Yii::$app->controller->id.'/'.$action : $action;
-                        return Url::toRoute($params);
+                        return BookMenu::createUrlFor($action, $model);
                     },
-                    'contentOptions' => ['nowrap' => 'nowrap']
+                    'contentOptions' => ['nowrap' => 'nowrap'],
                 ],
             ],
         ]);

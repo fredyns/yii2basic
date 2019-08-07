@@ -1,11 +1,25 @@
 <?php
-$tableSchema = $generator->getTableSchema();
-$softdelete = ($tableSchema->getColumn('is_deleted') !== null);
+/* @var $this \yii\web\View  */
+/* @var $generator \app\generators\crud\Generator  */
+/* @var $tableSchema \yii\db\TableSchema  */
+/* @var $giiConfigs array  */
+/* @var $softdelete bool  */
+/* @var $modelClassName string  */
+/* @var $modelSlug string  */
+/* @var $modelName string  */
+/* @var $model \yii\db\ActiveRecord  */
+/* @var $controllerClassName string  */
+/* @var $controllerNameSpace string  */
+/* @var $moduleNameSpace string  */
+/* @var $subPath string  */
+/* @var $actionParentNameSpace string  */
+/* @var $actionParent string[]  */
+/* @var $apiNameSpace string  */
+/* @var $menuNameSpace string  */
+/* @var $dateRange string[]  */
+/* @var $timestampRange string[]  */
 
-/**
- * Customizable controller class.
- */
-echo "<?php\n";
+echo '<?php\n';
 ?>
 
 namespace <?= $controllerNameSpace ?>;
@@ -33,7 +47,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  generic action
                 'class' => \app\lib\IndexAction::class,
                 'searchClass' => [
-                    'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                    'class' => \<?= $generator->searchModelClass ?>::class,
                     'is_deleted' => 0,
                 ],
             ],
@@ -44,7 +58,7 @@ class <?= $controllerClassName ?> extends Controller
                 //
                 //  generic action
                 'class' => \app\lib\ViewAction::class,
-                'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
+                'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'create' => [
                 //  uncomment thesse for custom action & access control
@@ -53,7 +67,7 @@ class <?= $controllerClassName ?> extends Controller
                 //
                 //  generic action
                 'class' => \app\lib\CreateAction::class,
-                'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
+                'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'update' => [
                 //  uncomment thesse for custom action & access control
@@ -62,7 +76,7 @@ class <?= $controllerClassName ?> extends Controller
                 //
                 //  generic action
                 'class' => \app\lib\UpdateAction::class,
-                'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
+                'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'delete' => [
                 //  uncomment thesse for custom action & access control
@@ -71,7 +85,7 @@ class <?= $controllerClassName ?> extends Controller
                 //
                 //  generic action
                 'class' => \app\lib\DeleteAction::class,
-                'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
+                'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
 <?php if ($softdelete): ?>
             'restore' => [
@@ -81,7 +95,7 @@ class <?= $controllerClassName ?> extends Controller
                 //
                 //  generic action
                 'class' => \app\lib\RestoreAction::class,
-                'modelClass' => \<?= ltrim($generator->modelClass, '\\') ?>::class,
+                'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'deleted' => [
                 //  uncomment thesse for custom action & access control
@@ -91,7 +105,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  generic action
                 'class' => \app\lib\IndexAction::class,
                 'searchClass' => [
-                    'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                    'class' => \<?= $generator->searchModelClass ?>::class,
                     'is_deleted' => 1,
                 ],
                 'view' => 'deleted',
@@ -104,7 +118,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  generic action
                 'class' => \app\lib\IndexAction::class,
                 'searchClass' => [
-                    'class' => \<?= ltrim($generator->searchModelClass, '\\') ?>::class,
+                    'class' => \<?= $generator->searchModelClass ?>::class,
                 ],
                 'view' => 'archive',
             ],
