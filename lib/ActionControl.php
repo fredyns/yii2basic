@@ -93,9 +93,12 @@ class ActionControl extends \yii\base\Component
 
         $result = $this->_isPassed ? 'passed' : 'blocked';
         $log = get_called_class()
-            .'('.$this->model::tableName().'#'.$this->model->id.'): '.$result
-            ."\n"
-            .'- '.implode("\n- ",$this->messages);
+            .'('.$this->model::tableName().'#'.$this->model->id.'): '.$result;
+        
+        if (!$this->_isPassed) {
+            $log .= "\n- ".implode("\n- ",$this->messages);
+        }
+        
         Yii::debug($log);
 
         return $this->_isPassed;
