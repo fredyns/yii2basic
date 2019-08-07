@@ -86,13 +86,19 @@ class ActionControl extends \yii\base\Component
      */
     public function getIsPassed($force = false)
     {
-        if ($this->_isPassed !== NULL && $force === FALSE) {
-            return $this->_isPassed;
-        } elseif ($force) {
+        if ($this->_isPassed === NULL OR $force) {
             $this->resetState();
+            $this->run();
         }
 
-        return $this->run();
+        $result = $this->_isPassed ? 'passed' : 'blocked';
+        $log = get_called_class()
+            .'('.$this->model::tableName().'#'.$this->model->id.'): '.$result
+            ."\n"
+            .'- '.implode("\n- ",$this->messages);
+        Yii::debug($log);
+
+        return $this->_isPassed;
     }
 
     /**
