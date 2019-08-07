@@ -34,6 +34,7 @@ use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
+use cornernote\returnurl\ReturnUrl;
 use app\components\Tabs;
 
 /* @var $this yii\web\View  */
@@ -60,6 +61,7 @@ use app\components\Tabs;
                 ],
             ],
     ]);
+    echo Html::hiddenInput('ru', ReturnUrl::getRequestToken());
     ?>
 
     <div class="">

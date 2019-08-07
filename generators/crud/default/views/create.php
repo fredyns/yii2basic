@@ -28,6 +28,7 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use cornernote\returnurl\ReturnUrl;
 
 /* @var $this yii\web\View  */
 /* @var $model <?= $generator->modelClass ?>  */
@@ -51,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </h1>
         </div>
         <div class="pull-right">
-            <?= '<?=' ?>Html::a('<span class="glyphicon glyphicon-remove"></span> '.<?= $generator->generateString('Cancel') ?>, Url::previous(), ['class' => 'btn btn-default']) ?>
+            <?= '<?=' ?> Html::a('<span class="glyphicon glyphicon-remove"></span> '.<?= $generator->generateString('Cancel') ?>, ReturnUrl::getUrl(Url::previous()), ['class' => 'btn btn-default']) ?>
         </div>
     </div>
 

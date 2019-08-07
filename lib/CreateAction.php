@@ -69,10 +69,6 @@ class CreateAction extends BaseAction
      */
     protected function resolveRedirectUrl($model)
     {
-        if (empty($this->redirectUrl)) {
-            return ['view', 'id' => $model->id];
-        }
-
         return $this->resolveUrl($this->redirectUrl, $model);
     }
 

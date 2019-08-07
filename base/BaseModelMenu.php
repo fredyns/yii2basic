@@ -7,6 +7,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use cornernote\returnurl\ReturnUrl;
 use app\lib\ActionControl;
 
 /**
@@ -59,6 +60,8 @@ class BaseModelMenu extends \yii\base\Component
                 $url[$field] = $model->getAttribute($field);
             }
         }
+
+        $url['ru'] = ReturnUrl::getToken();
 
         return Url::toRoute($url);
     }
