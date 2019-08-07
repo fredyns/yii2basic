@@ -182,7 +182,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             'archive' => 'IndexAction',
         ];
         $apiNameSpace = 'app\\controllers\\api'.($subPath ? '\\'.$subPath : '');
-        $menuNameSpace = 'actions\\'                        // parent name space
+        $menuNameSpace = 'app\\actions\\'                        // parent name space
             .($subPath ? $subPath.'\\' : '')                // subpath, if any
             .Inflector::camel2id($modelClassName, '_');     // model dir
         //range search params
