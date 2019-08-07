@@ -65,7 +65,29 @@ $this->params['breadcrumbs'][] = $this->title;
             </h1>
         </div>
         <div class="pull-right">
-            <?= '<?= ' ?>Html::a('<span class="glyphicon glyphicon-plus"></span> '.<?=$generator->generateString('New')?>, ['create'], ['class' => 'btn btn-success']) ?>
+            <div>
+                <?= "<?=\n" ?>
+                SplitDropdown::widget([
+                    'label' => <?= $menuClassName ?>::iconFor('create').'&nbsp; '.BookMenu::labelFor('create'),
+                    'encodeLabel' => FALSE,
+                    'buttonAction' => 'create',
+                    'options' => [
+                        'class' => 'btn btn-primary',
+                    ],
+                    'dropdownActions' => [
+                        'create',
+                        [
+                            'deleted',
+                            'archive',
+                        ],
+                    ],
+                    'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
+                    'urlCreator' => function($action, $model) {
+                        return <?= $menuClassName ?>::createUrlFor($action, $model);
+                    },
+                ]);
+                ?>
+            </div>
         </div>
     </div>
 
