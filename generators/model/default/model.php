@@ -149,9 +149,9 @@ $recordInfoFields = [
         ];
 foreach ($labels as $name => $label) {
     if (in_array($name, $recordInfoFields)) {
-        $label = "Yii::t('record-info', '{$label}')";  
+        $label = "Yii::t('record-info', '{$label}')";
     } else {
-        $label = $generator->generateString($label);        
+        $label = $generator->generateString($label);
     }
     echo "            '{$name}' => {$label},\n";
 }
