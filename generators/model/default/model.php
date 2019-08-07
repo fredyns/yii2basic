@@ -141,8 +141,18 @@ class <?= $className ?> extends <?= '\\' . ltrim($baseClass, '\\') . "\n" ?>
     {
         return [
 <?php
+$recordInfoFields = [
+            'id', 'uid',
+            'created_at', 'created_by',
+            'updated_at', 'updated_by',
+            'is_deleted', 'deleted_at', 'deleted_by',
+        ];
 foreach ($labels as $name => $label) {
-    $label = $generator->generateString($label);
+    if (in_array($name, $recordInfoFields)) {
+        $label = "Yii::t('record-info', '{$label}')";  
+    } else {
+        $label = $generator->generateString($label);        
+    }
     echo "            '{$name}' => {$label},\n";
 }
 ?>
