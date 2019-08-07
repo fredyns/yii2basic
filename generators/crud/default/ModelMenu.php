@@ -40,7 +40,7 @@ namespace <?= StringHelper::dirname($generator->searchModelClass) ?>;
 class <?= $modelClassName ?>Menu extends \app\lib\ModelMenu
 {
     public static $controller = '<?= $route ?>';
-    public static $softdelete = <?= $tableSchema->getColumn('is_deleted') !== NUll ? 'true' : 'false' ?>;
+    public static $softdelete = <?= $softdelete ? 'true' : 'false' ?>;
 
     public static function actionControls()
     {
@@ -50,7 +50,7 @@ class <?= $modelClassName ?>Menu extends \app\lib\ModelMenu
             static::CREATE => \<?= $actionParentNameSpace ?>\create\ActionControl::class,
             static::UPDATE => \<?= $actionParentNameSpace ?>\update\ActionControl::class,
             static::DELETE => \<?= $actionParentNameSpace ?>\delete\ActionControl::class,
-<?php if ($tableSchema->getColumn('is_deleted') !== NUll): ?>
+<?php if ($softdelete): ?>
             static::DELETED => \<?= $actionParentNameSpace ?>\deleted\ActionControl::class,
             static::RESTORE => \<?= $actionParentNameSpace ?>\restore\ActionControl::class,
             static::ARCHIVE => \<?= $actionParentNameSpace ?>\archive\ActionControl::class,
