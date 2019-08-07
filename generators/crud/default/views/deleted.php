@@ -42,7 +42,7 @@ use <?= $generator->modelClass ?>;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel <?= $generator->searchModelClass ?> */
 
-$this->title = <?=$generator->generateString('Deleted '.$modelName)?>;
+$this->title = <?=$generator->generateString('Deleted '.Inflector::pluralize($modelName))?>;
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>
