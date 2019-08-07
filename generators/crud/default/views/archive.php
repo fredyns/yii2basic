@@ -45,7 +45,7 @@ use app\widgets\SplitDropdown;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel <?= $generator->searchModelClass ?> */
 
-$this->title = <?= $generator->generateString($modelName.' Archives') ?>;
+$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','<?= $modelName ?> Archives');
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>

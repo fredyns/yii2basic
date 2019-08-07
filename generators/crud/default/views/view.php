@@ -51,9 +51,9 @@ use app\widgets\SplitDropdown;
 /* @var $model <?= $modelClassName ?>  */
 
 <?php if ($haveID): ?>
-$this->title = <?=$generator->generateString('View '.$modelName)?>.' #'.$model->id;
+$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','View <?= $modelName ?>').' #'.$model->id;
 <?php else: ?>
-$this->title = <?=$generator->generateString('View '.$modelName)?>.' #'.$model-><?= $generator->getModelNameAttribute() ?>;
+$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','View <?= $modelName ?>').' - '.$model-><?= $generator->getModelNameAttribute() ?>;
 <?php endif; ?>
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');

@@ -33,7 +33,7 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $this yii\web\View  */
 /* @var $model <?= $generator->modelClass ?>  */
 
-$this->title = <?= $generator->generateString('New '.$modelName) ?>;
+$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','New <?= $modelName ?>');
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
 <?php endif; ?>

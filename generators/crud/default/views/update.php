@@ -37,9 +37,9 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $model <?= $generator->modelClass ?>  */
 
 <?php if ($haveID): ?>
-$this->title = <?=$generator->generateString('Update '.$modelName)?>.' #'.$model->id;
+$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','Update <?= $modelName ?>').' #'.$model->id;
 <?php else: ?>
-$this->title = <?=$generator->generateString('Update '.$modelName)?>.' #'.$model-><?= $generator->getModelNameAttribute() ?>;
+$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','Update <?= $modelName ?>').' - '.$model-><?= $generator->getModelNameAttribute() ?>;
 <?php endif; ?>
 <?php if ($subPath): ?>
 $this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
