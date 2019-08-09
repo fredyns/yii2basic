@@ -48,7 +48,7 @@ use app\widgets\SplitDropdown;
 
 $this->title = $searchModel->modelLabel(true);
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
+$this->params['breadcrumbs'][] = Yii::t('app', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = $this->title;
 ?>

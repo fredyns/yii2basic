@@ -47,7 +47,7 @@ use app\widgets\SplitDropdown;
 
 $this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','Deleted <?= Inflector::pluralize($modelName) ?>');
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('app', '<?= $subPath ?>');
+$this->params['breadcrumbs'][] = Yii::t('app', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = <?=$generator->generateString('Deleted')?>;
