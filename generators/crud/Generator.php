@@ -166,7 +166,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         // parent scope
         $moduleNameSpace = StringHelper::dirname($controllerNameSpace);
         $subNameSpace = StringHelper::basename($controllerNameSpace);
-        $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace);
+        $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace, '_');
         // actions
         $actionParentNameSpace = 'app\\actions'
             .($subPath ? '\\'.$subPath : '')
