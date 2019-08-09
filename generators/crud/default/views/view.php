@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
                 <?= "<?=\n" ?>
                 SplitDropdown::widget([
                     'model' => $model,
-                    'label' => <?= $menuClassName ?>::iconFor('update').'&nbsp; '.BookMenu::labelFor('update'),
+                    'label' => <?= $menuClassName ?>::iconFor('create').'&nbsp; '.<?= $menuClassName ?>::labelFor('create'),
                     'encodeLabel' => FALSE,
                     'buttonAction' => 'update',
                     'dropdownActions' => [
