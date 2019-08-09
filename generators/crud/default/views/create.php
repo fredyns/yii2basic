@@ -35,7 +35,7 @@ use cornernote\returnurl\ReturnUrl;
 
 $this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','New <?= $modelName ?>');
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('app', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

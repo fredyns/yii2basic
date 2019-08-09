@@ -42,7 +42,7 @@ $this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','Update <?= $modelN
 $this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','Update <?= $modelName ?>').' - '.$model-><?= $generator->getModelNameAttribute() ?>;
 <?php endif; ?>
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('app', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
