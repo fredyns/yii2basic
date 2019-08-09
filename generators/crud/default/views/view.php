@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 <?php endif;?>
 <?php if($softdelete):?>
                     <?= '<?php' ?> if ($model->is_deleted): ?>
-                        <span class="badge">deleted</span>
+                        <span class="badge"><?= $generator->generateString('deleted') ?></span>
                     <?= '<?php' ?> endif; ?>
 <?php endif;?>
                 </small>
