@@ -8,7 +8,7 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $model app\models\geographical_hierarchy\Country  */
 
 $this->title = Yii::t('geographical_hierarchy','Update Country').' #'.$model->id;
-$this->params['breadcrumbs'][] = Yii::t('app', 'geographical_hierarchy');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Geographical Hierarchy');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Edit');
