@@ -20,7 +20,6 @@ echo $form->field($generator, 'generateHintsFromComments')->checkbox();
 echo $form->field($generator, 'generateQuery')->checkbox();
 echo $form->field($generator, 'enableI18N')->checkbox();
 echo $form->field($generator, 'singularEntities')->checkbox();
-echo $form->field($generator, 'messageCategory');
 ?>
 
 <div class="panel panel-default">

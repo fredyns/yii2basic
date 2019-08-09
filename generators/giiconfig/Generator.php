@@ -208,7 +208,7 @@ class Generator extends \yii\gii\generators\model\Generator
                 'labels' => $this->generateLabels($tableSchema),
                 'hints' => $this->generateHints($tableSchema),
                 'enableI18N' => $this->enableI18N,
-                'messageCategory' => $this->messageCategory,
+                'messageCategory' => StringHelper::basename($nameSpace),
             ];
         }
 
