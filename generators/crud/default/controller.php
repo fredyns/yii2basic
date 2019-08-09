@@ -48,7 +48,9 @@ class <?= $controllerClassName ?> extends Controller
                 'class' => \app\lib\IndexAction::class,
                 'searchClass' => [
                     'class' => \<?= $generator->searchModelClass ?>::class,
+<?php if ($softdelete): ?>
                     'is_deleted' => 0,
+<?php endif; ?>
                 ],
             ],
             'view' => [
