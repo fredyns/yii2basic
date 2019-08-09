@@ -1,4 +1,33 @@
 {
+    "geographical_hierarchy_country": {
+        "tableName": "geographical_hierarchy_country",
+        "db": "db",
+        "nameSpace": "app\\models\\geographical_hierarchy",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "Country",
+        "labels": {
+            "id": "ID",
+            "name": "Name",
+            "code": "Code"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "geographical_hierarchy",
+        "rules": [
+            "# filter",
+            "[\r\n                ['name', 'code'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['code'], 'string', 'max' => 8]",
+            "[['name'], 'string', 'max' => 255]",
+            "# format",
+            "# restriction",
+            "[['code'], 'unique']",
+            "# constraint",
+            "# safe"
+        ]
+    },
     "sample_book": {
         "tableName": "sample_book",
         "db": "db",
