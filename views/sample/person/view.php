@@ -16,7 +16,7 @@ use app\widgets\SplitDropdown;
 /* @var $model Person  */
 
 $this->title = Yii::t('sample','View Person').' #'.$model->id;
-$this->params['breadcrumbs'][] = Yii::t('app', 'sample');
+$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
                 <small>
                     #<?= $model->id ?>
                     <?php if ($model->is_deleted): ?>
-                        <span class="badge">deleted</span>
+                        <span class="badge">Yii::t('cruds', 'deleted')</span>
                     <?php endif; ?>
                 </small>
             </h1>
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
                 <?=
                 SplitDropdown::widget([
                     'model' => $model,
-                    'label' => PersonMenu::iconFor('update').'&nbsp; '.BookMenu::labelFor('update'),
+                    'label' => PersonMenu::iconFor('create').'&nbsp; '.PersonMenu::labelFor('create'),
                     'encodeLabel' => FALSE,
                     'buttonAction' => 'update',
                     'dropdownActions' => [

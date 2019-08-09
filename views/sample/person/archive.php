@@ -11,7 +11,7 @@ use app\widgets\SplitDropdown;
 /* @var $searchModel app\actions\sample\person\PersonSearch */
 
 $this->title = Yii::t('sample','Person Archives');
-$this->params['breadcrumbs'][] = Yii::t('app', 'sample');
+$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Archives');
 ?>
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'Archives');
             <div>
                 <?=
                 SplitDropdown::widget([
-                    'label' => PersonMenu::iconFor('create').'&nbsp; '.BookMenu::labelFor('create'),
+                    'label' => PersonMenu::iconFor('create').'&nbsp; '.PersonMenu::labelFor('create'),
                     'encodeLabel' => FALSE,
                     'buttonAction' => 'create',
                     'options' => [

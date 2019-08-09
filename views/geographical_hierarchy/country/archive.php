@@ -11,7 +11,7 @@ use app\widgets\SplitDropdown;
 /* @var $searchModel app\actions\geographical_hierarchy\country\CountrySearch */
 
 $this->title = Yii::t('geographical_hierarchy','Country Archives');
-$this->params['breadcrumbs'][] = Yii::t('app', 'Geographical Hierarchy');
+$this->params['breadcrumbs'][] = Yii::t('geographical_hierarchy', 'Geographical Hierarchy');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Archives');
 ?>

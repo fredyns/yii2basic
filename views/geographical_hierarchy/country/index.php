@@ -12,7 +12,7 @@ use app\widgets\SplitDropdown;
 /* @var $searchModel app\actions\geographical_hierarchy\country\CountrySearch */
 
 $this->title = $searchModel->modelLabel(true);
-$this->params['breadcrumbs'][] = Yii::t('app', 'Geographical Hierarchy');
+$this->params['breadcrumbs'][] = Yii::t('geographical_hierarchy', 'Geographical Hierarchy');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

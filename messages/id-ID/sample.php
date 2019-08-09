@@ -34,6 +34,7 @@ return [
     'Person' => 'Orang',
     'Person Archives' => 'Arsip Orang',
     'Released Date' => 'Tanggal Terbit',
+    'Sample' => 'Contoh',
     'Title' => 'Judul',
     'Update Book' => 'Ubah Buku',
     'Update Person' => 'Ubah Orang',

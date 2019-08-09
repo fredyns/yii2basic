@@ -16,7 +16,7 @@ use app\widgets\SplitDropdown;
 /* @var $model Country  */
 
 $this->title = Yii::t('geographical_hierarchy','View Country').' #'.$model->id;
-$this->params['breadcrumbs'][] = Yii::t('app', 'Geographical Hierarchy');
+$this->params['breadcrumbs'][] = Yii::t('geographical_hierarchy', 'Geographical Hierarchy');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');

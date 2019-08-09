@@ -8,7 +8,7 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $model app\models\sample\Book  */
 
 $this->title = Yii::t('sample','New Book');
-$this->params['breadcrumbs'][] = Yii::t('app', 'sample');
+$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

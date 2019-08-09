@@ -12,7 +12,7 @@ use app\widgets\SplitDropdown;
 /* @var $searchModel app\actions\sample\book\PersonSearch */
 
 $this->title = $searchModel->modelLabel(true);
-$this->params['breadcrumbs'][] = Yii::t('app', 'sample');
+$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

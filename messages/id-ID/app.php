@@ -20,6 +20,5 @@ return [
     'Action is forbidden for unknown reason.' => 'Tindakan/halaman tidak dapat diakses untuk alasan yang tidak diketahui.',
     'Guest' => 'Tamu',
     'The requested page does not exist.' => 'Halaman yang diminta tidak ditemukan.',
-    'sample' => 'contoh',
     'searching...' => 'mencari...',
 ];
