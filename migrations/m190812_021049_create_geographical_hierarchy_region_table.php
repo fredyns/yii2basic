@@ -23,8 +23,8 @@ class m190812_021049_create_geographical_hierarchy_region_table extends app\base
         $this->createIndex('country', '{{%geographical_hierarchy_region}}', ['country_id']);
         $this->createIndex('reg_number', '{{%geographical_hierarchy_region}}', ['reg_number']);
 
-        $this->addForeignKey('fk_type', '{{%geographical_hierarchy_region}}', 'type_id', '{{%geographical_hierarchy_type}}', 'id');
-        $this->addForeignKey('fk_country', '{{%geographical_hierarchy_region}}', 'country_id', '{{%geographical_hierarchy_country}}', 'id');
+        $this->addForeignKey('fk_geohie_region_type', '{{%geographical_hierarchy_region}}', 'type_id', '{{%geographical_hierarchy_type}}', 'id');
+        $this->addForeignKey('fk_geohie_region_country', '{{%geographical_hierarchy_region}}', 'country_id', '{{%geographical_hierarchy_country}}', 'id');
     }
 
     /**
@@ -32,8 +32,8 @@ class m190812_021049_create_geographical_hierarchy_region_table extends app\base
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk_type', '{{%geographical_hierarchy_region}}');
-        $this->dropForeignKey('fk_country', '{{%geographical_hierarchy_region}}');
+        $this->dropForeignKey('fk_geohie_region_type', '{{%geographical_hierarchy_region}}');
+        $this->dropForeignKey('fk_geohie_region_country', '{{%geographical_hierarchy_region}}');
 
         $this->dropIndex('type', '{{%geographical_hierarchy_region}}');
         $this->dropIndex('country', '{{%geographical_hierarchy_region}}');
