@@ -335,6 +335,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
     {
         $suffix = str_replace(' ', '', $this->getName());
         $file = Yii::getAlias('@app').'/gii/'
+            .($params['subPath'] ? $params['subPath'].'_' : '')
             .str_replace('Controller', $suffix, $params['controllerClassName']).'.json';
         $content = json_encode(SaveForm::getFormAttributesValues($this, $this->formAttributes()), JSON_PRETTY_PRINT);
 
