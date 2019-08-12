@@ -78,6 +78,10 @@ class ImportController extends Controller
         return ExitCode::OK;
     }
 
+    /**
+     * import indonesian provinces
+     * @return type
+     */
     public function actionIndonesiaProvinces()
     {
         // country model
@@ -107,11 +111,11 @@ class ImportController extends Controller
         $datasource = (array) json_decode($content, true);
         if (empty($datasource)) {
             echo "Datasource is empty.\n";
-            return;
+            return ExitCode::DATAERR;
         }
         if (isset($datasource['rows']) === FALSE) {
             echo "Rows is empty.\n";
-            return;
+            return ExitCode::DATAERR;
         }
 
         // compose batch
@@ -134,7 +138,7 @@ class ImportController extends Controller
             ->execute();
 
         echo "Operation Done: {$success} affected.\n";
-        return;
+        return ExitCode::OK;
     }
 
 }
