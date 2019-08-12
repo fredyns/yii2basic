@@ -80,7 +80,7 @@ class ImportController extends Controller
 
     /**
      * import indonesian provinces
-     * @return type
+     * @return int Exit code
      */
     public function actionIndonesiaProvinces()
     {
