@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
                 'query' => $model->get<?=$rel_key?>(),
                 'pagination' => [
                     'pageSize' => 20,
-                    'pageParam' => 'page-requestitems',
+                    'pageParam' => 'page-<?= Inflector::slug($rel_key) ?>',
                 ],
             ]),
             'columns' => [
