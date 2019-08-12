@@ -461,13 +461,13 @@ class Generator extends \yii\gii\generators\model\Generator
                         $refCode .= "                ->alias(static::".strtoupper($refRelationName).")\n";
                     }
                     if ($hasMany && $tableSchema->getColumn('is_deleted') !== null) {
-                        $refCode .= "                ->andFilterWhere(\$filter)";
+                        $refCode .= "                ->andFilterWhere(\$filter)\n";
                     }
                     $refRelation = [
                         'alias' => $refAlias,
                         'nameSpace' => $metadata['nameSpace'],
                         'className' => $metadata['className'],
-                        'query' => $refCode."\n        ;",
+                        'query' => $refCode."        ;",
                     ];
                     $relations[$refTableSchema->fullName][$refRelationName] = $relation;
                     $this->metadata[$refTableSchema->fullName][$hasWhat][$refRelationName] = $refRelation;
