@@ -11,7 +11,24 @@ use app\lib\ActionControl;
 
 class TypeController extends \yii\rest\ActiveController
 {
-    public $modelClass = 'app\models\geographical_hierarchy\Type';
+    public $modelClass = \app\models\geographical_hierarchy\Type::class;
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return ArrayHelper::merge(
+                parent::actions(),
+                [
+                'select2-options' => [
+                    'class' => \app\lib\Select2Options::class,
+                    'modelClass' => $this->modelClass,
+                    'text_field' => 'name',
+                ],
+                ]
+        );
+    }
 
     /**
      * {@inheritdoc}
