@@ -162,7 +162,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 <?php
 $rel_modelclass = $rel_info['nameSpace'].'\\'.$rel_info['className'];
 $rel_model = new $rel_modelclass;
-$allAttributes = $model->safeAttributes();
+$allAttributes = $rel_model->safeAttributes();
 $skipCols = ['id', 'created_at', 'created_by', 'updated_at', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by'];
 $safeAttributes = array_diff($allAttributes, $skipCols);
 
