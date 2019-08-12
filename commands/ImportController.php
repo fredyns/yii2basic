@@ -6,6 +6,8 @@ use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\geographical_hierarchy\Country;
+use app\models\geographical_hierarchy\Region;
+use app\models\geographical_hierarchy\Type;
 
 /**
  * 
@@ -74,6 +76,65 @@ class ImportController extends Controller
         echo "- ".implode("\n- ", $feed)."\n";
 
         return ExitCode::OK;
+    }
+
+    public function actionIndonesiaProvinces()
+    {
+        // country model
+        $country = Country::findOne(['code' => 'ID']);
+        if (empty($country)) {
+            $country = new Country([
+                'code' => "ID",
+                'name' => "Indonesia",
+            ]);
+            $country->save(FALSE);
+            echo "New Country Inserted: Indonesia\n";
+        }
+
+        // type model
+        $type = Type::findOne(['name' => 'Provinsi']);
+        if (empty($type)) {
+            $type = new Type([
+                'name' => "Provinsi",
+            ]);
+            $type->save(FALSE);
+            echo "New Type Inserted: Provinsi\n";
+        }
+
+        // datasource
+        $filepath = Yii::getAlias('@app').'/dataseed/indonesia_provinces.json';
+        $content = file_get_contents($filepath);
+        $datasource = (array) json_decode($content, true);
+        if (empty($datasource)) {
+            echo "Datasource is empty.\n";
+            return;
+        }
+        if (isset($datasource['rows']) === FALSE) {
+            echo "Rows is empty.\n";
+            return;
+        }
+
+        // compose batch
+        $batch_list = [];
+        foreach ($datasource['rows'] as $row) {
+            if (isset($row['name']) == FALSE OR isset($row['number']) == FALSE) {
+                continue;
+            }
+            $batch_list[] = [
+                'name' => $row['name'],
+                'type_id' => $type->id,
+                'country_id' => $country->id,
+                'reg_number' => $row['number'],
+            ];
+        }
+
+        // insert batch
+        $success = Yii::$app->db->createCommand()
+            ->batchInsert(Region::tableName(), ['name', 'type_id', 'country_id', 'reg_number'], $batch_list)
+            ->execute();
+
+        echo "Operation Done: {$success} affected.\n";
+        return;
     }
 
 }
