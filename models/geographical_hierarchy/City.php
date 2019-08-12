@@ -6,7 +6,7 @@ use Yii;
 use app\models\User;
 
 /**
- * This is the base-model class for table "geographical_hierarchy_region".
+ * This is the base-model class for table "geographical_hierarchy_city".
  * define base model structure as specified in database.
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
@@ -15,17 +15,18 @@ use app\models\User;
  * @property string $name
  * @property integer $type_id
  * @property integer $country_id
+ * @property integer $region_id
  * @property integer $reg_number
  *
  *
  * @property \app\models\geographical_hierarchy\Country $country
+ * @property \app\models\geographical_hierarchy\Region $region
  * @property \app\models\geographical_hierarchy\Type $type
- *
- * @property \app\models\geographical_hierarchy\City[] $cities
  */
-class Region extends \yii\db\ActiveRecord
+class City extends \yii\db\ActiveRecord
 {
     const COUNTRY = 'country';
+    const REGION = 'region';
     const TYPE = 'type';
 
     /* -------------------------- Static -------------------------- */
@@ -35,7 +36,7 @@ class Region extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'geographical_hierarchy_region';
+        return 'geographical_hierarchy_city';
     }
     ##
 
@@ -48,7 +49,7 @@ class Region extends \yii\db\ActiveRecord
      */
     public function modelLabel($plural = false)
     {
-        return $plural ? Yii::t('geographical_hierarchy', 'Regions') : Yii::t('geographical_hierarchy', 'Region');
+        return $plural ? Yii::t('geographical_hierarchy', 'Cities') : Yii::t('geographical_hierarchy', 'City');
     }
 
     /**
@@ -61,6 +62,7 @@ class Region extends \yii\db\ActiveRecord
             'name' => Yii::t('geographical_hierarchy', 'Name'),
             'type_id' => Yii::t('geographical_hierarchy', 'Type'),
             'country_id' => Yii::t('geographical_hierarchy', 'Country'),
+            'region_id' => Yii::t('geographical_hierarchy', 'Region'),
             'reg_number' => Yii::t('geographical_hierarchy', 'Reg Number'),
         ];
     }
@@ -82,7 +84,7 @@ class Region extends \yii\db\ActiveRecord
             # default,
             # required,
             # type,
-            [['type_id', 'country_id', 'reg_number'], 'integer'],
+            [['type_id', 'country_id', 'region_id', 'reg_number'], 'integer'],
             [['name'], 'string', 'max' => 255],
             # format,
             # restriction,
@@ -108,22 +110,17 @@ class Region extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getType()
+    public function getRegion()
     {
-        return $this->hasOne(Type::class, ['id' => 'type_id'])->alias(static::TYPE);
+        return $this->hasOne(Region::class, ['id' => 'region_id'])->alias(static::REGION);
     }
-    ##
-
-    /* -------------------------- Has Many -------------------------- */
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCities()
+    public function getType()
     {
-        return $this
-                ->hasMany(City::class, ['region_id' => 'id'])
-        ;
+        return $this->hasOne(Type::class, ['id' => 'type_id'])->alias(static::TYPE);
     }
     ##
 

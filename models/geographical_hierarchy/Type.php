@@ -16,6 +16,7 @@ use app\models\User;
  * @property string $description
  *
  *
+ * @property \app\models\geographical_hierarchy\City[] $cities
  * @property \app\models\geographical_hierarchy\Region[] $regions
  */
 class Type extends \yii\db\ActiveRecord
@@ -87,6 +88,16 @@ class Type extends \yii\db\ActiveRecord
     ##
 
     /* -------------------------- Has Many -------------------------- */
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this
+                ->hasMany(City::class, ['type_id' => 'id'])
+        ;
+    }
 
     /**
      * @return \yii\db\ActiveQuery

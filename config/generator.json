@@ -1,4 +1,69 @@
 {
+    "geographical_hierarchy_city": {
+        "tableName": "geographical_hierarchy_city",
+        "db": "db",
+        "nameSpace": "app\\models\\geographical_hierarchy",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "City",
+        "labels": {
+            "id": "ID",
+            "name": "Name",
+            "type_id": "Type",
+            "country_id": "Country",
+            "region_id": "Region",
+            "reg_number": "Reg Number"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "geographical_hierarchy",
+        "rules": [
+            "# filter",
+            "[\r\n                ['name'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['type_id', 'country_id', 'region_id', 'reg_number'], 'integer']",
+            "[['name'], 'string', 'max' => 255]",
+            "# format",
+            "# restriction",
+            "# constraint",
+            "# safe"
+        ],
+        "hasOne": {
+            "Country": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Country",
+                "query": "return $this->hasOne(Country::class, ['id' => 'country_id'])->alias(static::COUNTRY);"
+            },
+            "Region": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Region",
+                "query": "return $this->hasOne(Region::class, ['id' => 'region_id'])->alias(static::REGION);"
+            },
+            "Type": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Type",
+                "query": "return $this->hasOne(Type::class, ['id' => 'type_id'])->alias(static::TYPE);"
+            }
+        },
+        "select2": {
+            "country_id": {
+                "relationName": "country",
+                "uri": "\/api\/geographical-hierarchy\/country\/select2-options"
+            },
+            "region_id": {
+                "relationName": "region",
+                "uri": "\/api\/geographical-hierarchy\/region\/select2-options"
+            },
+            "type_id": {
+                "relationName": "type",
+                "uri": "\/api\/geographical-hierarchy\/type\/select2-options"
+            }
+        }
+    },
     "geographical_hierarchy_country": {
         "tableName": "geographical_hierarchy_country",
         "db": "db",
@@ -28,6 +93,12 @@
             "# safe"
         ],
         "hasMany": {
+            "Cities": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "City",
+                "query": "return $this\n                ->hasMany(City::class, ['country_id' => 'id'])\n        ;"
+            },
             "Regions": {
                 "alias": false,
                 "nameSpace": "app\\models\\geographical_hierarchy",
@@ -65,6 +136,14 @@
             "# constraint",
             "# safe"
         ],
+        "hasMany": {
+            "Cities": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "City",
+                "query": "return $this\n                ->hasMany(City::class, ['region_id' => 'id'])\n        ;"
+            }
+        },
         "hasOne": {
             "Country": {
                 "alias": true,
@@ -118,6 +197,12 @@
             "# safe"
         ],
         "hasMany": {
+            "Cities": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "City",
+                "query": "return $this\n                ->hasMany(City::class, ['type_id' => 'id'])\n        ;"
+            },
             "Regions": {
                 "alias": false,
                 "nameSpace": "app\\models\\geographical_hierarchy",
