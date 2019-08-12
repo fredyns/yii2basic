@@ -11,7 +11,7 @@ use app\lib\ActionControl;
 
 class RegionController extends \yii\rest\ActiveController
 {
-    public $modelClass = 'app\models\geographical_hierarchy\Region';
+    public $modelClass = \app\models\geographical_hierarchy\Region::class;
 
     /**
      * {@inheritdoc}

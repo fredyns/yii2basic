@@ -39,7 +39,7 @@ use app\lib\ActionControl;
 
 class <?= $controllerClassName ?> extends \yii\rest\ActiveController
 {
-    public $modelClass = '<?= $generator->modelClass ?>';
+    public $modelClass = \<?= $generator->modelClass ?>::class;
 <?php if ($generator->accessFilter): ?>
 
     /**
