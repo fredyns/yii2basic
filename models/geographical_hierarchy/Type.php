@@ -15,6 +15,8 @@ use app\models\User;
  * @property string $name
  * @property string $description
  *
+ *
+ * @property \app\models\geographical_hierarchy\Region[] $regions
  */
 class Type extends \yii\db\ActiveRecord
 {
@@ -82,6 +84,19 @@ class Type extends \yii\db\ActiveRecord
     ##
 
     /* -------------------------- Properties -------------------------- */
+    ##
+
+    /* -------------------------- Has Many -------------------------- */
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRegions()
+    {
+        return $this
+                ->hasMany(Region::class, ['type_id' => 'id'])
+        ;
+    }
     ##
 
 }

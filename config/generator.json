@@ -26,7 +26,69 @@
             "[['code'], 'unique']",
             "# constraint",
             "# safe"
-        ]
+        ],
+        "hasMany": {
+            "Regions": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Region",
+                "query": "return $this\n                ->hasMany(Region::class, ['country_id' => 'id'])\n        ;"
+            }
+        }
+    },
+    "geographical_hierarchy_region": {
+        "tableName": "geographical_hierarchy_region",
+        "db": "db",
+        "nameSpace": "app\\models\\geographical_hierarchy",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "Region",
+        "labels": {
+            "id": "ID",
+            "name": "Name",
+            "type_id": "Type",
+            "country_id": "Country",
+            "reg_number": "Reg Number"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "geographical_hierarchy",
+        "rules": [
+            "# filter",
+            "[\r\n                ['name'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['type_id', 'country_id', 'reg_number'], 'integer']",
+            "[['name'], 'string', 'max' => 255]",
+            "# format",
+            "# restriction",
+            "# constraint",
+            "# safe"
+        ],
+        "hasOne": {
+            "Country": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Country",
+                "query": "return $this->hasOne(Country::class, ['id' => 'country_id'])->alias(static::COUNTRY);"
+            },
+            "Type": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Type",
+                "query": "return $this->hasOne(Type::class, ['id' => 'type_id'])->alias(static::TYPE);"
+            }
+        },
+        "select2": {
+            "country_id": {
+                "relationName": "country",
+                "uri": "\/api\/geographical-hierarchy\/country\/select2-options"
+            },
+            "type_id": {
+                "relationName": "type",
+                "uri": "\/api\/geographical-hierarchy\/type\/select2-options"
+            }
+        }
     },
     "geographical_hierarchy_type": {
         "tableName": "geographical_hierarchy_type",
@@ -54,7 +116,15 @@
             "# restriction",
             "# constraint",
             "# safe"
-        ]
+        ],
+        "hasMany": {
+            "Regions": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Region",
+                "query": "return $this\n                ->hasMany(Region::class, ['type_id' => 'id'])\n        ;"
+            }
+        }
     },
     "sample_book": {
         "tableName": "sample_book",
