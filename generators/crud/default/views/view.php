@@ -157,7 +157,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
             ]),
             'columns' => [
                 [
-                    'class' => 'kartik\grid\SerialColumn',
+                    'class' => \kartik\grid\SerialColumn::class,
                 ],
 <?php
 $rel_modelclass = $rel_info['nameSpace'].'\\'.$rel_info['className'];
