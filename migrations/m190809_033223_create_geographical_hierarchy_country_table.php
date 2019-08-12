@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%geographical_hierarchy_country}}`.
  */
-class m190809_033223_create_geographical_hierarchy_country_table extends Migration
+class m190809_033223_create_geographical_hierarchy_country_table extends app\base\BaseMigration
 {
 
     /**
