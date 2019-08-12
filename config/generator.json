@@ -28,6 +28,34 @@
             "# safe"
         ]
     },
+    "geographical_hierarchy_type": {
+        "tableName": "geographical_hierarchy_type",
+        "db": "db",
+        "nameSpace": "app\\models\\geographical_hierarchy",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "Type",
+        "labels": {
+            "id": "ID",
+            "name": "Name",
+            "description": "Description"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "geographical_hierarchy",
+        "rules": [
+            "# filter",
+            "[\r\n                ['name', 'description'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['description'], 'string']",
+            "[['name'], 'string', 'max' => 255]",
+            "# format",
+            "# restriction",
+            "# constraint",
+            "# safe"
+        ]
+    },
     "sample_book": {
         "tableName": "sample_book",
         "db": "db",

@@ -1,0 +1,67 @@
+{
+    "modelclass": {
+        "value": "app\\models\\geographical_hierarchy\\Type",
+        "name": "modelClass"
+    },
+    "searchmodelclass": {
+        "value": "app\\actions\\geographical_hierarchy\\type\\TypeSearch",
+        "name": "searchModelClass"
+    },
+    "controllerclass": {
+        "value": "app\\controllers\\geographical_hierarchy\\TypeController",
+        "name": "controllerClass"
+    },
+    "basecontrollerclass": {
+        "value": "yii\\web\\Controller",
+        "name": "baseControllerClass"
+    },
+    "viewpath": {
+        "value": "@app\/views\/geographical_hierarchy",
+        "name": "viewPath"
+    },
+    "pathprefix": {
+        "value": "",
+        "name": "pathPrefix"
+    },
+    "enablei18n": {
+        "value": "1",
+        "name": "enableI18N"
+    },
+    "singularentities": {
+        "value": "0",
+        "name": "singularEntities"
+    },
+    "indexwidgettype": {
+        "value": "grid",
+        "name": "indexWidgetType"
+    },
+    "formlayout": {
+        "value": "horizontal",
+        "name": "formLayout"
+    },
+    "actionbuttonclass": {
+        "value": "yii\\grid\\ActionColumn",
+        "name": "actionButtonClass"
+    },
+    "providerlist": {
+        "value": [
+            "app\\generators\\crud\\providers\\CallbackProvider",
+            "app\\generators\\crud\\providers\\DateProvider",
+            "app\\generators\\crud\\providers\\RelationProvider",
+            "app\\generators\\crud\\providers\\TimestampProvider"
+        ],
+        "name": "providerList"
+    },
+    "template": {
+        "value": "default",
+        "name": "template"
+    },
+    "accessfilter": {
+        "value": "0",
+        "name": "accessFilter"
+    },
+    "modelmessagecategory": {
+        "value": "geographical_hierarchy",
+        "name": "modelMessageCategory"
+    }
+}
