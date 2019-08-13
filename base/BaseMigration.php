@@ -58,7 +58,7 @@ class BaseMigration extends Migration
      */
     public function FKBigInteger()
     {
-        return $this->integer(10)->unsigned()->defaultValue(NULL);
+        return $this->bigInteger(19)->unsigned()->defaultValue(NULL);
     }
 
 }
