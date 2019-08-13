@@ -43,4 +43,22 @@ class BaseMigration extends Migration
         return parent::bigPrimaryKey($length)->unsigned();
     }
 
+    /**
+     * create integer field for foreign key
+     * @return ColumnSchemaBuilder the column instance which can be further customized.
+     */
+    public function FKInteger()
+    {
+        return $this->integer(10)->unsigned()->defaultValue(NULL);
+    }
+
+    /**
+     * create big integer field for foreign key
+     * @return ColumnSchemaBuilder the column instance which can be further customized.
+     */
+    public function FKBigInteger()
+    {
+        return $this->integer(10)->unsigned()->defaultValue(NULL);
+    }
+
 }
