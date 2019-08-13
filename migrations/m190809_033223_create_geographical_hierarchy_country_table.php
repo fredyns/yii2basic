@@ -14,7 +14,7 @@ class m190809_033223_create_geographical_hierarchy_country_table extends app\bas
     public function safeUp()
     {
         $this->createTable('{{%geographical_hierarchy_country}}', [
-            'id' => $this->primaryKey(10)->unsigned(),
+            'id' => $this->primaryKey(),
             'name' => $this->string(255),
             'code' => $this->string(8)->defaultValue(NULL),
         ]);

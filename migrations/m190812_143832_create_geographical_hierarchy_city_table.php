@@ -13,7 +13,7 @@ class m190812_143832_create_geographical_hierarchy_city_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%geographical_hierarchy_city}}', [
-            'id' => $this->primaryKey(10)->unsigned(),
+            'id' => $this->primaryKey(),
             'name' => $this->string(255),
             'type_id' => $this->integer(10)->unsigned()->defaultValue(NULL),
             'country_id' => $this->integer(10)->unsigned()->defaultValue(NULL),

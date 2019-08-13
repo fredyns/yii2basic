@@ -12,7 +12,7 @@ class m190812_010901_create_geographical_hierarchy_type_table extends app\base\B
     public function safeUp()
     {
         $this->createTable('{{%geographical_hierarchy_type}}', [
-            'id' => $this->primaryKey(10)->unsigned(),
+            'id' => $this->primaryKey(),
             'name' => $this->string(255),
             'description' => $this->text()->defaultValue(NULL),
         ]);
