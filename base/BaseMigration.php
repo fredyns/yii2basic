@@ -25,4 +25,22 @@ class BaseMigration extends Migration
         return parent::createTable($table, $columns, $options);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function primaryKey($length = null)
+    {
+        $length = $length ?: 10;
+        return parent::primaryKey($length)->unsigned();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bigPrimaryKey($length = null)
+    {
+        $length = $length ?: 19;
+        return parent::bigPrimaryKey($length)->unsigned();
+    }
+
 }
