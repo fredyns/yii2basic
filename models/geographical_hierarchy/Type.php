@@ -19,6 +19,7 @@ use app\models\User;
  * @property \app\models\geographical_hierarchy\City[] $cities
  * @property \app\models\geographical_hierarchy\District[] $districts
  * @property \app\models\geographical_hierarchy\Region[] $regions
+ * @property \app\models\geographical_hierarchy\Subdistrict[] $subdistricts
  */
 class Type extends \yii\db\ActiveRecord
 {
@@ -117,6 +118,16 @@ class Type extends \yii\db\ActiveRecord
     {
         return $this
                 ->hasMany(Region::class, ['type_id' => 'id'])
+        ;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubdistricts()
+    {
+        return $this
+                ->hasMany(Subdistrict::class, ['type_id' => 'id'])
         ;
     }
     ##

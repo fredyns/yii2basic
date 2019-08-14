@@ -6,7 +6,7 @@ use Yii;
 use app\models\User;
 
 /**
- * This is the base-model class for table "geographical_hierarchy_district".
+ * This is the base-model class for table "geographical_hierarchy_subdistrict".
  * define base model structure as specified in database.
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
@@ -14,18 +14,16 @@ use app\models\User;
  * @property integer $id
  * @property string $name
  * @property integer $type_id
- * @property integer $city_id
+ * @property integer $district_id
  * @property integer $reg_number
  *
  *
- * @property \app\models\geographical_hierarchy\City $city
+ * @property \app\models\geographical_hierarchy\District $district
  * @property \app\models\geographical_hierarchy\Type $type
- *
- * @property \app\models\geographical_hierarchy\Subdistrict[] $subdistricts
  */
-class District extends \yii\db\ActiveRecord
+class Subdistrict extends \yii\db\ActiveRecord
 {
-    const CITY = 'city';
+    const DISTRICT = 'district';
     const TYPE = 'type';
 
     /* -------------------------- Static -------------------------- */
@@ -35,7 +33,7 @@ class District extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'geographical_hierarchy_district';
+        return 'geographical_hierarchy_subdistrict';
     }
     ##
 
@@ -48,7 +46,7 @@ class District extends \yii\db\ActiveRecord
      */
     public function modelLabel($plural = false)
     {
-        return $plural ? Yii::t('geographical_hierarchy', 'Districts') : Yii::t('geographical_hierarchy', 'District');
+        return $plural ? Yii::t('geographical_hierarchy', 'Subdistricts') : Yii::t('geographical_hierarchy', 'Subdistrict');
     }
 
     /**
@@ -60,7 +58,7 @@ class District extends \yii\db\ActiveRecord
             'id' => Yii::t('record-info', 'ID'),
             'name' => Yii::t('geographical_hierarchy', 'Name'),
             'type_id' => Yii::t('geographical_hierarchy', 'Type'),
-            'city_id' => Yii::t('geographical_hierarchy', 'City'),
+            'district_id' => Yii::t('geographical_hierarchy', 'District'),
             'reg_number' => Yii::t('geographical_hierarchy', 'Reg Number'),
         ];
     }
@@ -82,7 +80,7 @@ class District extends \yii\db\ActiveRecord
             # default,
             # required,
             # type,
-            [['type_id', 'city_id', 'reg_number'], 'integer'],
+            [['type_id', 'district_id', 'reg_number'], 'integer'],
             [['name'], 'string', 'max' => 255],
             # format,
             # restriction,
@@ -100,9 +98,9 @@ class District extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCity()
+    public function getDistrict()
     {
-        return $this->hasOne(City::class, ['id' => 'city_id'])->alias(static::CITY);
+        return $this->hasOne(District::class, ['id' => 'district_id'])->alias(static::DISTRICT);
     }
 
     /**
@@ -111,19 +109,6 @@ class District extends \yii\db\ActiveRecord
     public function getType()
     {
         return $this->hasOne(Type::class, ['id' => 'type_id'])->alias(static::TYPE);
-    }
-    ##
-
-    /* -------------------------- Has Many -------------------------- */
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSubdistricts()
-    {
-        return $this
-                ->hasMany(Subdistrict::class, ['district_id' => 'id'])
-        ;
     }
     ##
 

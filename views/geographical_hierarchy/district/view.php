@@ -87,6 +87,29 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     
     <hr/>
     <br/>
+    <h3><?= Yii::t('geographical_hierarchy', 'Subdistricts') ?></h3>
+    <div class="table-responsive">
+        <?=
+        \kartik\grid\GridView::widget([
+            'layout' => '{summary}{pager}<br/>{items}{pager}',
+            'dataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => $model->getSubdistricts(),
+                'pagination' => [
+                    'pageSize' => 20,
+                    'pageParam' => 'page-subdistricts',
+                ],
+            ]),
+            'columns' => [
+                [
+                    'class' => \kartik\grid\SerialColumn::class,
+                ],
+                'name',
+                'reg_number',
+            ],
+        ]);
+        ?>
+    </div>
+    <br/>
     <hr/>
 
 </div>

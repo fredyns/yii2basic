@@ -167,6 +167,14 @@
                 "relationName": "type",
                 "uri": "\/api\/geographical-hierarchy\/type\/select2-options"
             }
+        },
+        "hasMany": {
+            "Subdistricts": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Subdistrict",
+                "query": "return $this\n                ->hasMany(Subdistrict::class, ['district_id' => 'id'])\n        ;"
+            }
         }
     },
     "geographical_hierarchy_region": {
@@ -231,6 +239,60 @@
             }
         }
     },
+    "geographical_hierarchy_subdistrict": {
+        "tableName": "geographical_hierarchy_subdistrict",
+        "db": "db",
+        "nameSpace": "app\\models\\geographical_hierarchy",
+        "baseClass": "yii\\db\\ActiveRecord",
+        "className": "Subdistrict",
+        "labels": {
+            "id": "ID",
+            "name": "Name",
+            "type_id": "Type",
+            "district_id": "District",
+            "reg_number": "Reg Number"
+        },
+        "hints": [],
+        "enableI18N": "1",
+        "messageCategory": "geographical_hierarchy",
+        "rules": [
+            "# filter",
+            "[\r\n                ['name'],\r\n                \\fredyns\\stringcleaner\\yii2\\PlaintextValidator::class,\r\n            ]",
+            "# default",
+            "# required",
+            "# type",
+            "[['type_id', 'district_id', 'reg_number'], 'integer']",
+            "[['name'], 'string', 'max' => 255]",
+            "# format",
+            "# restriction",
+            "# constraint",
+            "# safe"
+        ],
+        "hasOne": {
+            "District": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "District",
+                "query": "return $this->hasOne(District::class, ['id' => 'district_id'])->alias(static::DISTRICT);"
+            },
+            "Type": {
+                "alias": true,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Type",
+                "query": "return $this->hasOne(Type::class, ['id' => 'type_id'])->alias(static::TYPE);"
+            }
+        },
+        "select2": {
+            "district_id": {
+                "relationName": "district",
+                "uri": "\/api\/geographical-hierarchy\/district\/select2-options"
+            },
+            "type_id": {
+                "relationName": "type",
+                "uri": "\/api\/geographical-hierarchy\/type\/select2-options"
+            }
+        }
+    },
     "geographical_hierarchy_type": {
         "tableName": "geographical_hierarchy_type",
         "db": "db",
@@ -276,6 +338,12 @@
                 "nameSpace": "app\\models\\geographical_hierarchy",
                 "className": "Region",
                 "query": "return $this\n                ->hasMany(Region::class, ['type_id' => 'id'])\n        ;"
+            },
+            "Subdistricts": {
+                "alias": false,
+                "nameSpace": "app\\models\\geographical_hierarchy",
+                "className": "Subdistrict",
+                "query": "return $this\n                ->hasMany(Subdistrict::class, ['type_id' => 'id'])\n        ;"
             }
         }
     },
