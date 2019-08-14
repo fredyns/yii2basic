@@ -32,7 +32,7 @@ class RegionSearch extends Region
         return [
             [['id', 'type_id', 'country_id', 'reg_number'], 'integer'],
             [
-                ['name', 'typeName', 'countryName'],
+                ['name', 'countryName'],
                 \fredyns\stringcleaner\yii2\PlaintextValidator::class,
             ],
         ];
