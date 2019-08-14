@@ -10,6 +10,7 @@ use app\models\geographical_hierarchy\City;
 use app\models\geographical_hierarchy\Country;
 use app\models\geographical_hierarchy\District;
 use app\models\geographical_hierarchy\Region;
+use app\models\geographical_hierarchy\Subdistrict;
 use app\models\geographical_hierarchy\Type;
 
 /**
@@ -241,7 +242,7 @@ class ImportController extends Controller
     }
 
     /**
-     * import indonesian cities
+     * import indonesian district
      * @return int Exit code
      */
     public function actionIndonesiaDistricts()
@@ -310,6 +311,92 @@ class ImportController extends Controller
             ->execute();
 
         echo "Operation Done: {$success} affected.\n";
+        return ExitCode::OK;
+    }
+
+    /**
+     * import indonesian subdistrict
+     * @return int Exit code
+     */
+    public function actionIndonesiaSubdistricts()
+    {
+        // type model for "Kelurahan"
+        $type = Type::findOne(['name' => 'Kelurahan']);
+        if (empty($type)) {
+            $type = new Type(['name' => "Kelurahan"]);
+            $type->save(FALSE);
+            echo "New Type Inserted: Kelurahan\n";
+        }
+
+        // seed file list
+        $file_list = \yii\helpers\FileHelper::findFiles(
+                Yii::getAlias('@app').DIRECTORY_SEPARATOR.'dataseed'
+                , [
+                'only' => ['indonesia_subdistricts_*.json'],
+                'recursive' => false,
+                ]
+        );
+        if (empty($file_list)) {
+            echo "File not found.\n";
+            return ExitCode::DATAERR;
+        }
+
+        // parse each seed
+        foreach ($file_list as $filepath) {
+            // datasource
+            $content = file_get_contents($filepath);
+            $source_list = (array) json_decode($content, true);
+            if (empty($source_list)) {
+                echo "File {$filepath} is empty.\n";
+                continue;
+            }
+
+            // release memory
+            unset($content);
+
+            // populate district code
+            $distric_code_list = [];
+            foreach ($source_list as $row) {
+                // invalid feed
+                if (isset($row['reg_number']) === FALSE) {
+                    continue;
+                }
+                // chop district code
+                $distric_code_list[] = substr(trim($row['reg_number']), 0, 6);
+            }
+
+            // get district as refference
+            $district_map = District::find()
+                ->select(['id', 'reg_number'])
+                ->where(['reg_number' => $distric_code_list])
+                ->indexBy('reg_number')
+                ->column();
+
+            // release memory
+            unset($distric_code_list);
+
+            // inject attribute
+            foreach ($source_list as &$row) {
+                $distric_code = substr(trim($row['reg_number']), 0, 6);
+                $row['type_id'] = $type->id;
+                $row['district_id'] = ArrayHelper::getValue($district_map, $distric_code);
+            }
+
+            // release memory
+            unset($district_map);
+
+            // insert batch
+            $success = Yii::$app->db->createCommand()
+                ->batchInsert(Subdistrict::tableName(), ['reg_number', 'name', 'type_id', 'district_id'], $source_list)
+                ->execute();
+
+            // release memory
+            unset($source_list);
+
+            // message
+            echo "Operation Done: {$success} affected.\n";
+        }
+
         return ExitCode::OK;
     }
 
