@@ -96,7 +96,7 @@ class RegionSearch extends Region
 
         $query
             ->andFilterWhere(['like', static::tableName().'.name', $this->name])
-            ->andFilterWhere(['like', static::COUNTRY.'.name', $this->country])
+            ->andFilterWhere(['like', static::COUNTRY.'.name', $this->countryName])
         ;
 
 
