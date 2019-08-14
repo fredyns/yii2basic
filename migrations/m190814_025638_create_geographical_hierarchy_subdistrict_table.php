@@ -16,7 +16,7 @@ class m190814_025638_create_geographical_hierarchy_subdistrict_table extends \ap
             'name' => $this->string(255),
             'type_id' => $this->FKInteger(),
             'district_id' => $this->FKInteger(),
-            'reg_number' => $this->FKInteger(),
+            'reg_number' => $this->FKBigInteger(),
         ]);
 
         $this->createIndex('type', '{{%geographical_hierarchy_subdistrict}}', ['type_id']);
