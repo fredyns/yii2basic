@@ -76,10 +76,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'dropdownActions' => [
                         'create',
+<?php if($softdelete):?>
                         [
                             'deleted',
                             'archive',
                         ],
+<?php endif;?>
                     ],
                     'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
                     'urlCreator' => function($action, $model) {
