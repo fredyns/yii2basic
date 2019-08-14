@@ -8,6 +8,7 @@ use yii\console\ExitCode;
 use yii\helpers\ArrayHelper;
 use app\models\geographical_hierarchy\City;
 use app\models\geographical_hierarchy\Country;
+use app\models\geographical_hierarchy\District;
 use app\models\geographical_hierarchy\Region;
 use app\models\geographical_hierarchy\Type;
 
@@ -233,6 +234,79 @@ class ImportController extends Controller
         // insert batch
         $success = Yii::$app->db->createCommand()
             ->batchInsert(City::tableName(), ['name', 'type_id', 'country_id', 'region_id', 'reg_number'], $batch_list)
+            ->execute();
+
+        echo "Operation Done: {$success} affected.\n";
+        return ExitCode::OK;
+    }
+
+    /**
+     * import indonesian cities
+     * @return int Exit code
+     */
+    public function actionIndonesiaDistricts()
+    {
+        // country model
+        $country = Country::findOne(['code' => 'ID']);
+        if (empty($country)) {
+            $country = new Country([
+                'code' => "ID",
+                'name' => "Indonesia",
+            ]);
+            $country->save(FALSE);
+            echo "New Country Inserted: Indonesia\n";
+        }
+
+        // region model list
+        $city_list = City::find()
+            ->where(['country_id' => $country->id])
+            ->indexBy('reg_number')
+            ->all();
+
+        // cleanup
+        unset($country);
+
+        // type model for "District"
+        $type = Type::findOne(['name' => 'Kecamatan']);
+        if (empty($type)) {
+            $type = new Type(['name' => "Kecamatan"]);
+            $type->save(FALSE);
+            echo "New Type Inserted: Kecamatan\n";
+        }
+
+        // datasource
+        $filepath = Yii::getAlias('@app').'/dataseed/indonesia_districts.json';
+        $content = file_get_contents($filepath);
+        $source_list = (array) json_decode($content, true);
+        if (empty($source_list)) {
+            echo "Datasource is empty.\n";
+            return ExitCode::DATAERR;
+        }
+
+        // compose batch
+        foreach ($source_list as $index => $row) {
+            // skip broken data
+            if (isset($row['name']) == FALSE OR isset($row['reg_number']) == FALSE) {
+                echo "Skipping: #{$index} (".print_r($row, TRUE).").\n";
+                continue;
+            }
+            // decide region
+            $city_code = substr($row['reg_number'], 0, 4);
+            if (empty($city_code)) {
+                echo "Skipping: #{$index} ({$row['reg_number']}).\n";
+                continue;
+            }
+            // add information
+            $source_list[$index]['type_id'] = $type->id;
+            $source_list[$index]['city_id'] = ArrayHelper::getValue($city_list, $city_code.'.id');
+        }
+
+        // release memory
+        unset($city_list);
+
+        // insert batch
+        $success = Yii::$app->db->createCommand()
+            ->batchInsert(District::tableName(), ['reg_number', 'name', 'type_id', 'city_id'], $source_list)
             ->execute();
 
         echo "Operation Done: {$success} affected.\n";
