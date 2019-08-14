@@ -14,6 +14,23 @@ class CityController extends \yii\rest\ActiveController
     public $modelClass = \app\models\geographical_hierarchy\City::class;
 
     /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return ArrayHelper::merge(
+                parent::actions(),
+                [
+                'select2-options' => [
+                    'class' => \app\lib\Select2Options::class,
+                    'modelClass' => $this->modelClass,
+                    'text_field' => 'name',
+                ],
+                ]
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function checkAccess($action, $model = null, $params = [])
