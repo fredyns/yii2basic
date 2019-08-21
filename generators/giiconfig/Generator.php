@@ -752,7 +752,7 @@ TXT;
         foreach ($table->foreignKeys as $refs) {
             $refTable = $refs[0];
             $refTableSchema = $db->getTableSchema($refTable);
-            if ($refTableSchema === null OR isset($this->metadata[$refTable])) {
+            if ($refTableSchema === null) {
                 // Foreign key could point to non-existing table: https://github.com/yiisoft/yii2-gii/issues/34
                 continue;
             }
