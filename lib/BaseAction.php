@@ -102,11 +102,7 @@ class BaseAction extends \yii\base\Action
             }
 
             if (is_callable($url) && $model) {
-                if ($model) {
-                    return call_user_func($url, $model);
-                } else {
-                    return call_user_func($url);
-                }
+                return call_user_func($url, $model);
             }
         }
 
