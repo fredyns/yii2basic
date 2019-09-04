@@ -108,7 +108,7 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
             $generatorForm = (clone $this);
             $generatorForm->tableName = $tableName;
             $generatorForm->modelClass = $className;
-            $formData = json_encode(SaveForm::getFormAttributesValues($generatorForm, $this->formAttributes()));
+            $formData = json_encode(SaveForm::getFormAttributesValues($generatorForm, $this->formAttributes()), JSON_PRETTY_PRINT);
             $files[] = new CodeFile($formDataFile, $formData);
         }
 
