@@ -98,6 +98,9 @@ if (YII_ENV_DEV) {
             'modelclass' => [
                 'class' => \app\generators\modelclass\Generator::class,
             ],
+            'my-model2' => [
+                'class' => \app\generators\model2\Generator::class,
+            ],
             'gii-config' => [
                 'class' => \app\generators\giiconfig\Generator::class,
             ],
