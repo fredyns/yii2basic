@@ -104,7 +104,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function requiredTemplates()
     {
-        return [];
+        return ['formdata.php'];
     }
 
     /**
@@ -112,10 +112,25 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function generate()
     {
-        // only 1 file generated
-        return [
+        $files = [
             new CodeFile($this->getFilePath(), json_encode($this->modelClasses, JSON_PRETTY_PRINT))
         ];
+
+        foreach ($this->modelClasses as $tableName => $modelClass) {
+            $params = [
+                'tableName' => $tableName,
+                'modelClass' => StringHelper::basename($modelClass),
+                'ns' => str_replace("\\", "\\\\", StringHelper::dirname($modelClass)),
+            ];
+            $suffix = 'MyModel2'; // sesuai generator yg mau dipake
+            $formDataFile = Yii::getAlias('@app').'/gii/'.$tableName.$suffix.'.json';
+            $files[] = new CodeFile(
+                $formDataFile, $this->render('formdata.php', $params)
+            );
+
+        }
+
+        return $files;
     }
 
     /**
