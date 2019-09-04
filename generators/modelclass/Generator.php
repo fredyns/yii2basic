@@ -32,7 +32,7 @@ class Generator extends \yii\gii\generators\model\Generator
      *      'table': "namespace"
      *  }
      */
-    public static function readMetadata()
+    public static function readData()
     {
         $filepath = static::getFilePath();
 
@@ -49,7 +49,7 @@ class Generator extends \yii\gii\generators\model\Generator
         parent::init();
 
         // read saved data
-        $this->modelClasses = static::readMetadata();
+        $this->modelClasses = static::readData();
 
         // default
         foreach ($this->getTableNames() as $tableName) {
