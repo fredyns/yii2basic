@@ -22,6 +22,11 @@ use app\generators\SaveForm;
 class Generator extends \schmunk42\giiant\generators\model\Generator
 {
     /**
+     * @var bool whether the strings will be generated using `Yii::t()` or normal strings.
+     */
+    public $enableI18N = true;
+
+    /**
      * @var bool whether to overwrite (extended) model classes, will be always created, if file does not exist
      */
     public $generateModelClass = true;

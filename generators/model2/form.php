@@ -15,7 +15,7 @@ use app\generators\SaveForm;
 $this->registerJs(SaveForm::getSavedFormsJs($generator->getName()), yii\web\View::POS_END);
 $this->registerJs(SaveForm::jsFillForm(), yii\web\View::POS_END);
 echo $form->field($generator, 'savedForm')->dropDownList(
-        SaveForm::getSavedFormsListbox($generator->getName()), ['onchange' => 'fillForm(this.value)']
+    SaveForm::getSavedFormsListbox($generator->getName()), ['onchange' => 'fillForm(this.value)']
 );
 
 echo $form->field($generator, 'tableName');
@@ -29,57 +29,4 @@ echo $form->field($generator, 'generateRelations')->dropDownList([
     Generator::RELATIONS_ALL => Yii::t('giiant', 'All relations'),
     Generator::RELATIONS_ALL_INVERSE => Yii::t('giiant', 'All relations with inverse'),
 ]);
-//echo $form->field($generator, 'generateRelationsFromCurrentSchema')->checkbox();
-echo $form->field($generator, 'generateLabelsFromComments')->checkbox();
-echo $form->field($generator, 'generateHintsFromComments')->checkbox();
-echo $form->field($generator, 'generateModelClass')->checkbox();
-echo $form->field($generator, 'generateQuery')->checkbox();
-echo $form->field($generator, 'queryNs');
-echo $form->field($generator, 'queryClass');
-echo $form->field($generator, 'queryBaseClass');
-echo $form->field($generator, 'enableI18N')->checkbox();
-echo $form->field($generator, 'singularEntities')->checkbox();
 echo $form->field($generator, 'messageCategory');
-
-?>
-
-<div class="panel panel-default">
-    <div class="panel-heading">Translatable Behavior</div>
-    <div class="panel-body">
-        <?php
-        echo $form->field($generator, 'useTranslatableBehavior')->checkbox();
-        echo $form->field($generator, 'languageTableName');
-        echo $form->field($generator, 'languageCodeColumn');
-        ?>
-        <div class="alert alert-warning" role="alert">
-            <h4>Attention!</h4>
-
-            <p>
-                You must run <code>php composer.phar require 2amigos/yii2-translateable-behavior "*"</code> to
-                install this package.
-            </p>
-        </div>
-    </div>
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">Blameable Behavior</div>
-    <div class="panel-body">
-        <?php
-        echo $form->field($generator, 'useBlameableBehavior')->checkbox();
-        echo $form->field($generator, 'createdByColumn');
-        echo $form->field($generator, 'updatedByColumn');
-        ?>
-    </div>
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">Timestamp Behavior</div>
-    <div class="panel-body">
-        <?php
-        echo $form->field($generator, 'useTimestampBehavior')->checkbox();
-        echo $form->field($generator, 'createdAtColumn');
-        echo $form->field($generator, 'updatedAtColumn');
-        ?>
-    </div>
-</div>
