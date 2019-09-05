@@ -8,8 +8,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-use schmunk42\giiant\helpers\SaveForm;
 use yii\db\Schema;
+use app\generators\SaveForm;
 
 /**
  * This generator generates an extended version of Giiant-CRUDs.

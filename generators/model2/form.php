@@ -1,7 +1,7 @@
 <?php
 
 use schmunk42\giiant\generators\model\Generator;
-use schmunk42\giiant\helpers\SaveForm;
+use app\generators\SaveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */

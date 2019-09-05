@@ -10,7 +10,7 @@ use yii\gii\CodeFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-use schmunk42\giiant\helpers\SaveForm;
+use app\generators\SaveForm;
 
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
