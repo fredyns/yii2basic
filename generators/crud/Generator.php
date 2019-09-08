@@ -19,6 +19,11 @@ use app\generators\SaveForm;
 class Generator extends \schmunk42\giiant\generators\crud\Generator
 {
     /**
+     * @var bool whether the strings will be generated using `Yii::t()` or normal strings.
+     */
+    public $enableI18N = true;
+
+    /**
      * @var string default view path
      */
     public $viewPath = '@app/views';
