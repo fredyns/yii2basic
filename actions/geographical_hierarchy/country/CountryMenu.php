@@ -6,7 +6,7 @@ namespace app\actions\geographical_hierarchy\country;
  * Action menu manager for model Country *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class CountryMenu extends \app\lib\ModelMenu
+class CountryMenu extends \app\components\ModelMenu
 {
     public static $controller = '/geographical_hierarchy/country';
     public static $softdelete = false;

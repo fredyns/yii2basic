@@ -7,7 +7,7 @@ namespace app\actions\geographical_hierarchy\subdistrict\delete;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\DeleteAction
+class ActiveAction extends \app\components\DeleteAction
 {
     
 }

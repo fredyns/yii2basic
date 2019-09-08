@@ -1,13 +1,13 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\lib\ActionControl;
+use app\components\ActionControl;
 
 /**
  * Description of ModelMenu

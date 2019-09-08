@@ -7,7 +7,7 @@ namespace app\actions\sample\person\create;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\CreateAction
+class ActiveAction extends \app\components\CreateAction
 {
     
 }

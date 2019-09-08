@@ -7,7 +7,7 @@ namespace app\controllers\api\geographical_hierarchy;
  */
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use app\lib\ActionControl;
+use app\components\ActionControl;
 
 class TypeController extends \yii\rest\ActiveController
 {
@@ -22,7 +22,7 @@ class TypeController extends \yii\rest\ActiveController
                 parent::actions(),
                 [
                 'select2-options' => [
-                    'class' => \app\lib\Select2Options::class,
+                    'class' => \app\components\Select2Options::class,
                     'modelClass' => $this->modelClass,
                     'text_field' => 'name',
                 ],

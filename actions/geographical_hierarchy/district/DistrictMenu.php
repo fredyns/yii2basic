@@ -6,7 +6,7 @@ namespace app\actions\geographical_hierarchy\district;
  * Action menu manager for model District *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class DistrictMenu extends \app\lib\ModelMenu
+class DistrictMenu extends \app\components\ModelMenu
 {
     public static $controller = '/geographical_hierarchy/district';
     public static $softdelete = false;

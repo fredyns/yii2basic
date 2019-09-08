@@ -10,7 +10,7 @@ use yii\db\ActiveRecord;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActionControl extends \app\lib\ActionControl
+class ActionControl extends \app\components\ActionControl
 {
 
     /**

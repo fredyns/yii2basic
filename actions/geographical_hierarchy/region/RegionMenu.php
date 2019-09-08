@@ -6,7 +6,7 @@ namespace app\actions\geographical_hierarchy\region;
  * Action menu manager for model Region *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class RegionMenu extends \app\lib\ModelMenu
+class RegionMenu extends \app\components\ModelMenu
 {
     public static $controller = '/geographical_hierarchy/region';
     public static $softdelete = false;

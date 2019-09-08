@@ -6,7 +6,7 @@ namespace app\actions\sample\person;
  * Action menu manager for model Person *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class PersonMenu extends \app\lib\ModelMenu
+class PersonMenu extends \app\components\ModelMenu
 {
     public static $controller = '/sample/person';
     public static $softdelete = true;

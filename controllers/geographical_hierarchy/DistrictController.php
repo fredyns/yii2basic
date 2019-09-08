@@ -23,7 +23,7 @@ class DistrictController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\district\index\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\geographical_hierarchy\district\DistrictSearch::class,
                 ],
@@ -34,7 +34,7 @@ class DistrictController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\district\view\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\ViewAction::class,
+                'class' => \app\components\ViewAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\District::class,
             ],
             'create' => [
@@ -43,7 +43,7 @@ class DistrictController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\district\create\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\CreateAction::class,
+                'class' => \app\components\CreateAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\District::class,
             ],
             'update' => [
@@ -52,7 +52,7 @@ class DistrictController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\district\update\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\UpdateAction::class,
+                'class' => \app\components\UpdateAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\District::class,
             ],
             'delete' => [
@@ -61,7 +61,7 @@ class DistrictController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\district\delete\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\DeleteAction::class,
+                'class' => \app\components\DeleteAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\District::class,
             ],
         ];

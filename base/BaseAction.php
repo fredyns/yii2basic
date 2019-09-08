@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\base;
 
 use Yii;
 use yii\base\Exception;

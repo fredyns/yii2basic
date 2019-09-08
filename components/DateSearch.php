@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use DateTime;
 use DateTimeZone;
@@ -10,12 +10,12 @@ use yii\helpers\ArrayHelper;
 use kartik\daterange\DateRangePicker;
 
 /**
- * Description of TimestampSearch
+ * Description of DateSearch
  * @property-read Boolean $isValid
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class TimestampSearch extends \yii\base\BaseObject
+class DateSearch extends \yii\base\BaseObject
 {
     // mandatory
     public $attribute;
@@ -26,12 +26,9 @@ class TimestampSearch extends \yii\base\BaseObject
     public $field;
     // optional
     public $separator = 'to';
-    public $format = 'Y-m-d H.i'; // format for second auto added later
-    public $formatSecond = '.s';
+    public $format = 'Y-m-d';
     public $timezone; // this will overide apps timezone
     // result
-    public $value;
-
     /**
      * @var DateTime object of minimum timestamp filter
      */
@@ -56,12 +53,11 @@ class TimestampSearch extends \yii\base\BaseObject
         }
 
         if ($this->load($range)) {
-            $this->value = $range;
             return $query->andFilterWhere([
                     'between',
                     $this->field,
-                    $this->from->getTimestamp(),
-                    $this->to->getTimestamp(),
+                    $this->from->format('Y-m-d'),
+                    $this->to->format('Y-m-d'),
             ]);
         }
 
@@ -90,23 +86,16 @@ class TimestampSearch extends \yii\base\BaseObject
         // extract from search param
         list($from_date, $to_date) = explode($this->separator, $range);
 
-        // seconds suffix
-        $from_suffix = str_replace('s', '00', $this->formatSecond);
-        $to_suffix = str_replace('s', '59', $this->formatSecond);
-
         // remove space & format value
-        $from_date = trim($from_date).$from_suffix;
-        $to_date = trim($to_date).$to_suffix;
-
-        // full format
-        $format = $this->format.$this->formatSecond;
+        $from_date = trim($from_date);
+        $to_date = trim($to_date);
 
         // timezone
         $tz = $this->getTimeZone();
 
         // date object
-        $this->from = DateTime::createFromFormat($format, $from_date, $tz);
-        $this->to = DateTime::createFromFormat($format, $to_date, $tz);
+        $this->from = DateTime::createFromFormat($this->format, $from_date, $tz);
+        $this->to = DateTime::createFromFormat($this->format, $to_date, $tz);
 
         return $this->isValid;
     }
@@ -129,13 +118,10 @@ class TimestampSearch extends \yii\base\BaseObject
     {
         $default_options = [
             'name' => $this->attribute,
-            'value' => $this->value,
             'convertFormat' => true,
             'pluginOptions' => [
                 "opens" => "left",
-                'timePicker' => true,
-                'timePicker24Hour' => true,
-                'timePickerIncrement' => 15,
+                'timePicker' => FALSE,
                 'locale' => [
                     'format' => $this->format,
                     'separator' => ' '.$this->separator.' ',

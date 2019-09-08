@@ -7,7 +7,7 @@ namespace app\controllers\api\sample;
  */
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use app\lib\ActionControl;
+use app\components\ActionControl;
 
 class BookController extends \yii\rest\ActiveController
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ViewAction extends BaseAction
+class ViewAction extends \app\base\BaseAction
 {
     public $modelClass;
 

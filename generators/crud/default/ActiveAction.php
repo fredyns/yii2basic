@@ -29,7 +29,7 @@ namespace <?= $actionNameSpace ?>;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\<?= $actionParent[$action]."\n" ?>
+class ActiveAction extends \app\components\<?= $actionParent[$action]."\n" ?>
 {
     
 }

@@ -23,7 +23,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\index\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\sample\book\PersonSearch::class,
                     'is_deleted' => 0,
@@ -35,7 +35,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\view\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\ViewAction::class,
+                'class' => \app\components\ViewAction::class,
                 'modelClass' => \app\models\sample\Book::class,
             ],
             'create' => [
@@ -44,7 +44,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\create\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\CreateAction::class,
+                'class' => \app\components\CreateAction::class,
                 'modelClass' => \app\models\sample\Book::class,
             ],
             'update' => [
@@ -53,7 +53,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\update\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\UpdateAction::class,
+                'class' => \app\components\UpdateAction::class,
                 'modelClass' => \app\models\sample\Book::class,
             ],
             'delete' => [
@@ -62,7 +62,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\delete\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\DeleteAction::class,
+                'class' => \app\components\DeleteAction::class,
                 'modelClass' => \app\models\sample\Book::class,
             ],
             'restore' => [
@@ -71,7 +71,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\restore\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\RestoreAction::class,
+                'class' => \app\components\RestoreAction::class,
                 'modelClass' => \app\models\sample\Book::class,
             ],
             'deleted' => [
@@ -80,7 +80,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\deleted\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\sample\book\PersonSearch::class,
                     'is_deleted' => 1,
@@ -93,7 +93,7 @@ class BookController extends Controller
                 //  'actionControl' => \app\actions\sample\book\archive\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\sample\book\PersonSearch::class,
                 ],

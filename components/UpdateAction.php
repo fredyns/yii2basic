@@ -1,22 +1,19 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
-use cornernote\returnurl\ReturnUrl;
 
 /**
  * Description of ActiveAction
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class DeleteAction extends BaseAction
+class UpdateAction extends \app\base\BaseAction
 {
     public $modelClass;
-    public $errorUrl;
     public $redirectUrl;
 
     /**
@@ -53,21 +50,22 @@ class DeleteAction extends BaseAction
         }
 
         try {
-            $model->delete();
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $url = $this->resolveRedirectUrl($model);
+                return $this->controller->redirect($url);
+            }
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
-            Yii::$app->getSession()->addFlash('error', $msg);
-
-            $url = $this->resolveErrorUrl($model);
-            return $this->controller->redirect($url);
+            $model->addError('_exception', $msg);
         }
 
-        $url = $this->resolveRedirectUrl($model);
-        return $this->controller->redirect($url);
+        return $this->controller->render('update', [
+                'model' => $model,
+        ]);
     }
 
     /**
-     * resolve url to redirect when deletion successfull
+     * resolve url to redirect when creation successfull
      *
      * @param \yii\db\ActiveRecord $model
      * @return array
@@ -75,17 +73,6 @@ class DeleteAction extends BaseAction
     protected function resolveRedirectUrl($model)
     {
         return $this->resolveUrl($this->redirectUrl, $model);
-    }
-
-    /**
-     * resolve url to fallback when deletion failed
-     *
-     * @param \yii\db\ActiveRecord $model
-     * @return array
-     */
-    protected function resolveErrorUrl($model)
-    {
-        return $this->resolveUrl($this->errorUrl, $model);
     }
 
 }

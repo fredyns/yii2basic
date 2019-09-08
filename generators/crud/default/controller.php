@@ -45,7 +45,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\index\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \<?= $generator->searchModelClass ?>::class,
 <?php if ($softdelete): ?>
@@ -59,7 +59,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\view\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\ViewAction::class,
+                'class' => \app\components\ViewAction::class,
                 'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'create' => [
@@ -68,7 +68,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\create\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\CreateAction::class,
+                'class' => \app\components\CreateAction::class,
                 'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'update' => [
@@ -77,7 +77,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\update\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\UpdateAction::class,
+                'class' => \app\components\UpdateAction::class,
                 'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'delete' => [
@@ -86,7 +86,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\delete\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\DeleteAction::class,
+                'class' => \app\components\DeleteAction::class,
                 'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
 <?php if ($softdelete): ?>
@@ -96,7 +96,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\restore\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\RestoreAction::class,
+                'class' => \app\components\RestoreAction::class,
                 'modelClass' => \<?= $generator->modelClass ?>::class,
             ],
             'deleted' => [
@@ -105,7 +105,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\deleted\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \<?= $generator->searchModelClass ?>::class,
                     'is_deleted' => 1,
@@ -118,7 +118,7 @@ class <?= $controllerClassName ?> extends Controller
                 //  'actionControl' => \<?= $actionParentNameSpace ?>\archive\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \<?= $generator->searchModelClass ?>::class,
                 ],

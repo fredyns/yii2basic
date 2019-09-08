@@ -23,7 +23,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\index\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\sample\person\PersonSearch::class,
                     'is_deleted' => 0,
@@ -35,7 +35,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\view\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\ViewAction::class,
+                'class' => \app\components\ViewAction::class,
                 'modelClass' => \app\models\sample\Person::class,
             ],
             'create' => [
@@ -44,7 +44,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\create\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\CreateAction::class,
+                'class' => \app\components\CreateAction::class,
                 'modelClass' => \app\models\sample\Person::class,
             ],
             'update' => [
@@ -53,7 +53,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\update\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\UpdateAction::class,
+                'class' => \app\components\UpdateAction::class,
                 'modelClass' => \app\models\sample\Person::class,
             ],
             'delete' => [
@@ -62,7 +62,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\delete\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\DeleteAction::class,
+                'class' => \app\components\DeleteAction::class,
                 'modelClass' => \app\models\sample\Person::class,
             ],
             'restore' => [
@@ -71,7 +71,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\restore\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\RestoreAction::class,
+                'class' => \app\components\RestoreAction::class,
                 'modelClass' => \app\models\sample\Person::class,
             ],
             'deleted' => [
@@ -80,7 +80,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\deleted\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\sample\person\PersonSearch::class,
                     'is_deleted' => 1,
@@ -93,7 +93,7 @@ class PersonController extends Controller
                 //  'actionControl' => \app\actions\sample\person\archive\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\sample\person\PersonSearch::class,
                 ],

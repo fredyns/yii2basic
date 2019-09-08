@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use cornernote\returnurl\ReturnUrl;
-use app\lib\ActionControl;
+use app\components\ActionControl;
 
 /**
  * Description of ModelMenu

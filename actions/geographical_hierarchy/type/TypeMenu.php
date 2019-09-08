@@ -6,7 +6,7 @@ namespace app\actions\geographical_hierarchy\type;
  * Action menu manager for model Type *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class TypeMenu extends \app\lib\ModelMenu
+class TypeMenu extends \app\components\ModelMenu
 {
     public static $controller = '/geographical_hierarchy/type';
     public static $softdelete = false;

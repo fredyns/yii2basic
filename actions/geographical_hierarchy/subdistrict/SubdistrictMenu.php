@@ -6,7 +6,7 @@ namespace app\actions\geographical_hierarchy\subdistrict;
  * Action menu manager for model Subdistrict *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class SubdistrictMenu extends \app\lib\ModelMenu
+class SubdistrictMenu extends \app\components\ModelMenu
 {
     public static $controller = '/geographical_hierarchy/subdistrict';
     public static $softdelete = false;

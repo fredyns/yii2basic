@@ -7,7 +7,7 @@ namespace app\actions\geographical_hierarchy\city\index;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\IndexAction
+class ActiveAction extends \app\components\IndexAction
 {
     
 }

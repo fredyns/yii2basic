@@ -39,8 +39,8 @@ namespace <?= StringHelper::dirname($generator->searchModelClass) ?>;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\lib\DateSearch;
-use app\lib\TimestampSearch;
+use app\components\DateSearch;
+use app\components\TimestampSearch;
 use <?= $generator->modelClass ?>;
 
 /**

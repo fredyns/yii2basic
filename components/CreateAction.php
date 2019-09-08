@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -10,7 +10,7 @@ use yii\base\InvalidConfigException;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class CreateAction extends BaseAction
+class CreateAction extends \app\base\BaseAction
 {
     public $modelClass;
     public $redirectUrl;

@@ -23,7 +23,7 @@ class TypeController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\type\index\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\IndexAction::class,
+                'class' => \app\components\IndexAction::class,
                 'searchClass' => [
                     'class' => \app\actions\geographical_hierarchy\type\TypeSearch::class,
                 ],
@@ -34,7 +34,7 @@ class TypeController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\type\view\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\ViewAction::class,
+                'class' => \app\components\ViewAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\Type::class,
             ],
             'create' => [
@@ -43,7 +43,7 @@ class TypeController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\type\create\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\CreateAction::class,
+                'class' => \app\components\CreateAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\Type::class,
             ],
             'update' => [
@@ -52,7 +52,7 @@ class TypeController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\type\update\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\UpdateAction::class,
+                'class' => \app\components\UpdateAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\Type::class,
             ],
             'delete' => [
@@ -61,7 +61,7 @@ class TypeController extends Controller
                 //  'actionControl' => \app\actions\geographical_hierarchy\type\delete\ActionControl::class,
                 //
                 //  generic action
-                'class' => \app\lib\DeleteAction::class,
+                'class' => \app\components\DeleteAction::class,
                 'modelClass' => \app\models\geographical_hierarchy\Type::class,
             ],
         ];

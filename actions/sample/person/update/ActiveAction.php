@@ -7,7 +7,7 @@ namespace app\actions\sample\person\update;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\UpdateAction
+class ActiveAction extends \app\components\UpdateAction
 {
     
 }

@@ -7,7 +7,7 @@ namespace app\actions\sample\book\view;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\ViewAction
+class ActiveAction extends \app\components\ViewAction
 {
     
 }

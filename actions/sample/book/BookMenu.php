@@ -6,7 +6,7 @@ namespace app\actions\sample\book;
  * Action menu manager for model Book *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class BookMenu extends \app\lib\ModelMenu
+class BookMenu extends \app\components\ModelMenu
 {
     public static $controller = '/sample/book';
     public static $softdelete = true;

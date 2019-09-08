@@ -37,7 +37,7 @@ namespace <?= StringHelper::dirname($generator->searchModelClass) ?>;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class <?= $modelClassName ?>Menu extends \app\lib\ModelMenu
+class <?= $modelClassName ?>Menu extends \app\components\ModelMenu
 {
     public static $controller = '<?= $route ?>';
     public static $softdelete = <?= $softdelete ? 'true' : 'false' ?>;

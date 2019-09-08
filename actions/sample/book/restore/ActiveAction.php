@@ -7,7 +7,7 @@ namespace app\actions\sample\book\restore;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveAction extends \app\lib\RestoreAction
+class ActiveAction extends \app\components\RestoreAction
 {
     
 }

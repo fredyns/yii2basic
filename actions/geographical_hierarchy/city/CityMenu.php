@@ -6,7 +6,7 @@ namespace app\actions\geographical_hierarchy\city;
  * Action menu manager for model City *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class CityMenu extends \app\lib\ModelMenu
+class CityMenu extends \app\components\ModelMenu
 {
     public static $controller = '/geographical_hierarchy/city';
     public static $softdelete = false;

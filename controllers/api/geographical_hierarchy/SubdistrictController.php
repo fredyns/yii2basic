@@ -7,7 +7,7 @@ namespace app\controllers\api\geographical_hierarchy;
  */
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use app\lib\ActionControl;
+use app\components\ActionControl;
 
 class SubdistrictController extends \yii\rest\ActiveController
 {

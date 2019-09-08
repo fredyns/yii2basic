@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -12,7 +12,7 @@ use yii\web\NotFoundHttpException;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class IndexAction extends BaseAction
+class IndexAction extends \app\base\BaseAction
 {
     public $searchClass;
     public $is_deleted = NULL;

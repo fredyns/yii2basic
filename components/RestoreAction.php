@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -13,7 +13,7 @@ use cornernote\returnurl\ReturnUrl;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class RestoreAction extends BaseAction
+class RestoreAction extends \app\base\BaseAction
 {
     public $modelClass;
     public $errorUrl;

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib;
+namespace app\components;
 
 use Yii;
 use yii\base\Exception;
@@ -22,7 +22,7 @@ use cornernote\returnurl\ReturnUrl;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ModelAction extends BaseAction
+class ModelAction extends \app\base\BaseAction
 {
     /**
      * @var string primary key attribute name of model
