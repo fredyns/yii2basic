@@ -22,7 +22,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public static function getFilePath()
     {
-        return Yii::getAlias('@app').'/gii/model_namespaces.json';
+        return Yii::getAlias('@app').'/gii/model_classes.json';
     }
 
     /**
