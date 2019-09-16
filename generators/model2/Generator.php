@@ -237,6 +237,31 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
         return $this->ns."\\".$this->generateClassName($tableName);
     }
 
+    /**
+     * Generates the attribute labels for the specified table.
+     * @param \yii\db\TableSchema $table the table schema
+     * @return array the generated attribute labels (name => label)
+     */
+    public function generateLabels($table)
+    {
+        $labels = [];
+        foreach ($table->columns as $column) {
+            if ($this->generateLabelsFromComments && !empty($column->comment)) {
+                $labels[$column->name] = $column->comment;
+            } elseif (!strcasecmp($column->name, 'id')) {
+                $labels[$column->name] = 'ID';
+            } else {
+                $label = Inflector::camel2words($column->name);
+                if (!empty($label) && substr_compare($label, ' id', -3, 3, true) === 0) {
+                    $label = substr($label, 0, -3);
+                }
+                $labels[$column->name] = $label;
+            }
+        }
+
+        return $labels;
+    }
+
     public function isNeedAlias($hasMany, $refTable, $fk)
     {
         if ($hasMany) {
