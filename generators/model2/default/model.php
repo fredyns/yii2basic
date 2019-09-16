@@ -68,7 +68,7 @@ use app\models\Profile;
  * @method void restore() bring back form trash
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
+class <?= $className ?> extends \<?= ltrim($generator->baseClass, "\\") . "\n" ?>
 {
 <?php if ($tableSchema->getColumn('created_by') !== null): ?>
     const CREATEDBY = 'createdBy';
