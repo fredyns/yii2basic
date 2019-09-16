@@ -23,7 +23,7 @@ class SaveForm extends \schmunk42\giiant\helpers\SaveForm
             $js[] = "\"".$k."\" : ".$row['jsonData'];
         }
 
-        return 'var savedForms = {'.str_replace('\\', '\\\\', implode(',', $js)).'};';
+        return 'var savedForms = {'.implode(',', $js).'};';
     }
 
     public static function jsFillForm()
