@@ -177,7 +177,7 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
                         'className' => $relatedModelClassName,
                         'query' => $originalQueryCode.";",
                     ];
-                    $relations[$originTableSchema->fullName][$relationName] = $originalRelation;
+                    $relations[$originTableSchema->fullName]['hasOne'][$relationName] = $originalRelation;
 
                     /**
                      * menambahkan relasi kebalikannya
@@ -202,7 +202,7 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
                         'className' => $originModelClassName,
                         'query' => $relatedQueryCode."        ;",
                     ];
-                    $relations[$relatedTableSchema->fullName][$relatedRelationName] = $relatedRelation;
+                    $relations[$relatedTableSchema->fullName][$hasWhat][$relatedRelationName] = $relatedRelation;
                 }
 
                 if (($junctionFks = $this->checkJunctionTable($originTableSchema)) === false) {
