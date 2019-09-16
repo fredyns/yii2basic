@@ -80,6 +80,7 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
      */
     public function generate()
     {
+        $this->enableI18N = TRUE;
         $this->modelClasses = \app\generators\modelclass\Generator::readData();
         $files = [];
         $relations = $this->generateRelations();
