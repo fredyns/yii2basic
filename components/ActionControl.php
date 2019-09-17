@@ -3,169 +3,145 @@
 namespace app\components;
 
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\db\ActiveRecord;
-use yii\web\ForbiddenHttpException;
+use yii\base\UserException;
 
 /**
- * base class to check whether an action is executable
- * regarding user log in status & all situation
- * 
- * How to use:
- *  $control = new ActionControl($model);
- * 
- *  if ($control->isPassed) {
- *      // run action
- *  }
- * 
- * Or:
- *  if (ActionControl::check($model)) {
- *      // run action
- *  }
- * 
- * inherited access control must overide run() function to define assessment
- * 
- * @property ActiveRecord $model particular model to check
- * @property Boolean $isPassed whether user passed access control to run action
- * @property String[] $messages error messages produced on checking process
+ * simple action control
+ * contain function to check whether particular action is runnable by user
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActionControl extends \yii\base\Component
+class ActionControl
 {
-    public $model;
-    public $messages = [];
-    public $params = [];
+    public static $error = [];
+    public static $catchError = FALSE;
 
     /**
-     * build access control instance
-     * @param array $config
-     * @return static
-     * @throws InvalidConfigException
-     */
-    public static function build($config)
-    {
-        /* @var $access_control ActionControl */
-        $access_control = Yii::createObject($config);
-        $class = self::class;
-
-        if (($access_control instanceof $class) == FALSE) {
-            throw new InvalidConfigException("Access control must extend from {$class}.");
-        }
-
-        return $access_control;
-    }
-
-    /**
-     * run access control check
-     * 
-     * @param array $config
-     * @throws InvalidConfigException
-     * @throws ForbiddenHttpException
-     */
-    public static function check($config, $throw = false)
-    {
-        /* @var $access_control ActionControl */
-        $access_control = static::build($config);
-
-        if (!$access_control->isPassed && $throw) {
-            throw $access_control->exception();
-        }
-
-        return $access_control->isPassed;
-    }
-    /**
-     * @var Boolean
-     */
-    private $_isPassed;
-
-    /**
-     * chcek whether user pass access control to run action
-     * @param Boolean $force
-     * @return Boolean
-     */
-    public function getIsPassed($force = false)
-    {
-        if ($this->_isPassed === NULL OR $force) {
-            $this->resetState();
-            $this->run();
-        }
-
-        $result = $this->_isPassed ? 'passed' : 'blocked';
-        $log = get_called_class()
-            .'('.$this->model::tableName().'#'.$this->model->id.'): '.$result;
-        
-        if (!$this->_isPassed) {
-            $log .= "\n- ".implode("\n- ",$this->messages);
-        }
-        
-        Yii::debug($log);
-
-        return $this->_isPassed;
-    }
-
-    /**
-     * all assessment logic to check whether user granted to run action
+     * check whether particular action is executable
+     * @param type $action
+     * @param type $params
      * @return boolean
      */
-    public function run()
+    public static function can($action, $params = [])
     {
-        return $this->passed();
+        $function = 'can'.Inflector::camelize($action);
+
+        if (method_exists(static::class, $function)) {
+            return call_user_func_array([static::class, $function], $params);
+        }
+
+        return static::addError(Yii::t('app', 'The requested page does not exist.'));
     }
 
     /**
-     * reset checking state
+     * ready to catch any error message
      */
-    protected function resetState()
+    public static function catchError()
     {
-        $this->_isPassed = NULL;
-        $this->messages = [];
+        static::resetError();
+        static::$catchError = TRUE;
     }
 
     /**
-     * set access control to be true
-     * @return Boolean
+     * ignore any error message
      */
-    public function passed()
+    public static function suppressError()
     {
-        return $this->_isPassed = TRUE;
+        static::$catchError = FALSE;
     }
 
     /**
-     * set access control to be false
-     * and save message
-     * @return Boolean
+     * get all error message as joined string
+     * @param string $glue
+     * @return string
      */
-    public function blocked($message)
+    public static function getErrorText($glue = "\n")
     {
-        $this->messages[] = $message;
-
-        return $this->_isPassed = FALSE;
+        return implode($glue, static::$error);
     }
 
     /**
-     * put messages to session
+     * get error message as exception object
+     * @param string $glue
+     * @return UserException
      */
-    public function setSessionMessages($category = 'error')
+    public static function exception($glue = "\n", $reset = true)
     {
-        foreach ($this->messages as $msg) {
+        $errorText = static::$error ? static::getErrorText($glue) : Yii::t('messages', "Unknown error.");
+
+        if ($reset) {
+            static::resetError();
+        }
+
+        return new UserException($errorText);
+    }
+
+    /**
+     * put error messages to session
+     * @param string $category
+     */
+    public static function flashMessages($category = 'error', $reset = true)
+    {
+        foreach (static::$error as $msg) {
             Yii::$app->getSession()->addFlash($category, $msg);
         }
+
+        if ($reset) {
+            static::resetError();
+        }
     }
 
     /**
-     * throw messages as exception
-     * @return ForbiddenHttpException
+     * reset error message handling
      */
-    public function exception()
+    public static function resetError()
     {
-        if (count($this->messages) > 0) {
-            $msg = implode("\n", $this->messages);
-        } else {
-            $msg = Yii::t('app', 'Action is forbidden for unknown reason.');
+        static::$error = [];
+        static::suppressError();
+    }
+
+    /**
+     * put error message & return false as result
+     * @param type $message
+     * @return boolean
+     */
+    public static function addError($message)
+    {
+        if (static::$catchError) {
+            static::$error[] = $message;
         }
 
-        return new ForbiddenHttpException($msg);
+        return FALSE;
+    }
+
+    /**
+     * check whether user is logged-in
+     * @return boolean
+     */
+    public static function isLoggedIn()
+    {
+        if (Yii::$app->user->isGuest) {
+            return static::addError(Yii::t('messages', "Please login first."));
+        }
+
+        return true;
+    }
+
+    /**
+     * check whether user is system administrator
+     * @return boolean
+     */
+    public static function isAdmin()
+    {
+        if (!static::isLoggedIn()) {
+            return FALSE;
+        }
+
+        if (Yii::$app->user->identity->isAdmin == FALSE) {
+            return static::addError(Yii::t('messages', "Page forbidden."));
+        }
+
+        return true;
     }
 
 }
