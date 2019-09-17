@@ -8,7 +8,6 @@ use yii\helpers\StringHelper;
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
 /* @var $tableSchema \yii\db\TableSchema  */
-/* @var $giiConfigs array  */
 /* @var $softdelete bool  */
 /* @var $modelClassName string  */
 /* @var $modelSlug string  */
@@ -17,11 +16,9 @@ use yii\helpers\StringHelper;
 /* @var $controllerClassName string  */
 /* @var $controllerNameSpace string  */
 /* @var $moduleNameSpace string  */
+/* @var $moduleId string  */
 /* @var $subPath string  */
-/* @var $actionParentNameSpace string  */
-/* @var $actionParent string[]  */
 /* @var $apiNameSpace string  */
-/* @var $menuNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 

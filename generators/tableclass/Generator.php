@@ -1,6 +1,6 @@
 <?php
 
-namespace app\generators\modelclass;
+namespace app\generators\tableclass;
 
 use Yii;
 use yii\base\NotSupportedException;
@@ -22,7 +22,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public static function getFilePath()
     {
-        return Yii::getAlias('@app').'/gii/model_classes.json';
+        return Yii::getAlias('@app').'/gii/_table_classes.json';
     }
 
     /**
@@ -68,7 +68,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function getName()
     {
-        return 'Model Classes';
+        return 'Table Classes';
     }
 
     /**
@@ -76,7 +76,8 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function getDescription()
     {
-        return 'This generates model class colection as refference for model\'s relation & rules.';
+        return 'Generates refference of model classes used for model\'s relation & rules. '
+        . 'Also generate formdata for app-code-generator.';
     }
 
     /**
@@ -104,7 +105,10 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function requiredTemplates()
     {
-        return ['formdata.php'];
+        return [
+            'model-formdata.php',
+            'crud-formdata.php',
+        ];
     }
 
     /**
@@ -122,12 +126,18 @@ class Generator extends \yii\gii\generators\model\Generator
                 'modelClass' => StringHelper::basename($modelClass),
                 'ns' => str_replace("\\", "\\\\", StringHelper::dirname($modelClass)),
             ];
-            $suffix = 'MyModel2'; // sesuai generator yg mau dipake
+            // form data for model generator
+            $suffix = '_MyModel'; // sesuai generator yg mau dipake
             $formDataFile = Yii::getAlias('@app').'/gii/'.$tableName.$suffix.'.json';
             $files[] = new CodeFile(
-                $formDataFile, $this->render('formdata.php', $params)
+                $formDataFile, $this->render('model-formdata.php', $params)
             );
-
+            // form data for CRUD generator
+            $suffix = '_MyCRUD'; // sesuai generator yg mau dipake
+            $formDataFile = Yii::getAlias('@app').'/gii/'.$tableName.$suffix.'.json';
+            $files[] = new CodeFile(
+                $formDataFile, $this->render('crud-formdata.php', $params)
+            );
         }
 
         return $files;

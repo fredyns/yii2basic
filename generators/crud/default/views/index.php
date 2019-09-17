@@ -6,24 +6,23 @@ use yii\helpers\StringHelper;
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
 /* @var $tableSchema \yii\db\TableSchema  */
-/* @var $giiConfigs array  */
 /* @var $softdelete bool  */
 /* @var $modelClassName string  */
 /* @var $modelSlug string  */
 /* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $searchClassName string search model class name w/o namespace  */
+/* @var $acNameSpace string action control namespace */
+/* @var $acClassName string action control class name w/o namespace */
 /* @var $controllerClassName string  */
 /* @var $controllerNameSpace string  */
 /* @var $moduleNameSpace string  */
+/* @var $moduleId string  */
 /* @var $subPath string  */
-/* @var $actionParentNameSpace string  */
-/* @var $actionParent string[]  */
 /* @var $apiNameSpace string  */
-/* @var $menuNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
-$menuClassName = $modelClassName.'Menu';
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 $safeAttributes = $model->safeAttributes();
@@ -35,25 +34,30 @@ if (empty($safeAttributes)) {
 echo "<?php\n";
 ?>
 
+use yii\bootstrap\ButtonDropdown;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use <?= $menuNameSpace."\\".$menuClassName ?>;
+use cornernote\returnurl\ReturnUrl;
+use <?= $acNameSpace ?>\<?= $acClassName ?>;
+use <?= $generator->searchModelClass ?>;
 use <?= $generator->modelClass ?>;
-use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel <?= $generator->searchModelClass ?> */
+/* @var $searchModel <?= $searchClassName ?> */
 
 $this->title = $searchModel->modelLabel(true);
+<?php if ($moduleId != 'app'): ?>
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId ?>', '<?= Inflector::camel2words($moduleId) ?>');
+<?php endif; ?>
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/'.$subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="giiant-crud <?= $modelSlug ?>-index">
+<div class="app-crud <?= $modelSlug ?>-index">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
@@ -67,27 +71,40 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="pull-right">
             <div>
                 <?= "<?=\n" ?>
-                SplitDropdown::widget([
-                    'label' => <?= $menuClassName ?>::iconFor('create').'&nbsp; '.<?= $menuClassName ?>::labelFor('create'),
-                    'encodeLabel' => FALSE,
-                    'buttonAction' => 'create',
+                ButtonDropdown::widget([
+                    'label' => 'Menu',
                     'options' => [
                         'class' => 'btn btn-primary',
                     ],
-                    'dropdownActions' => [
-                        'create',
-<?php if($softdelete):?>
-                        [
-                            'deleted',
-                            'archive',
+                    'dropdown' => [
+                        'items' => [
+                            [
+                                'label' => '<span class="glyphicon glyphicon-plus"></span> '.Yii::t('cruds', "New"),
+                                'encode' => FALSE,
+                                'url' => [
+                                    'create',
+                                    'ru' => ReturnUrl::getToken(),
+                                ],
+                                'visible' => <?= $acClassName ?>::canCreate(),
+                            ],
+                            //'<li role="presentation" class="divider"></li>',
+<?php if ($softdelete): ?>
+                            [
+                                'label' => '<span class="glyphicon glyphicon-trash"></span> '.Yii::t('cruds', "List Deleted"),
+                                'encode' => FALSE,
+                                'url' => ['list-deleted'],
+                                'visible' => <?= $acClassName ?>::canListDeleted(),
+                            ],
+                            [
+                                'label' => '<span class="glyphicon glyphicon-hdd"></span> '.Yii::t('cruds', "List Archive"),
+                                'encode' => FALSE,
+                                'url' => ['list-archive'],
+                                'visible' => <?= $acClassName ?>::canListArchive(),
+                            ],
+<?php endif; ?>
                         ],
-<?php endif;?>
                     ],
-                    'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
-                    'urlCreator' => function($action, $model) {
-                        return <?= $menuClassName ?>::createUrlFor($action, $model);
-                    },
-                ]);
+                ])
                 ?>
             </div>
         </div>
@@ -186,25 +203,26 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endif;?>
 <?php endforeach;?>
                 [
-                    'class' => \app\components\ActionColumn::class,
-                    'contentRenderer' => function($model, $key, $index) {
-                        return SplitDropdown::widget([
-                                'model' => $model,
-                                'label' => <?= $menuClassName ?>::iconFor('view').' '.<?= $menuClassName ?>::labelFor('view'),
-                                'buttonAction' => 'view',
-                                'dropdownActions' => [
-                                    'view',
-                                    'update',
-                                    [
-                                        'delete',
-                                    ],
-                                ],
-                                'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
-                                'urlCreator' => function($action, $model) {
-                                    return <?= $menuClassName ?>::createUrlFor($action, $model);
-                                },
-                        ]);
+                    'class' => \kartik\grid\ActionColumn::class,
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                            $label = '<span class="glyphicon glyphicon-eye-open"></span>';
+                            $options = [
+                                'title' => Yii::t('cruds', 'View'),
+                                'aria-label' => Yii::t('cruds', 'View'),
+                                'data-pjax' => '0',
+                            ];
+                            return Html::a($label, $url, $options);
+                        },
+                    ],
+                    'urlCreator' => function($action, $model, $key, $index) {
+                        // using the column name as key, not mapping to 'id' like the standard generator
+                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id.'/'.$action : $action;
+                        return Url::toRoute($params);
                     },
+                    'contentOptions' => ['nowrap' => 'nowrap']
                 ],
             ],
         ]);

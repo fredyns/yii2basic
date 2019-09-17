@@ -6,20 +6,20 @@ use yii\helpers\StringHelper;
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
 /* @var $tableSchema \yii\db\TableSchema  */
-/* @var $giiConfigs array  */
 /* @var $softdelete bool  */
 /* @var $modelClassName string  */
 /* @var $modelSlug string  */
 /* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $searchClassName string search model class name w/o namespace  */
+/* @var $acNameSpace string action control namespace */
+/* @var $acClassName string action control class name w/o namespace */
 /* @var $controllerClassName string  */
 /* @var $controllerNameSpace string  */
 /* @var $moduleNameSpace string  */
+/* @var $moduleId string  */
 /* @var $subPath string  */
-/* @var $actionParentNameSpace string  */
-/* @var $actionParent string[]  */
 /* @var $apiNameSpace string  */
-/* @var $menuNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
@@ -33,14 +33,17 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $this yii\web\View  */
 /* @var $model <?= $generator->modelClass ?>  */
 
-$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','New <?= $modelName ?>');
+$this->title = Yii::t('<?= trim($moduleId.'/'.$subPath, '/') ?>','New <?= $modelName ?>');
+<?php if ($moduleId != 'app'): ?>
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId ?>', '<?= Inflector::camel2words($moduleId) ?>');
+<?php endif; ?>
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/'.$subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="giiant-crud <?= $modelSlug ?>-create">
+<div class="app-crud <?= $modelSlug ?>-create">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">

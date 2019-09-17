@@ -26,6 +26,9 @@ class SaveForm extends \schmunk42\giiant\helpers\SaveForm
         return 'var savedForms = {'.implode(',', $js).'};';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function jsFillForm()
     {
         return '
@@ -74,6 +77,14 @@ class SaveForm extends \schmunk42\giiant\helpers\SaveForm
         }    
     }
         ';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function loadSavedForms($generatorName)
+    {
+        return parent::loadSavedForms('_'.$generatorName);
     }
 
 }

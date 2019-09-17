@@ -6,20 +6,20 @@ use yii\helpers\StringHelper;
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
 /* @var $tableSchema \yii\db\TableSchema  */
-/* @var $giiConfigs array  */
 /* @var $softdelete bool  */
 /* @var $modelClassName string  */
 /* @var $modelSlug string  */
 /* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $searchClassName string search model class name w/o namespace  */
+/* @var $acNameSpace string action control namespace */
+/* @var $acClassName string action control class name w/o namespace */
 /* @var $controllerClassName string  */
 /* @var $controllerNameSpace string  */
 /* @var $moduleNameSpace string  */
+/* @var $moduleId string  */
 /* @var $subPath string  */
-/* @var $actionParentNameSpace string  */
-/* @var $actionParent string[]  */
 /* @var $apiNameSpace string  */
-/* @var $menuNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
@@ -54,8 +54,10 @@ foreach ($tableSchema->getColumnNames() as $attribute) {
 }
 ?>
     <div class="form-group">
-        <?= '<?= ' ?>Html::submitButton(<?= $generator->generateString('Search') ?>, ['class' => 'btn btn-primary']) ?>
-        <?= '<?= ' ?>Html::resetButton(<?= $generator->generateString('Reset') ?>, ['class' => 'btn btn-default']) ?>
+        <div class="col-sm-8 col-sm-offset-2">
+            <?= '<?= ' ?>Html::submitButton(<?= $generator->generateString('Search') ?>, ['class' => 'btn btn-primary']) ?>
+            <?= '<?= ' ?>Html::resetButton(<?= $generator->generateString('Reset') ?>, ['class' => 'btn btn-default']) ?>
+        </div>
     </div>
 
     <?= '<?php' ?> ActiveForm::end(); ?>

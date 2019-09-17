@@ -2,7 +2,7 @@
 
 namespace app\generators\crud\providers;
 
-use schmunk42\giiant\generators\model\Generator as ModelGenerator;
+use app\generators\model\Generator as ModelGenerator;
 use yii\db\ActiveRecord;
 use yii\db\ColumnSchema;
 use yii\helpers\ArrayHelper;
@@ -44,12 +44,28 @@ class RelationProvider extends \schmunk42\giiant\base\Provider
             return null;
         }
         $relation = $this->generator->getRelationByColumn($this->generator->modelClass, $column, ['belongs_to']);
-        $giiConfigs = \app\generators\giiconfig\Generator::readMetadata();
-        $select2 = ArrayHelper::getValue($giiConfigs, $this->generator->getTableSchema()->fullName.'.select2.'.$column->name);
 
-        if ($select2) {
+        if ($relation) {
             $pk = key($relation->link);
             $name = $this->generator->getModelNameAttribute($relation->modelClass);
+            $modelClass = $this->generator->modelClass;
+            $relationProperty = lcfirst((new ModelGenerator())->generateRelationName(
+                    [$relation], $modelClass::getTableSchema(), $column->name, $relation->multiple
+            ));
+            $nameSpaceArray = explode("\\", $relation->modelClass);
+            $relationClassName = array_pop($nameSpaceArray);
+            if (isset($nameSpaceArray[1]) && $nameSpaceArray[1] == 'modules' && isset($nameSpaceArray[2])) {
+                $moduleId = $nameSpaceArray[2];
+                $subPath = isset($nameSpaceArray[4]) ? $nameSpaceArray[4] : null;
+            } else {
+                $moduleId = 'app';
+                $subPath = isset($nameSpaceArray[2]) ? $nameSpaceArray[2] : null;
+            }
+            $apiUri = trim("/api/{$moduleId}/{$subPath}", "/").'/'.Inflector::slug($relationClassName);
+            $apiUri = "/api/"
+                .($moduleId != 'app' ? $moduleId.'/' : '')
+                .($subPath ? $subPath.'/' : '')
+                .Inflector::slug($relationClassName);
             $method = __METHOD__;
             return <<<EOS
 
@@ -57,7 +73,7 @@ class RelationProvider extends \schmunk42\giiant\base\Provider
     \$form
     ->field(\$model, '{$column->name}')
     ->widget(\kartik\select2\Select2::class, [
-        'initValueText' => \yii\helpers\ArrayHelper::getValue(\$model, '{$select2['relationName']}.{$name}', \$model->{$column->name}),
+        'initValueText' => \yii\helpers\ArrayHelper::getValue(\$model, '{$relationProperty}.{$name}', \$model->{$column->name}),
         'options' => ['placeholder' => Yii::t('app', 'searching...')],
         'pluginOptions' => [
             'allowClear' => true,
@@ -67,7 +83,8 @@ class RelationProvider extends \schmunk42\giiant\base\Provider
                 'errorLoading' => new \yii\web\JsExpression('function () { return "'.{$this->generator->generateString('waiting results...')}.'"; }'),
             ],
             'ajax' => [
-                'url' => \yii\helpers\Url::to(['{$select2['uri']}']),
+                //api/*module_id/*subpath/*model
+                'url' => \yii\helpers\Url::to(['{$apiUri}']),
                 'dataType' => 'json',
                 'data' => new \yii\web\JsExpression('function(params) { return {q:params.term}; }')
             ],
@@ -213,7 +230,6 @@ EOS;
             return $code;
         }
     }
-
     /**
      * Renders a grid view for a given relation.
      *
@@ -223,4 +239,5 @@ EOS;
      *
      * @return mixed|string
      */
+
 }

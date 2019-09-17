@@ -67,45 +67,14 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $params = $this->generateParams();
 
         /**
-         * define actions to generate
-         */
-        $action_list = ['index', 'create', 'view', 'update', 'delete'];
-
-        if ($params['softdelete']) {
-            $action_list = ArrayHelper::merge($action_list, ['restore', 'deleted', 'archive']);
-        }
-
-        /**
-         * enumerate each actions
-         */
-        foreach ($action_list as $action) {
-            /**
-             * add action params
-             */
-            $params['action'] = $action;
-            $params['actionNameSpace'] = $params['actionParentNameSpace'].'\\'.$action;
-
-            /**
-             * generate access control for current action
-             */
-            $files[] = $this->generateActionControl($action, $params);
-
-            /**
-             * generate action class for current action
-             */
-            $files[] = $this->generateActiveAction($action, $params);
-
-            /**
-             * remove action params
-             */
-            unset($params['action']);
-            unset($params['actionNameSpace']);
-        }
-
-        /**
          * generate search
          */
         $files[] = $this->generateSearch($params);
+
+        /**
+         * generate action control
+         */
+        $files[] = $this->generateActionControl($params);
 
         /**
          * generate controller
@@ -118,17 +87,13 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $files[] = $this->generateRestAPI($params);
 
         /**
-         * generate model menu
-         */
-        $files[] = $this->generateModelMenu($params);
-
-        /**
          * generate view
          */
         $viewPath = $this->getViewPath();
         $templatePath = $this->getTemplatePath().'/views';
+        $softdeleteViews = ['list-archive.php', 'list-deleted.php'];
         foreach (scandir($templatePath) as $file) {
-            if (empty($this->searchModelClass) && $file === '_search.php') {
+            if ($params['softdelete'] && in_array($file, $softdeleteViews)) {
                 continue;
             }
             if (is_file($templatePath.'/'.$file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
@@ -159,37 +124,38 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         $this->controllerClass = ltrim($this->controllerClass, '\\');
         // global
         $tableSchema = $this->getTableSchema();
-        $giiConfigs = \app\generators\giiconfig\Generator::readMetadata();
         $softdelete = ($tableSchema->getColumn('is_deleted') !== null);
         $modelClassName = StringHelper::basename($this->modelClass);
         $modelSlug = Inflector::camel2id($modelClassName, '-', true);
         $modelName = Inflector::camel2words($modelClassName);
         $model = new $this->modelClass;
+        $searchClassName = StringHelper::basename($this->searchModelClass);
+        // act control
+        $acNameSpace = StringHelper::dirname($this->searchModelClass);
+        $acClassName = $modelClassName.'AC';
         // controller
         $controllerClassName = StringHelper::basename($this->controllerClass);
         $controllerNameSpace = StringHelper::dirname($this->controllerClass);
         // parent scope
-        $moduleNameSpace = StringHelper::dirname($controllerNameSpace);
-        $subNameSpace = StringHelper::basename($controllerNameSpace);
-        $subPath = ($subNameSpace === 'controllers') ? FALSE : Inflector::camel2id($subNameSpace, '_');
+        /**
+         * namespace pattern:
+         * app/controllers/sub
+         * app/modules/moduleId/controllers/sub
+         */
+        $controllerNameSpaceArray = explode("\\", $controllerNameSpace);
+        if (isset($controllerNameSpaceArray[1]) && $controllerNameSpaceArray[1] == 'modules' && isset($controllerNameSpaceArray[2])) {
+            $moduleId = $controllerNameSpaceArray[2];
+            $moduleNameSpace = "app\\modules\\{$moduleId}";
+            $subPath = isset($controllerNameSpaceArray[4]) ? $controllerNameSpaceArray[4] : null;
+        } else {
+            $moduleId = 'app';
+            $moduleNameSpace = "app";
+            $subPath = isset($controllerNameSpaceArray[2]) ? $controllerNameSpaceArray[2] : null;
+        }
         // actions
-        $actionParentNameSpace = 'app\\actions'
-            .($subPath ? '\\'.$subPath : '')
-            .'\\'.Inflector::camel2id($modelClassName, '_');
-        $actionParent = [
-            'index' => 'IndexAction',
-            'create' => 'CreateAction',
-            'view' => 'ViewAction',
-            'update' => 'UpdateAction',
-            'delete' => 'DeleteAction',
-            'restore' => 'RestoreAction',
-            'deleted' => 'IndexAction',
-            'archive' => 'IndexAction',
-        ];
-        $apiNameSpace = 'app\\controllers\\api'.($subPath ? '\\'.$subPath : '');
-        $menuNameSpace = 'app\\actions\\'                        // parent name space
-            .($subPath ? $subPath.'\\' : '')                // subpath, if any
-            .Inflector::camel2id($modelClassName, '_');     // model dir
+        $apiNameSpace = "app\\controllers\\api"
+            .($moduleId != 'app' ? "\\".$moduleId : '')
+            .($subPath ? "\\".$subPath : '');
         //range search params
         $dateRange = [];
         $timestampRange = [];
@@ -231,20 +197,20 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
          */
         return compact(
             'tableSchema'
-            , 'giiConfigs'
             , 'softdelete'
             , 'modelClassName'
             , 'modelSlug'
             , 'modelName'
             , 'model'
+            , 'searchClassName'
+            , 'acNameSpace'
+            , 'acClassName'
             , 'controllerClassName'
             , 'controllerNameSpace'
             , 'moduleNameSpace'
+            , 'moduleId'
             , 'subPath'
-            , 'actionParentNameSpace'
-            , 'actionParent'
             , 'apiNameSpace'
-            , 'menuNameSpace'
             , 'dateRange'
             , 'timestampRange'
         );
@@ -283,32 +249,16 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
         return $path;
     }
 
-    /**
-     * generate access control for particular action
-     * @param array $params
-     * @return CodeFile
-     */
-    public function generateActionControl($action, $params)
-    {
-        $file = $this->generatePath($params['actionNameSpace']."\ActionControl.php");
-        return new CodeFile($file, $this->render("action-control\\{$action}.php", $params));
-    }
-
-    /**
-     * generate action class for particular action
-     * @param array $params
-     * @return CodeFile
-     */
-    public function generateActiveAction($action, $params)
-    {
-        $file = $this->generatePath($params['actionNameSpace'].'\ActiveAction.php');
-        return new CodeFile($file, $this->render('ActiveAction.php', $params));
-    }
-
     public function generateSearch($params)
     {
         $file = $this->generatePath($this->searchModelClass.'.php');
-        return new CodeFile($file, $this->render('SearchModel.php', $params));
+        return new CodeFile($file, $this->render('search-model.php', $params));
+    }
+
+    public function generateActionControl($params)
+    {
+        $file = $this->generatePath($params['acNameSpace']."\\".$params['acClassName'].".php");
+        return new CodeFile($file, $this->render('action-control.php', $params));
     }
 
     /**
@@ -326,19 +276,12 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
     {
         $nameSpacedPath = $params['apiNameSpace'].'\\'.$params['controllerClassName'].'.php';
         $file = $this->generatePath($nameSpacedPath);
-        return new CodeFile($file, $this->render('RestAPI.php', $params));
-    }
-
-    public function generateModelMenu($params)
-    {
-        $nameSpacedPath = $params['menuNameSpace'].'\\'.$params['modelClassName'].'Menu.php';
-        $file = $this->generatePath($nameSpacedPath);
-        return new CodeFile($file, $this->render('ModelMenu.php', $params));
+        return new CodeFile($file, $this->render('rest-api.php', $params));
     }
 
     public function generateFormData($params)
     {
-        $suffix = str_replace(' ', '', $this->getName());
+        $suffix = '_'.str_replace(' ', '', $this->getName());
         $file = Yii::getAlias('@app').'/gii/'
             .($params['subPath'] ? $params['subPath'].'_' : '')
             .str_replace('Controller', $suffix, $params['controllerClassName']).'.json';

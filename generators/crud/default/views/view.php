@@ -6,24 +6,23 @@ use yii\helpers\StringHelper;
 /* @var $this \yii\web\View  */
 /* @var $generator \app\generators\crud\Generator  */
 /* @var $tableSchema \yii\db\TableSchema  */
-/* @var $giiConfigs array  */
 /* @var $softdelete bool  */
 /* @var $modelClassName string  */
 /* @var $modelSlug string  */
 /* @var $modelName string  */
 /* @var $model \yii\db\ActiveRecord  */
+/* @var $searchClassName string search model class name w/o namespace  */
+/* @var $acNameSpace string action control namespace */
+/* @var $acClassName string action control class name w/o namespace */
 /* @var $controllerClassName string  */
 /* @var $controllerNameSpace string  */
 /* @var $moduleNameSpace string  */
+/* @var $moduleId string  */
 /* @var $subPath string  */
-/* @var $actionParentNameSpace string  */
-/* @var $actionParent string[]  */
 /* @var $apiNameSpace string  */
-/* @var $menuNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
 
-$menuClassName = $modelClassName.'Menu';
 $urlParams = $generator->generateUrlParams();
 $haveID = ($tableSchema->getColumn('id') !== null);
 $safeAttributes = $model->safeAttributes();
@@ -41,28 +40,29 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
-use yii\widgets\Pjax;
-use <?= $menuNameSpace."\\".$menuClassName ?>;
-use app\components\Tabs;
+use cornernote\returnurl\ReturnUrl;
+use <?= $acNameSpace ?>\<?= $acClassName ?>;
 use <?= $generator->modelClass ?>;
-use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View  */
 /* @var $model <?= $modelClassName ?>  */
 
 <?php if ($haveID): ?>
-$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','View <?= $modelName ?>').' #'.$model->id;
+$this->title = Yii::t('<?= trim($moduleId.'/'.$subPath, '/') ?>','View <?= $modelName ?>').' #'.$model->id;
 <?php else: ?>
-$this->title = Yii::t('<?= $subPath ? $subPath : 'pages' ?>','View <?= $modelName ?>').' - '.$model-><?= $generator->getModelNameAttribute() ?>;
+$this->title = Yii::t('<?= trim($moduleId.'/'.$subPath, '/') ?>','View <?= $modelName ?>').' - '.$model-><?= $generator->getModelNameAttribute() ?>;
+<?php endif; ?>
+<?php if ($moduleId != 'app'): ?>
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId ?>', '<?= Inflector::camel2words($moduleId) ?>');
 <?php endif; ?>
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/'.$subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 ?>
-<div class="giiant-crud <?= $modelSlug ?>-view">
+<div class="app-crud <?= $modelSlug ?>-view">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
@@ -84,28 +84,30 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
         </div>
 
         <!-- menu buttons -->
-        <div class='pull-right'>
+        <div class="pull-right">
             <div>
                 <?= "<?=\n" ?>
-                SplitDropdown::widget([
-                    'model' => $model,
-                    'label' => <?= $menuClassName ?>::iconFor('create').'&nbsp; '.<?= $menuClassName ?>::labelFor('create'),
-                    'encodeLabel' => FALSE,
-                    'buttonAction' => 'update',
-                    'dropdownActions' => [
-                        'view',
-                        [
-                            'delete',
-<?php if($softdelete):?>
-                            'restore',
-<?php endif;?>
+                ButtonDropdown::widget([
+                    'label' => 'Menu',
+                    'options' => [
+                        'class' => 'btn btn-primary',
+                    ],
+                    'dropdown' => [
+                        'items' => [
+                            [
+                                'label' => '<span class="glyphicon glyphicon-pencil"></span> '.Yii::t('cruds', "Edit"),
+                                'encode' => FALSE,
+                                'url' => [
+                                    'update',
+                                    'id' => $model->id,
+                                    'ru' => ReturnUrl::getToken(),
+                                ],
+                                'visible' => <?= $acClassName ?>::canUpdate(),
+                            ],
+                            //'<li role="presentation" class="divider"></li>',
                         ],
                     ],
-                    'dropdownButtons' => <?= $menuClassName ?>::dropdownButtons(),
-                    'urlCreator' => function($action, $model) {
-                        return <?= $menuClassName ?>::createUrlFor($action, $model);
-                    },
-                ]);
+                ])
                 ?>
             </div>
         </div>
@@ -116,7 +118,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 
     <?= $generator->partialView('detail_prepend', $model); ?>
 
-    <?= "<?= \n" ?>
+    <?= "<?=\n" ?>
     DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -137,22 +139,25 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
     <?= $generator->partialView('detail_append', $model); ?>
 
     <hr/>
-<?php $modelMeta = \app\generators\giiconfig\Generator::readMetadata(); ?>
-<?php if (isset($modelMeta[$model::tableName()]['hasMany'])): ?>
-<?php $subinfo_list = $modelMeta[$model::tableName()]['hasMany']; ?>
-<?php $i18n_category = yii\helpers\ArrayHelper::getValue($modelMeta, $model::tableName().'.messageCategory', 'models'); ?>
-<?php foreach ($subinfo_list as $rel_key => $rel_info): ?>
+<?php $hasManyRelations = $generator->getModelRelations($generator->modelClass, ['has_many']); ?>
+<?php if (count($hasManyRelations) > 0): ?>
+<?php foreach ($hasManyRelations as $name => $relation): ?>
+<?php
+if (method_exists($model, 'get'.$name) == FALSE) {
+    continue;
+}
+?>
     <br/>
-    <h3><?= '<?= ' ?>Yii::t('<?= $i18n_category ?>', '<?= Inflector::camel2words($rel_key, TRUE) ?>') ?></h3>
+    <h3><?= '<?= ' ?>Yii::t('<?= trim($moduleId.'/'.$subPath, '/') ?>', '<?= Inflector::camel2words($name, TRUE) ?>') ?></h3>
     <div class="table-responsive">
         <?= "<?=\n" ?>
         \kartik\grid\GridView::widget([
             'layout' => '{summary}{pager}<br/>{items}{pager}',
             'dataProvider' => new \yii\data\ActiveDataProvider([
-                'query' => $model->get<?=$rel_key?>(),
+                'query' => $model->get<?= $name ?>(),
                 'pagination' => [
                     'pageSize' => 20,
-                    'pageParam' => 'page-<?= Inflector::slug($rel_key) ?>',
+                    'pageParam' => 'page-<?= Inflector::slug($name) ?>',
                 ],
             ]),
             'columns' => [
@@ -160,8 +165,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
                     'class' => \kartik\grid\SerialColumn::class,
                 ],
 <?php
-$rel_modelclass = $rel_info['nameSpace'].'\\'.$rel_info['className'];
-$rel_model = new $rel_modelclass;
+$rel_model = new $relation->modelClass();
 $allAttributes = $rel_model->safeAttributes();
 $skipCols = ['id', 'created_at', 'created_by', 'updated_at', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by'];
 $safeAttributes = array_diff($allAttributes, $skipCols);
@@ -190,6 +194,57 @@ foreach ($safeAttributes as $attribute) {
 <?php endif; ?>
     <br/>
     <hr/>
+
+    <div class="clearfix">
+        <!-- danger menu buttons -->
+        <div class='pull-right'>
+            <div>
+                <?= "<?php\n" ?>
+                if (<?= $acClassName ?>::canDelete()) {
+                    $label = '<span class="glyphicon glyphicon-trash"></span> '.Yii::t('cruds', 'Delete');
+                    $options = [
+                        'class' => 'btn btn-danger',
+                        'title' => Yii::t('cruds', 'Delete'),
+                        'aria-label' => Yii::t('cruds', 'Delete'),
+                        'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
+                        'data-method' => 'post',
+                        'data-pjax' => FALSE,
+                    ];
+                    $url = [
+                        'delete',
+                        'id' => $model->id,
+                        'ru' => ReturnUrl::urlToToken(Url::to(['index'])),
+                    ];
+                    echo Html::a($label, $url, $options);
+                }
+                ?>
+            </div>
+<?php if ($softdelete): ?>
+            <div>
+                <?= "<?php\n" ?>
+                if (<?= $acClassName ?>::canRestore()) {
+                    $label = '<span class="glyphicon glyphicon-refresh"></span> '.Yii::t('cruds', 'Restore');
+                    $options = [
+                        'class' => 'btn btn-warning',
+                        'title' => Yii::t('cruds', 'Restore'),
+                        'aria-label' => Yii::t('cruds', 'Restore'),
+                        'data-confirm' => Yii::t('cruds', 'Are you sure to restore this item?'),
+                        'data-method' => 'post',
+                        'data-pjax' => FALSE,
+                    ];
+                    $url = [
+                        'restore',
+                        'id' => $model->id,
+                        'ru' => ReturnUrl::urlToToken(Url::to(['view', 'id' => $model->id])),
+                    ];
+                    echo Html::a($label, $url, $options);
+                }
+                ?>
+            </div>
+<?php endif; ?>
+        </div>
+    </div>
+
 <?php if ($tableSchema->getColumn('created_at') !== null): ?>
 
     <div style="font-size: 75%; font-style: italic;">

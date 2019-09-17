@@ -3,21 +3,15 @@
 use yii\helpers\Inflector;
 
 /* @var $this yii\web\View  */
-/* @var $generator app\generators\model\Generator  */
+/* @var $generator app\generators\model2\Generator  */
 /* @var $tableSchema yii\db\TableSchema  */
 /* @var $tableName string  full table name */
-/* @var $db string  */
 /* @var $nameSpace string  */
-/* @var $baseClass string  */
+/* @var $messageCategory string  */
 /* @var $className string  class name */
 /* @var $labels string[]  */
-/* @var $hints string[]  */
-/* @var $enableI18N boolean  */
-/* @var $messageCategory string  */
 /* @var $rules string[]  list of validation rules */
-/* @var $hasOne array  */
-/* @var $hasMany array  */
-/* @var $hasJunction array  */
+/* @var $relations array  */
 
 $modelName = Inflector::camel2words($className);
 $blameable = ($tableSchema->getColumn('created_by') !== null) OR ($tableSchema->getColumn('updated_by') !== null);
@@ -30,11 +24,11 @@ echo "<?php\n";
 namespace <?= $nameSpace ?>;
 
 use Yii;
-use app\models\User;
+use app\models\Profile;
 
 /**
- * This is the base-model class for table "<?= $tableName ?>".
- * define base model structure as specified in database.
+ * This is the model class for table "<?= $tableName ?>".
+ * define model structure as specified in database.
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  *
@@ -43,29 +37,29 @@ use app\models\User;
 <?php endforeach; ?>
  *
 <?php if ($tableSchema->getColumn('created_by') !== null): ?>
- * @property User $createdBy
+ * @property Profile $createdBy
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('updated_by') !== null): ?>
- * @property User $updatedBy
+ * @property Profile $updatedBy
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
- * @property User $deletedBy
+ * @property Profile $deletedBy
 <?php endif; ?>
-<?php if (isset($hasOne) && !empty($hasOne)): ?>
+<?php if (isset($relations['hasOne']) && !empty($relations['hasOne'])): ?>
  *
-<?php foreach ($hasOne as $name => $relation): ?>
+<?php foreach ($relations['hasOne'] as $name => $relation): ?>
  * @property \<?= $relation['nameSpace'].'\\'.$relation['className'].' $'.lcfirst($name)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
-<?php if (isset($hasMany) && !empty($hasMany)): ?>
+<?php if (isset($relations['hasMany']) && !empty($relations['hasMany'])): ?>
  *
-<?php foreach ($hasMany as $name => $relation): ?>
+<?php foreach ($relations['hasMany'] as $name => $relation): ?>
  * @property \<?= $relation['nameSpace'].'\\'.$relation['className'].'[] $'.lcfirst($name)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
-<?php if (isset($hasJunction) && !empty($hasJunction)): ?>
+<?php if (isset($relations['hasJunction']) && !empty($relations['hasJunction'])): ?>
  *
-<?php foreach ($hasJunction as $name => $relation): ?>
+<?php foreach ($relations['hasJunction'] as $name => $relation): ?>
  * @property \<?= $relation['nameSpace'].'\\'.$relation['className'].'[] $'.lcfirst($name)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
@@ -75,7 +69,7 @@ use app\models\User;
  * @method void restore() bring back form trash
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= '\\' . ltrim($baseClass, '\\') . "\n" ?>
+class <?= $className ?> extends \<?= ltrim($generator->baseClass, "\\") . "\n" ?>
 {
 <?php if ($tableSchema->getColumn('created_by') !== null): ?>
     const CREATEDBY = 'createdBy';
@@ -86,15 +80,15 @@ class <?= $className ?> extends <?= '\\' . ltrim($baseClass, '\\') . "\n" ?>
 <?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
     const DELETEDBY = 'deletedBy';
 <?php endif; ?>
-<?php if (isset($hasOne) && !empty($hasOne)): ?>
-<?php foreach ($hasOne as $name => $relation): ?>
+<?php if (isset($relations['hasOne']) && !empty($relations['hasOne'])): ?>
+<?php foreach ($relations['hasOne'] as $name => $relation): ?>
 <?php if ($relation['alias']): ?>
     const <?= strtoupper($name) ?> = '<?= strtolower($name) ?>';
 <?php endif; ?>
 <?php endforeach; ?>
 <?php endif; ?>
-<?php if (isset($hasMany) && !empty($hasMany)): ?>
-<?php foreach ($hasMany as $name => $relation): ?>
+<?php if (isset($relations['hasMany']) && !empty($relations['hasMany'])): ?>
+<?php foreach ($relations['hasMany'] as $name => $relation): ?>
 <?php if ($relation['alias']): ?>
     const <?= strtoupper($name) ?> = '<?= strtolower($name) ?>';
 <?php endif; ?>
@@ -110,14 +104,14 @@ class <?= $className ?> extends <?= '\\' . ltrim($baseClass, '\\') . "\n" ?>
     {
         return '<?= $tableName ?>';
     }
-<?php if ($db !== 'db'): ?>
+<?php if ($generator->db != 'db'): ?>
 
     /**
      * @return \yii\db\Connection the database connection used by this AR class.
      */
     public static function getDb()
     {
-        return Yii::$app->get('<?= $db ?>');
+        return Yii::$app->get('<?= $generator->db ?>');
     }
 <?php endif; ?>
     ##
@@ -158,20 +152,6 @@ foreach ($labels as $name => $label) {
 ?>
         ];
     }
-<?php if (!empty($hints)): ?>
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeHints()
-    {
-        return [
-<?php foreach ($hints as $name => $hint): ?>
-            <?= "'$name' => " . $generator->generateString($hint) . ",\n" ?>
-<?php endforeach; ?>
-        ];
-    }
-<?php endif; ?>
     ##
 
     /* -------------------------- Meta -------------------------- */
@@ -237,7 +217,7 @@ foreach ($labels as $name => $label) {
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
     }
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('updated_by') !== null): ?>
@@ -247,7 +227,7 @@ foreach ($labels as $name => $label) {
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
     }
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
@@ -257,14 +237,14 @@ foreach ($labels as $name => $label) {
      */
     public function getDeletedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
     }
 <?php endif; ?>
-<?php if (isset($hasOne) && !empty($hasOne)): ?>
+<?php if (isset($relations['hasOne']) && !empty($relations['hasOne'])): ?>
     ##
 
     /* -------------------------- Has One -------------------------- */
-<?php foreach ($hasOne as $name => $relation): ?>
+<?php foreach ($relations['hasOne'] as $name => $relation): ?>
 
     /**
      * @return \yii\db\ActiveQuery
@@ -275,11 +255,11 @@ foreach ($labels as $name => $label) {
     }
 <?php endforeach; ?>
 <?php endif; ?>
-<?php if (isset($hasMany) && !empty($hasMany)): ?>
+<?php if (isset($relations['hasMany']) && !empty($relations['hasMany'])): ?>
     ##
 
     /* -------------------------- Has Many -------------------------- */
-<?php foreach ($hasMany as $name => $relation): ?>
+<?php foreach ($relations['hasMany'] as $name => $relation): ?>
 
     /**
      * @return \yii\db\ActiveQuery
@@ -294,11 +274,11 @@ foreach ($labels as $name => $label) {
     }
 <?php endforeach; ?>
 <?php endif; ?>
-<?php if (isset($hasJunction) && !empty($hasJunction)): ?>
+<?php if (isset($relations['hasJunction']) && !empty($relations['hasJunction'])): ?>
     ##
 
     /* -------------------------- Has Junction -------------------------- */
-<?php foreach ($hasJunction as $name => $relation): ?>
+<?php foreach ($relations['hasJunction'] as $name => $relation): ?>
 
     /**
      * @return \yii\db\ActiveQuery

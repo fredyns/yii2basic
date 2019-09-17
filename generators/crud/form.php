@@ -1,6 +1,6 @@
 <?php
 
-use app\generators\crud\SaveForm;
+use app\generators\SaveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
