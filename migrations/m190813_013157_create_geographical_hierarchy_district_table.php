@@ -36,7 +36,7 @@ class m190813_013157_create_geographical_hierarchy_district_table extends app\ba
         $this->dropForeignKey('fk_geohie_district_city', '{{%geographical_hierarchy_district}}');
 
         $this->dropIndex('type', '{{%geographical_hierarchy_district}}');
-        $this->dropIndex('country', '{{%geographical_hierarchy_district}}');
+        $this->dropIndex('city', '{{%geographical_hierarchy_district}}');
         $this->dropIndex('reg_number', '{{%geographical_hierarchy_district}}');
 
         $this->dropTable('{{%geographical_hierarchy_district}}');
