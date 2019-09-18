@@ -16,13 +16,15 @@ $nameSpaceArray = explode("\\", str_replace("\\\\", "\\", $ns));
 if (isset($nameSpaceArray[1]) && $nameSpaceArray[1] == 'modules' && isset($nameSpaceArray[2])) {
     $moduleId = $nameSpaceArray[2];
     $subPath = isset($nameSpaceArray[4]) ? $nameSpaceArray[4] : null;
-    $searchModelClass = trim("app\\\\modules\\\\{$moduleId}\\\\lib\\\\{$subPath}", "\\")."\\\\".$modelClass."Search";
+    $searchModelClass = trim("app\\\\modules\\\\{$moduleId}\\\\lib\\\\{$subPath}", "\\")
+        ."\\\\".Inflector::slug($modelClass, '_', TRUE)."\\\\".$modelClass."Search";
     $controllerClass = trim("app\\\\modules\\\\{$moduleId}\\\\controllers\\\\{$subPath}", "\\")."\\\\".$modelClass."Controller";
     $viewPath = "@app\/modules\/{$moduleId}\/views".($subPath ? "\/".$subPath : '');
 } else {
     $moduleId = 'app';
     $subPath = isset($nameSpaceArray[2]) ? $nameSpaceArray[2] : null;
-    $searchModelClass = trim("app\\\\lib\\\\{$subPath}", "\\")."\\\\".$modelClass."Search";
+    $searchModelClass = trim("app\\\\lib\\\\{$subPath}", "\\")
+        ."\\\\".Inflector::slug($modelClass, '_', TRUE)."\\\\".$modelClass."Search";
     $controllerClass = trim("app\\\\controllers\\\\{$subPath}", "\\")."\\\\".$modelClass."Controller";
     $viewPath = "@app\/views".($subPath ? "\/".$subPath : '');
 }
