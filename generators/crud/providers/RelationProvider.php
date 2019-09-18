@@ -61,11 +61,11 @@ class RelationProvider extends \schmunk42\giiant\base\Provider
                 $moduleId = 'app';
                 $subPath = isset($nameSpaceArray[2]) ? $nameSpaceArray[2] : null;
             }
-            $apiUri = trim("/api/{$moduleId}/{$subPath}", "/").'/'.Inflector::slug($relationClassName);
+            //api/*module_id/*subpath/*model/select2-options
             $apiUri = "/api/"
                 .($moduleId != 'app' ? $moduleId.'/' : '')
                 .($subPath ? $subPath.'/' : '')
-                .Inflector::slug($relationClassName);
+                .Inflector::slug($relationClassName).'/select2-options';
             $method = __METHOD__;
             return <<<EOS
 
@@ -83,7 +83,6 @@ class RelationProvider extends \schmunk42\giiant\base\Provider
                 'errorLoading' => new \yii\web\JsExpression('function () { return "'.{$this->generator->generateString('waiting results...')}.'"; }'),
             ],
             'ajax' => [
-                //api/*module_id/*subpath/*model
                 'url' => \yii\helpers\Url::to(['{$apiUri}']),
                 'dataType' => 'json',
                 'data' => new \yii\web\JsExpression('function(params) { return {q:params.term}; }')

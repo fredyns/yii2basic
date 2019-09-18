@@ -59,8 +59,7 @@ use app\components\Tabs;
                             'errorLoading' => new \yii\web\JsExpression('function () { return "'.Yii::t('cruds', 'waiting results...').'"; }'),
                         ],
                         'ajax' => [
-                            //api/*module_id/*subpath/*model
-                            'url' => \yii\helpers\Url::to(['/api/sample/person']),
+                            'url' => \yii\helpers\Url::to(['/api/sample/person/select2-options']),
                             'dataType' => 'json',
                             'data' => new \yii\web\JsExpression('function(params) { return {q:params.term}; }')
                         ],
@@ -88,8 +87,7 @@ use app\components\Tabs;
                             'errorLoading' => new \yii\web\JsExpression('function () { return "'.Yii::t('cruds', 'waiting results...').'"; }'),
                         ],
                         'ajax' => [
-                            //api/*module_id/*subpath/*model
-                            'url' => \yii\helpers\Url::to(['/api/sample/person']),
+                            'url' => \yii\helpers\Url::to(['/api/sample/person/select2-options']),
                             'dataType' => 'json',
                             'data' => new \yii\web\JsExpression('function(params) { return {q:params.term}; }')
                         ],
