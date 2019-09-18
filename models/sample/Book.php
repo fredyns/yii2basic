@@ -3,11 +3,11 @@
 namespace app\models\sample;
 
 use Yii;
-use app\models\User;
+use app\models\Profile;
 
 /**
- * This is the base-model class for table "sample_book".
- * define base model structure as specified in database.
+ * This is the model class for table "sample_book".
+ * define model structure as specified in database.
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  *
@@ -25,9 +25,9 @@ use app\models\User;
  * @property integer $editor_id
  * @property string $released_date
  *
- * @property User $createdBy
- * @property User $updatedBy
- * @property User $deletedBy
+ * @property Profile $createdBy
+ * @property Profile $updatedBy
+ * @property Profile $deletedBy
  *
  * @property \app\models\sample\Person $author
  * @property \app\models\sample\Person $editor
@@ -63,7 +63,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function modelLabel($plural = false)
     {
-        return $plural ? Yii::t('sample', 'Books') : Yii::t('sample', 'Book');
+        return $plural ? Yii::t('app/sample/models', 'Books') : Yii::t('app/sample/models', 'Book');
     }
 
     /**
@@ -80,11 +80,11 @@ class Book extends \yii\db\ActiveRecord
             'is_deleted' => Yii::t('record-info', 'Is Deleted'),
             'deleted_at' => Yii::t('record-info', 'Deleted At'),
             'deleted_by' => Yii::t('record-info', 'Deleted By'),
-            'title' => Yii::t('sample', 'Title'),
-            'description' => Yii::t('sample', 'Description'),
-            'author_id' => Yii::t('sample', 'Author'),
-            'editor_id' => Yii::t('sample', 'Editor'),
-            'released_date' => Yii::t('sample', 'Released Date'),
+            'title' => Yii::t('app/sample/models', 'Title'),
+            'description' => Yii::t('app/sample/models', 'Description'),
+            'author_id' => Yii::t('app/sample/models', 'Author'),
+            'editor_id' => Yii::t('app/sample/models', 'Editor'),
+            'released_date' => Yii::t('app/sample/models', 'Released Date'),
         ];
     }
     ##
@@ -147,6 +147,20 @@ class Book extends \yii\db\ActiveRecord
             [['released_date'], 'date', 'format' => 'yyyy-MM-dd'],
             # restriction,
             # constraint,
+            [
+                ['author_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Person::class,
+                'targetAttribute' => ['author_id' => 'id'],
+            ],
+            [
+                ['editor_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Person::class,
+                'targetAttribute' => ['editor_id' => 'id'],
+            ],
             # safe,
         ];
     }
@@ -159,7 +173,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
     }
 
     /**
@@ -167,7 +181,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
     }
 
     /**
@@ -175,7 +189,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function getDeletedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
     }
     ##
 

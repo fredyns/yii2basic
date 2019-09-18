@@ -1,0 +1,47 @@
+{
+    "modelclass": {
+        "value": "app\\models\\sample\\Book",
+        "name": "modelClass"
+    },
+    "searchmodelclass": {
+        "value": "app\\lib\\sample\\book\\BookSearch",
+        "name": "searchModelClass"
+    },
+    "controllerclass": {
+        "value": "app\\controllers\\sample\\BookController",
+        "name": "controllerClass"
+    },
+    "basecontrollerclass": {
+        "value": "yii\\web\\Controller",
+        "name": "baseControllerClass"
+    },
+    "viewpath": {
+        "value": "@app\/views\/sample",
+        "name": "viewPath"
+    },
+    "indexwidgettype": {
+        "value": "grid",
+        "name": "indexWidgetType"
+    },
+    "formlayout": {
+        "value": "horizontal",
+        "name": "formLayout"
+    },
+    "providerlist": {
+        "value": [
+            "app\\generators\\crud\\providers\\CallbackProvider",
+            "app\\generators\\crud\\providers\\DateProvider",
+            "app\\generators\\crud\\providers\\RelationProvider",
+            "app\\generators\\crud\\providers\\TimestampProvider"
+        ],
+        "name": "providerList"
+    },
+    "template": {
+        "value": "default",
+        "name": "template"
+    },
+    "modelmessagecategory": {
+        "value": "app\/sample\/models",
+        "name": "modelMessageCategory"
+    }
+}

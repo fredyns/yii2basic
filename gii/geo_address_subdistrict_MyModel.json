@@ -1,0 +1,34 @@
+{
+    "tablename": {
+        "value": "geo_address_subdistrict",
+        "name": "tableName"
+    },
+    "tableprefix": {
+        "value": "",
+        "name": "tablePrefix"
+    },
+    "modelclass": {
+        "value": "Subdistrict",
+        "name": "modelClass"
+    },
+    "ns": {
+        "value": "app\\models\\geo_address",
+        "name": "ns"
+    },
+    "baseclass": {
+        "value": "yii\\db\\ActiveRecord",
+        "name": "baseClass"
+    },
+    "db": {
+        "value": "db",
+        "name": "db"
+    },
+    "generaterelations": {
+        "value": "all",
+        "name": "generateRelations"
+    },
+    "messagecategory": {
+        "value": "app\/geo_address\/models",
+        "name": "messageCategory"
+    }
+}

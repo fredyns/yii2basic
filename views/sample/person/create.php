@@ -7,12 +7,12 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $this yii\web\View  */
 /* @var $model app\models\sample\Person  */
 
-$this->title = Yii::t('sample','New Person');
-$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
+$this->title = Yii::t('app/sample/texts','New Person');
+$this->params['breadcrumbs'][] = Yii::t('app/sample/texts', 'Sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="giiant-crud person-create">
+<div class="app-crud person-create">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">

@@ -1,0 +1,10 @@
+{
+    "geo_address_city": "app\\models\\geo_address\\City",
+    "geo_address_country": "app\\models\\geo_address\\Country",
+    "geo_address_district": "app\\models\\geo_address\\District",
+    "geo_address_region": "app\\models\\geo_address\\Region",
+    "geo_address_subdistrict": "app\\models\\geo_address\\Subdistrict",
+    "geo_address_type": "app\\models\\geo_address\\Type",
+    "sample_book": "app\\models\\sample\\Book",
+    "sample_person": "app\\models\\sample\\Person"
+}

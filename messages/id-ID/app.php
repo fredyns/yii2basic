@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Action is forbidden for unknown reason.' => 'Tindakan/halaman tidak dapat diakses untuk alasan yang tidak diketahui.',
     'Guest' => 'Tamu',
     'The requested page does not exist.' => 'Halaman yang diminta tidak ditemukan.',
     'searching...' => 'mencari...',

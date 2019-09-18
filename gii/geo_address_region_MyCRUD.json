@@ -1,0 +1,47 @@
+{
+    "modelclass": {
+        "value": "app\\models\\geo_address\\Region",
+        "name": "modelClass"
+    },
+    "searchmodelclass": {
+        "value": "app\\lib\\geo_address\\region\\RegionSearch",
+        "name": "searchModelClass"
+    },
+    "controllerclass": {
+        "value": "app\\controllers\\geo_address\\RegionController",
+        "name": "controllerClass"
+    },
+    "basecontrollerclass": {
+        "value": "yii\\web\\Controller",
+        "name": "baseControllerClass"
+    },
+    "viewpath": {
+        "value": "@app\/views\/geo_address",
+        "name": "viewPath"
+    },
+    "indexwidgettype": {
+        "value": "grid",
+        "name": "indexWidgetType"
+    },
+    "formlayout": {
+        "value": "horizontal",
+        "name": "formLayout"
+    },
+    "providerlist": {
+        "value": [
+            "app\\generators\\crud\\providers\\CallbackProvider",
+            "app\\generators\\crud\\providers\\DateProvider",
+            "app\\generators\\crud\\providers\\RelationProvider",
+            "app\\generators\\crud\\providers\\TimestampProvider"
+        ],
+        "name": "providerList"
+    },
+    "template": {
+        "value": "default",
+        "name": "template"
+    },
+    "modelmessagecategory": {
+        "value": "app\/geo_address\/models",
+        "name": "modelMessageCategory"
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "tablename": {
+        "value": "sample_book",
+        "name": "tableName"
+    },
+    "tableprefix": {
+        "value": "",
+        "name": "tablePrefix"
+    },
+    "modelclass": {
+        "value": "Book",
+        "name": "modelClass"
+    },
+    "ns": {
+        "value": "app\\models\\sample",
+        "name": "ns"
+    },
+    "baseclass": {
+        "value": "yii\\db\\ActiveRecord",
+        "name": "baseClass"
+    },
+    "db": {
+        "value": "db",
+        "name": "db"
+    },
+    "generaterelations": {
+        "value": "all",
+        "name": "generateRelations"
+    },
+    "messagecategory": {
+        "value": "app\/sample\/models",
+        "name": "messageCategory"
+    }
+}

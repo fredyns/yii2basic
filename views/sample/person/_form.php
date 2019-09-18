@@ -46,16 +46,22 @@ use app\components\Tabs;
 
         <?= $form->errorSummary($model); ?>
 
-        <?=
-        Html::submitButton(
-            '<span class="glyphicon glyphicon-check"></span> '
-            .($model->isNewRecord ? Yii::t('cruds', 'Create') : Yii::t('cruds', 'Save'))
-            , [
-            'id' => 'save-'.$model->formName(),
-            'class' => 'btn btn-success'
-            ]
-        );
-        ?>
+        <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+
+                <?=
+                Html::submitButton(
+                    '<span class="glyphicon glyphicon-check"></span> '
+                    .($model->isNewRecord ? Yii::t('cruds', 'Create') : Yii::t('cruds', 'Save'))
+                    , [
+                    'id' => 'save-'.$model->formName(),
+                    'class' => 'btn btn-success'
+                    ]
+                );
+                ?>
+
+            </div>
+        </div>
 
         <?php ActiveForm::end(); ?>
 

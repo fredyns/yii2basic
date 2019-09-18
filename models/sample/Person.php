@@ -3,11 +3,11 @@
 namespace app\models\sample;
 
 use Yii;
-use app\models\User;
+use app\models\Profile;
 
 /**
- * This is the base-model class for table "sample_person".
- * define base model structure as specified in database.
+ * This is the model class for table "sample_person".
+ * define model structure as specified in database.
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  *
@@ -21,9 +21,9 @@ use app\models\User;
  * @property integer $deleted_by
  * @property string $name
  *
- * @property User $createdBy
- * @property User $updatedBy
- * @property User $deletedBy
+ * @property Profile $createdBy
+ * @property Profile $updatedBy
+ * @property Profile $deletedBy
  *
  * @property \app\models\sample\Book[] $booksAsAuthor
  * @property \app\models\sample\Book[] $booksAsEditor
@@ -57,7 +57,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function modelLabel($plural = false)
     {
-        return $plural ? Yii::t('sample', 'People') : Yii::t('sample', 'Person');
+        return $plural ? Yii::t('app/sample/models', 'People') : Yii::t('app/sample/models', 'Person');
     }
 
     /**
@@ -74,7 +74,7 @@ class Person extends \yii\db\ActiveRecord
             'is_deleted' => Yii::t('record-info', 'Is Deleted'),
             'deleted_at' => Yii::t('record-info', 'Deleted At'),
             'deleted_by' => Yii::t('record-info', 'Deleted By'),
-            'name' => Yii::t('sample', 'Name'),
+            'name' => Yii::t('app/sample/models', 'Name'),
         ];
     }
     ##
@@ -147,7 +147,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
     }
 
     /**
@@ -155,7 +155,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
     }
 
     /**
@@ -163,7 +163,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function getDeletedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
+        return $this->hasOne(Profile::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
     }
     ##
 

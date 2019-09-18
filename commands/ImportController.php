@@ -6,12 +6,12 @@ use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\ArrayHelper;
-use app\models\geographical_hierarchy\City;
-use app\models\geographical_hierarchy\Country;
-use app\models\geographical_hierarchy\District;
-use app\models\geographical_hierarchy\Region;
-use app\models\geographical_hierarchy\Subdistrict;
-use app\models\geographical_hierarchy\Type;
+use app\models\geo_address\City;
+use app\models\geo_address\Country;
+use app\models\geo_address\District;
+use app\models\geo_address\Region;
+use app\models\geo_address\Subdistrict;
+use app\models\geo_address\Type;
 
 /**
  * 
@@ -86,7 +86,7 @@ class ImportController extends Controller
      * import indonesian provinces
      * @return int Exit code
      */
-    public function actionIndonesiaProvinces()
+    public function actionIdProvinces()
     {
         // country model
         $country = Country::findOne(['code' => 'ID']);
@@ -149,7 +149,7 @@ class ImportController extends Controller
      * import indonesian cities
      * @return int Exit code
      */
-    public function actionIndonesiaCities()
+    public function actionIdCities()
     {
         // country model
         $country = Country::findOne(['code' => 'ID']);
@@ -245,7 +245,7 @@ class ImportController extends Controller
      * import indonesian district
      * @return int Exit code
      */
-    public function actionIndonesiaDistricts()
+    public function actionIdDistricts()
     {
         // country model
         $country = Country::findOne(['code' => 'ID']);
@@ -318,7 +318,7 @@ class ImportController extends Controller
      * import indonesian subdistrict
      * @return int Exit code
      */
-    public function actionIndonesiaSubdistricts()
+    public function actionIdSubdistricts()
     {
         // type model for "Kelurahan"
         $type = Type::findOne(['name' => 'Kelurahan']);

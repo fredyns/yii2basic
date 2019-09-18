@@ -1,22 +1,24 @@
 <?php
 
+use yii\bootstrap\ButtonDropdown;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\actions\sample\book\BookMenu;
+use cornernote\returnurl\ReturnUrl;
+use app\lib\sample\book\BookAC;
+use app\lib\sample\book\BookSearch;
 use app\models\sample\Book;
-use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel app\actions\sample\book\PersonSearch */
+/* @var $searchModel BookSearch */
 
 $this->title = $searchModel->modelLabel(true);
-$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
+$this->params['breadcrumbs'][] = Yii::t('app/sample/texts', 'Sample');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="giiant-crud book-index">
+<div class="app-crud book-index">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
@@ -30,25 +32,38 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="pull-right">
             <div>
                 <?=
-                SplitDropdown::widget([
-                    'label' => BookMenu::iconFor('create').'&nbsp; '.BookMenu::labelFor('create'),
-                    'encodeLabel' => FALSE,
-                    'buttonAction' => 'create',
+                ButtonDropdown::widget([
+                    'label' => 'Menu',
                     'options' => [
                         'class' => 'btn btn-primary',
                     ],
-                    'dropdownActions' => [
-                        'create',
-                        [
-                            'deleted',
-                            'archive',
+                    'dropdown' => [
+                        'items' => [
+                            [
+                                'label' => '<span class="glyphicon glyphicon-plus"></span> '.Yii::t('cruds', "New"),
+                                'encode' => FALSE,
+                                'url' => [
+                                    'create',
+                                    'ru' => ReturnUrl::getToken(),
+                                ],
+                                'visible' => BookAC::canCreate(),
+                            ],
+                            //'<li role="presentation" class="divider"></li>',
+                            [
+                                'label' => '<span class="glyphicon glyphicon-trash"></span> '.Yii::t('cruds', "List Deleted"),
+                                'encode' => FALSE,
+                                'url' => ['list-deleted'],
+                                'visible' => BookAC::canListDeleted(),
+                            ],
+                            [
+                                'label' => '<span class="glyphicon glyphicon-hdd"></span> '.Yii::t('cruds', "List Archive"),
+                                'encode' => FALSE,
+                                'url' => ['list-archive'],
+                                'visible' => BookAC::canListArchive(),
+                            ],
                         ],
                     ],
-                    'dropdownButtons' => BookMenu::dropdownButtons(),
-                    'urlCreator' => function($action, $model) {
-                        return BookMenu::createUrlFor($action, $model);
-                    },
-                ]);
+                ])
                 ?>
             </div>
         </div>
@@ -115,25 +130,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filter' => $searchModel->releasedSearch->filterWidget(),
                 ],
                 [
-                    'class' => \app\components\ActionColumn::class,
-                    'contentRenderer' => function($model, $key, $index) {
-                        return SplitDropdown::widget([
-                                'model' => $model,
-                                'label' => BookMenu::iconFor('view').' '.BookMenu::labelFor('view'),
-                                'buttonAction' => 'view',
-                                'dropdownActions' => [
-                                    'view',
-                                    'update',
-                                    [
-                                        'delete',
-                                    ],
-                                ],
-                                'dropdownButtons' => BookMenu::dropdownButtons(),
-                                'urlCreator' => function($action, $model) {
-                                    return BookMenu::createUrlFor($action, $model);
-                                },
-                        ]);
+                    'class' => \kartik\grid\ActionColumn::class,
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                            $label = '<span class="glyphicon glyphicon-eye-open"></span>';
+                            $options = [
+                                'title' => Yii::t('cruds', 'View'),
+                                'aria-label' => Yii::t('cruds', 'View'),
+                                'data-pjax' => '0',
+                            ];
+                            return Html::a($label, $url, $options);
+                        },
+                    ],
+                    'urlCreator' => function($action, $model, $key, $index) {
+                        // using the column name as key, not mapping to 'id' like the standard generator
+                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id.'/'.$action : $action;
+                        return Url::toRoute($params);
                     },
+                    'contentOptions' => ['nowrap' => 'nowrap']
                 ],
             ],
         ]);

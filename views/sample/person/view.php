@@ -6,22 +6,20 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
-use yii\widgets\Pjax;
-use app\actions\sample\person\PersonMenu;
-use app\components\Tabs;
+use cornernote\returnurl\ReturnUrl;
+use app\lib\sample\person\PersonAC;
 use app\models\sample\Person;
-use app\widgets\SplitDropdown;
 
 /* @var $this yii\web\View  */
 /* @var $model Person  */
 
-$this->title = Yii::t('sample','View Person').' #'.$model->id;
-$this->params['breadcrumbs'][] = Yii::t('sample', 'Sample');
+$this->title = Yii::t('app/sample/texts','View Person').' #'.$model->id;
+$this->params['breadcrumbs'][] = Yii::t('app/sample/texts', 'Sample');
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 ?>
-<div class="giiant-crud person-view">
+<div class="app-crud person-view">
 
     <div class="clearfix crud-navigation" style="padding-top: 30px;">
         <div class="pull-left">
@@ -37,26 +35,30 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
         </div>
 
         <!-- menu buttons -->
-        <div class='pull-right'>
+        <div class="pull-right">
             <div>
                 <?=
-                SplitDropdown::widget([
-                    'model' => $model,
-                    'label' => PersonMenu::iconFor('create').'&nbsp; '.PersonMenu::labelFor('create'),
-                    'encodeLabel' => FALSE,
-                    'buttonAction' => 'update',
-                    'dropdownActions' => [
-                        'view',
-                        [
-                            'delete',
-                            'restore',
+                ButtonDropdown::widget([
+                    'label' => 'Menu',
+                    'options' => [
+                        'class' => 'btn btn-primary',
+                    ],
+                    'dropdown' => [
+                        'items' => [
+                            [
+                                'label' => '<span class="glyphicon glyphicon-pencil"></span> '.Yii::t('cruds', "Edit"),
+                                'encode' => FALSE,
+                                'url' => [
+                                    'update',
+                                    'id' => $model->id,
+                                    'ru' => ReturnUrl::getToken(),
+                                ],
+                                'visible' => PersonAC::canUpdate(),
+                            ],
+                            //'<li role="presentation" class="divider"></li>',
                         ],
                     ],
-                    'dropdownButtons' => PersonMenu::dropdownButtons(),
-                    'urlCreator' => function($action, $model) {
-                        return PersonMenu::createUrlFor($action, $model);
-                    },
-                ]);
+                ])
                 ?>
             </div>
         </div>
@@ -66,7 +68,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <hr/>
 
     
-    <?= 
+    <?=
     DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -78,51 +80,56 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     
     <hr/>
     <br/>
-    <h3><?= Yii::t('sample', 'Books As Author') ?></h3>
-    <div class="table-responsive">
-        <?=
-        \kartik\grid\GridView::widget([
-            'layout' => '{summary}{pager}<br/>{items}{pager}',
-            'dataProvider' => new \yii\data\ActiveDataProvider([
-                'query' => $model->getBooksAsAuthor(),
-                'pagination' => [
-                    'pageSize' => 20,
-                    'pageParam' => 'page-requestitems',
-                ],
-            ]),
-            'columns' => [
-                [
-                    'class' => 'kartik\grid\SerialColumn',
-                ],
-                'name',
-            ],
-        ]);
-        ?>
-    </div>
-    <br/>
-    <h3><?= Yii::t('sample', 'Books As Editor') ?></h3>
-    <div class="table-responsive">
-        <?=
-        \kartik\grid\GridView::widget([
-            'layout' => '{summary}{pager}<br/>{items}{pager}',
-            'dataProvider' => new \yii\data\ActiveDataProvider([
-                'query' => $model->getBooksAsEditor(),
-                'pagination' => [
-                    'pageSize' => 20,
-                    'pageParam' => 'page-requestitems',
-                ],
-            ]),
-            'columns' => [
-                [
-                    'class' => 'kartik\grid\SerialColumn',
-                ],
-                'name',
-            ],
-        ]);
-        ?>
-    </div>
-    <br/>
     <hr/>
+
+    <div class="clearfix">
+        <!-- danger menu buttons -->
+        <div class='pull-right'>
+            <div>
+                <?php
+                if (PersonAC::canDelete()) {
+                    $label = '<span class="glyphicon glyphicon-trash"></span> '.Yii::t('cruds', 'Delete');
+                    $options = [
+                        'class' => 'btn btn-danger',
+                        'title' => Yii::t('cruds', 'Delete'),
+                        'aria-label' => Yii::t('cruds', 'Delete'),
+                        'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
+                        'data-method' => 'post',
+                        'data-pjax' => FALSE,
+                    ];
+                    $url = [
+                        'delete',
+                        'id' => $model->id,
+                        'ru' => ReturnUrl::urlToToken(Url::to(['index'])),
+                    ];
+                    echo Html::a($label, $url, $options);
+                }
+                ?>
+            </div>
+            <div>
+                <?php
+                if (PersonAC::canRestore()) {
+                    $label = '<span class="glyphicon glyphicon-refresh"></span> '.Yii::t('cruds', 'Restore');
+                    $options = [
+                        'class' => 'btn btn-warning',
+                        'title' => Yii::t('cruds', 'Restore'),
+                        'aria-label' => Yii::t('cruds', 'Restore'),
+                        'data-confirm' => Yii::t('cruds', 'Are you sure to restore this item?'),
+                        'data-method' => 'post',
+                        'data-pjax' => FALSE,
+                    ];
+                    $url = [
+                        'restore',
+                        'id' => $model->id,
+                        'ru' => ReturnUrl::urlToToken(Url::to(['view', 'id' => $model->id])),
+                    ];
+                    echo Html::a($label, $url, $options);
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+
 
     <div style="font-size: 75%; font-style: italic;">
         <?= Yii::t('record-info', 'Created') ?>

@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm  */
-/* @var $searchModel app\actions\sample\person\PersonSearch */
+/* @var $searchModel app\lib\sample\person\PersonSearch */
 ?>
 
 <div class="person-search">
@@ -36,8 +36,10 @@ use yii\widgets\ActiveForm;
         <?php // echo $form->field($model, 'name') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('cruds', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('cruds', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <div class="col-sm-8 col-sm-offset-2">
+            <?= Html::submitButton(Yii::t('cruds', 'Search'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton(Yii::t('cruds', 'Reset'), ['class' => 'btn btn-default']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>
