@@ -152,6 +152,8 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             $moduleNameSpace = "app";
             $subPath = isset($controllerNameSpaceArray[2]) ? $controllerNameSpaceArray[2] : null;
         }
+        // i18n
+        $messageCategory = trim("{$moduleId}/{$subPath}", "/")."/texts";
         // actions
         $apiNameSpace = "app\\controllers\\api"
             .($moduleId != 'app' ? "\\".$moduleId : '')
@@ -210,6 +212,7 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             , 'moduleNameSpace'
             , 'moduleId'
             , 'subPath'
+            , 'messageCategory'
             , 'apiNameSpace'
             , 'dateRange'
             , 'timestampRange'

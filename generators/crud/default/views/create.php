@@ -19,6 +19,7 @@ use yii\helpers\StringHelper;
 /* @var $moduleNameSpace string  */
 /* @var $moduleId string  */
 /* @var $subPath string  */
+/* @var $messageCategory string  */
 /* @var $apiNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
@@ -33,12 +34,12 @@ use cornernote\returnurl\ReturnUrl;
 /* @var $this yii\web\View  */
 /* @var $model <?= $generator->modelClass ?>  */
 
-$this->title = Yii::t('<?= trim($moduleId.'/'.$subPath, '/') ?>','New <?= $modelName ?>');
+$this->title = Yii::t('<?= $messageCategory ?>','New <?= $modelName ?>');
 <?php if ($moduleId != 'app'): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId ?>', '<?= Inflector::camel2words($moduleId) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/texts' ?>', '<?= Inflector::camel2words($moduleId) ?>');
 <?php endif; ?>
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/'.$subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $messageCategory ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = ['label' => $model->modelLabel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

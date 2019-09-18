@@ -16,13 +16,12 @@ $nameSpaceArray = explode("\\", str_replace("\\\\", "\\", $ns));
 if (isset($nameSpaceArray[1]) && $nameSpaceArray[1] == 'modules' && isset($nameSpaceArray[2])) {
     $moduleId = $nameSpaceArray[2];
     $subPath = isset($nameSpaceArray[4]) ? $nameSpaceArray[4] : null;
-    $messageCategory = trim("{$moduleId}/{$subPath}", "/")."/models";
 } else {
     $moduleId = 'app';
     $subPath = isset($nameSpaceArray[2]) ? $nameSpaceArray[2] : null;
-    $messageCategory = trim("{$subPath}/models", "/");
 }
 
+$messageCategory = trim("{$moduleId}/{$subPath}", "/")."/models";
 ?>
 {
     "tablename": {
@@ -54,7 +53,7 @@ if (isset($nameSpaceArray[1]) && $nameSpaceArray[1] == 'modules' && isset($nameS
         "name": "generateRelations"
     },
     "messagecategory": {
-        "value": "<?= $messageCategory ?>",
+        "value": "<?= str_replace("/","\\/",$messageCategory) ?>",
         "name": "messageCategory"
     }
 }

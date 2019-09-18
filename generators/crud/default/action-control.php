@@ -18,6 +18,7 @@ use yii\helpers\StringHelper;
 /* @var $moduleNameSpace string  */
 /* @var $moduleId string  */
 /* @var $subPath string  */
+/* @var $messageCategory string  */
 /* @var $apiNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */

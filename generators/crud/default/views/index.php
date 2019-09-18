@@ -19,6 +19,7 @@ use yii\helpers\StringHelper;
 /* @var $moduleNameSpace string  */
 /* @var $moduleId string  */
 /* @var $subPath string  */
+/* @var $messageCategory string  */
 /* @var $apiNameSpace string  */
 /* @var $dateRange string[]  */
 /* @var $timestampRange string[]  */
@@ -49,10 +50,10 @@ use <?= $generator->modelClass ?>;
 
 $this->title = $searchModel->modelLabel(true);
 <?php if ($moduleId != 'app'): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId ?>', '<?= Inflector::camel2words($moduleId) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/texts' ?>', '<?= Inflector::camel2words($moduleId) ?>');
 <?php endif; ?>
 <?php if ($subPath): ?>
-$this->params['breadcrumbs'][] = Yii::t('<?= $moduleId.'/'.$subPath ?>', '<?= Inflector::camel2words($subPath) ?>');
+$this->params['breadcrumbs'][] = Yii::t('<?= $messageCategory ?>', '<?= Inflector::camel2words($subPath) ?>');
 <?php endif; ?>
 $this->params['breadcrumbs'][] = $this->title;
 ?>

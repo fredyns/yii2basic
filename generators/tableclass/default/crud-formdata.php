@@ -16,18 +16,18 @@ $nameSpaceArray = explode("\\", str_replace("\\\\", "\\", $ns));
 if (isset($nameSpaceArray[1]) && $nameSpaceArray[1] == 'modules' && isset($nameSpaceArray[2])) {
     $moduleId = $nameSpaceArray[2];
     $subPath = isset($nameSpaceArray[4]) ? $nameSpaceArray[4] : null;
-    $modelMessageCategory = trim("{$moduleId}\/{$subPath}", "\/")."/models";
     $searchModelClass = trim("app\\\\modules\\\\{$moduleId}\\\\lib\\\\{$subPath}", "\\")."\\\\".$modelClass."Search";
     $controllerClass = trim("app\\\\modules\\\\{$moduleId}\\\\controllers\\\\{$subPath}", "\\")."\\\\".$modelClass."Controller";
     $viewPath = "@app\/modules\/{$moduleId}\/views".($subPath ? "\/".$subPath : '');
 } else {
     $moduleId = 'app';
     $subPath = isset($nameSpaceArray[2]) ? $nameSpaceArray[2] : null;
-    $modelMessageCategory = trim("{$subPath}\/models", "\/");
     $searchModelClass = trim("app\\\\lib\\\\{$subPath}", "\\")."\\\\".$modelClass."Search";
     $controllerClass = trim("app\\\\controllers\\\\{$subPath}", "\\")."\\\\".$modelClass."Controller";
     $viewPath = "@app\/views".($subPath ? "\/".$subPath : '');
 }
+
+$modelMessageCategory = trim("{$moduleId}/{$subPath}", "/")."/models";
 ?>
 {
     "modelclass": {
@@ -72,7 +72,7 @@ if (isset($nameSpaceArray[1]) && $nameSpaceArray[1] == 'modules' && isset($nameS
         "name": "template"
     },
     "modelmessagecategory": {
-        "value": "<?= $modelMessageCategory ?>",
+        "value": "<?= str_replace("/","\\/",$modelMessageCategory) ?>",
         "name": "modelMessageCategory"
     }
 }
