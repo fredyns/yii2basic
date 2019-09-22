@@ -72,7 +72,11 @@ AppAsset::register($this);
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>
-                <?= Alert::widget() ?>
+                <?php
+                if (Yii::$app->controller->module->id != 'user') {
+                    Alert::widget();
+                }
+                ?>
                 <?= $content ?>
             </div>
         </div>
