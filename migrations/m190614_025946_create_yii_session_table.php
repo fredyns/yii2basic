@@ -13,12 +13,8 @@ class m190614_025946_create_yii_session_table extends Migration
      */
     public function safeUp()
     {
-        if ($this->db->driverName !== 'mysql') {
-            echo "m190623_025946_create_yii_session_table migration only support mysql.\n";
-            return TRUE;
-        }
-        
-        $sql = <<<SQL
+        if ($this->db->driverName == 'mysql') {
+            $sql = <<<SQL
             CREATE TABLE `yii_session` (
                 `id` CHAR(64) NOT NULL COLLATE 'utf8_unicode_ci',
                 `expire` INT(10) UNSIGNED NULL DEFAULT NULL,
@@ -29,6 +25,21 @@ class m190614_025946_create_yii_session_table extends Migration
             ENGINE=InnoDB
             ;
 SQL;
+        } elseif ($this->db->driverName == 'pgsql') {
+            $sql = <<<SQL
+            CREATE TABLE yii_session (
+                id CHAR(64) PRIMARY KEY,
+                expire INT NULL DEFAULT NULL,
+                data BYTEA NULL
+            )
+            ;
+SQL;
+
+        } else {
+            echo "m190623_025946_create_yii_session_table migration only support mysql.\n";
+            return TRUE;
+        }
+
         $this->execute($sql);
     }
 
@@ -37,7 +48,8 @@ SQL;
      */
     public function safeDown()
     {
-        if ($this->db->driverName !== 'mysql') {
+        $dbSupport = ['mysql', 'pgsql'];
+        if (!in_array($this->db->driverName, $dbSupport)) {
             echo "m190614_025946_create_yii_session_table migration only support mysql.\n";
             return TRUE;
         }

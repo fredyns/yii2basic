@@ -39,8 +39,8 @@ class m190917_021934_create_sample_tables extends \app\base\BaseMigration
             'released_date' => $this->date()->defaultValue(NULL),
         ]);
 
-        $this->createIndex('author', '{{%sample_book}}', 'author_id');
-        $this->createIndex('editor', '{{%sample_book}}', 'editor_id');
+        $this->createIndex('i_sample_book_author', '{{%sample_book}}', 'author_id');
+        $this->createIndex('i_sample_book_editor', '{{%sample_book}}', 'editor_id');
 
         $this->addForeignKey('fk_sample_book_author', '{{%sample_book}}', 'author_id', '{{%sample_person}}', 'id');
         $this->addForeignKey('fk_sample_book_editor', '{{%sample_book}}', 'editor_id', '{{%sample_person}}', 'id');
@@ -54,8 +54,8 @@ class m190917_021934_create_sample_tables extends \app\base\BaseMigration
         $this->dropForeignKey('fk_sample_book_editor', '{{%sample_book}}');
         $this->dropForeignKey('fk_sample_book_author', '{{%sample_book}}');
 
-        $this->dropIndex('author', '{{%sample_book}}');
-        $this->dropIndex('editor', '{{%sample_book}}');
+        $this->dropIndex('i_sample_book_author', '{{%sample_book}}');
+        $this->dropIndex('i_sample_book_editor', '{{%sample_book}}');
 
         $this->dropTable('{{%sample_book}}');
         $this->dropTable('{{%sample_person}}');

@@ -51,24 +51,24 @@ class m190917_023218_create_geo_address_tables extends \app\base\BaseMigration
             'reg_number' => $this->FKBigInteger(),
         ]);
 
-        $this->createIndex('code', '{{%geo_address_country}}', 'code', TRUE);
+        $this->createIndex('i_geoadr_ctry_code', '{{%geo_address_country}}', 'code', TRUE);
 
-        $this->createIndex('type', '{{%geo_address_region}}', ['type_id']);
-        $this->createIndex('country', '{{%geo_address_region}}', ['country_id']);
-        $this->createIndex('reg_number', '{{%geo_address_region}}', ['reg_number']);
+        $this->createIndex('i_geoadr_rgn_type', '{{%geo_address_region}}', ['type_id']);
+        $this->createIndex('i_geoadr_rgn_country', '{{%geo_address_region}}', ['country_id']);
+        $this->createIndex('i_geoadr_rgn_regnum', '{{%geo_address_region}}', ['reg_number']);
 
-        $this->createIndex('type', '{{%geo_address_city}}', ['type_id']);
-        $this->createIndex('country', '{{%geo_address_city}}', ['country_id']);
-        $this->createIndex('region', '{{%geo_address_city}}', ['region_id']);
-        $this->createIndex('reg_number', '{{%geo_address_city}}', ['reg_number']);
+        $this->createIndex('i_geoadr_cty_type', '{{%geo_address_city}}', ['type_id']);
+        $this->createIndex('i_geoadr_cty_country', '{{%geo_address_city}}', ['country_id']);
+        $this->createIndex('i_geoadr_cty_region', '{{%geo_address_city}}', ['region_id']);
+        $this->createIndex('i_geoadr_cty_regnum', '{{%geo_address_city}}', ['reg_number']);
 
-        $this->createIndex('type', '{{%geo_address_district}}', ['type_id']);
-        $this->createIndex('city', '{{%geo_address_district}}', ['city_id']);
-        $this->createIndex('reg_number', '{{%geo_address_district}}', ['reg_number']);
+        $this->createIndex('i_geoadr_dstr_type', '{{%geo_address_district}}', ['type_id']);
+        $this->createIndex('i_geoadr_dstr_city', '{{%geo_address_district}}', ['city_id']);
+        $this->createIndex('i_geoadr_dstr_regnum', '{{%geo_address_district}}', ['reg_number']);
 
-        $this->createIndex('type', '{{%geo_address_subdistrict}}', ['type_id']);
-        $this->createIndex('district', '{{%geo_address_subdistrict}}', ['district_id']);
-        $this->createIndex('reg_number', '{{%geo_address_subdistrict}}', ['reg_number']);
+        $this->createIndex('i_geoadr_sdstr_type', '{{%geo_address_subdistrict}}', ['type_id']);
+        $this->createIndex('i_geoadr_sdstr_district', '{{%geo_address_subdistrict}}', ['district_id']);
+        $this->createIndex('i_geoadr_sdstr_regnum', '{{%geo_address_subdistrict}}', ['reg_number']);
 
         $this->addForeignKey('fk_geoadr_region_type', '{{%geo_address_region}}', 'type_id', '{{%geo_address_type}}', 'id');
         $this->addForeignKey('fk_geoadr_region_country', '{{%geo_address_region}}', 'country_id', '{{%geo_address_country}}', 'id');
@@ -102,22 +102,24 @@ class m190917_023218_create_geo_address_tables extends \app\base\BaseMigration
         $this->dropForeignKey('fk_geoadr_region_type', '{{%geo_address_region}}');
         $this->dropForeignKey('fk_geoadr_region_country', '{{%geo_address_region}}');
 
-        $this->dropIndex('type', '{{%geo_address_subdistrict}}');
-        $this->dropIndex('district', '{{%geo_address_subdistrict}}');
-        $this->dropIndex('reg_number', '{{%geo_address_subdistrict}}');
+        $this->dropIndex('i_geoadr_ctry_code', '{{%geo_address_country}}', 'code', TRUE);
 
-        $this->dropIndex('type', '{{%geo_address_district}}');
-        $this->dropIndex('city', '{{%geo_address_district}}');
-        $this->dropIndex('reg_number', '{{%geo_address_district}}');
+        $this->dropIndex('i_geoadr_rgn_type', '{{%geo_address_region}}');
+        $this->dropIndex('i_geoadr_rgn_country', '{{%geo_address_region}}');
+        $this->dropIndex('i_geoadr_rgn_regnum', '{{%geo_address_region}}');
 
-        $this->dropIndex('type', '{{%geo_address_city}}');
-        $this->dropIndex('country', '{{%geo_address_city}}');
-        $this->dropIndex('region', '{{%geo_address_city}}');
-        $this->dropIndex('reg_number', '{{%geo_address_city}}');
+        $this->dropIndex('i_geoadr_cty_type', '{{%geo_address_city}}');
+        $this->dropIndex('i_geoadr_cty_country', '{{%geo_address_city}}');
+        $this->dropIndex('i_geoadr_cty_region', '{{%geo_address_city}}');
+        $this->dropIndex('i_geoadr_cty_regnum', '{{%geo_address_city}}');
 
-        $this->dropIndex('type', '{{%geo_address_region}}');
-        $this->dropIndex('country', '{{%geo_address_region}}');
-        $this->dropIndex('reg_number', '{{%geo_address_region}}');
+        $this->dropIndex('i_geoadr_dstr_type', '{{%geo_address_district}}');
+        $this->dropIndex('i_geoadr_dstr_city', '{{%geo_address_district}}');
+        $this->dropIndex('i_geoadr_dstr_regnum', '{{%geo_address_district}}');
+
+        $this->dropIndex('i_geoadr_sdstr_type', '{{%geo_address_subdistrict}}');
+        $this->dropIndex('i_geoadr_sdstr_district', '{{%geo_address_subdistrict}}');
+        $this->dropIndex('i_geoadr_sdstr_regnum', '{{%geo_address_subdistrict}}');
 
         $this->dropTable('{{%geo_address_subdistrict}}');
         $this->dropTable('{{%geo_address_district}}');
