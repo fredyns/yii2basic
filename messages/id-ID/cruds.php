@@ -18,7 +18,7 @@
  */
 return [
     'Actions' => 'Tindakan',
-    'Archive' => 'Arsip',
+    'Archives' => 'Arsip',
     'Are you sure to delete this item?' => 'Apa Anda yakin hendak menghapus data ini?',
     'Are you sure to restore this item?' => 'Apa Anda yakin hendak mengembalikan data ini?',
     'Cancel' => 'Batal',
@@ -39,5 +39,8 @@ return [
     'Search' => 'Cari',
     'Update' => 'Ubah',
     'View' => 'Lihat',
+    'delete this record' => 'hapus baris ini',
+    'update this record' => 'ubah baris ini',
+    'view this record' => 'lihat baris ini',
     'waiting results...' => 'menunggu hasil...',
 ];
