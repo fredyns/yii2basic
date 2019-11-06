@@ -111,16 +111,51 @@ $this->params['breadcrumbs'][] = $this->title;
                 'reg_number',
                 [
                     'class' => \kartik\grid\ActionColumn::class,
-                    'template' => '{view}',
+                    'template' => '{view} {update}',
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
                             $label = '<span class="glyphicon glyphicon-eye-open"></span>';
+                            $hover_text = Yii::t('cruds', 'view this record');
                             $options = [
-                                'title' => Yii::t('cruds', 'View'),
-                                'aria-label' => Yii::t('cruds', 'View'),
+                                'title' => $hover_text,
+                                'aria-label' => $hover_text,
                                 'data-pjax' => '0',
                             ];
                             return Html::a($label, $url, $options);
+                        },
+                        'update' => function ($url, $model, $key) {
+                            $label = '<span class="glyphicon glyphicon-pencil"></span>';
+                            $hover_text = Yii::t('cruds', 'update this record');
+                            $options = [
+                                'title' => $hover_text,
+                                'aria-label' => $hover_text,
+                                'data-pjax' => '0',
+                            ];
+                            return Html::a($label, $url, $options);
+                        },
+                        'delete' => function ($url, $model, $key) {
+                            $label = '<span class="glyphicon glyphicon-trash"></span>';
+                            $hover_text = Yii::t('cruds', 'delete this record');
+                            $options = [
+                                'title' => $hover_text,
+                                'aria-label' => $hover_text,
+                                'data-pjax' => '0',
+                            ];
+                            return Html::a($label, $url, $options);
+                        },
+                    ],
+                    'visibleButtons' => [
+                        'view' => function ($model, $key, $index) {
+                            /* @var $model Region */
+                            return RegionAC::canView();
+                        },
+                        'update' => function ($model, $key, $index) {
+                            /* @var $model Region */
+                            return RegionAC::canUpdate();
+                        },
+                        'delete' => function ($model, $key, $index) {
+                            /* @var $model Region */
+                            return RegionAC::canDelete();
                         },
                     ],
                     'urlCreator' => function($action, $model, $key, $index) {
