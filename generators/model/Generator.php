@@ -470,6 +470,10 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
             switch ($column->type) {
                 case Schema::TYPE_SMALLINT:
                 case Schema::TYPE_INTEGER:
+                    if (substr_compare($column->name, '_at', -3, 3, true) === 0) {
+                        $types['timestamp'][] = $column->name;
+                        break;
+                    }
                 case Schema::TYPE_BIGINT:
                 case Schema::TYPE_TINYINT:
                     $types['integer'][] = $column->name;
@@ -521,6 +525,24 @@ TXT;
         $rules = [];
         $driverName = $this->getDbDriverName();
         foreach ($types as $type => $columns) {
+            if ($type === 'timestamp') {                                                                                 //--- added
+                foreach ($columns as $columnName) {
+                    $groups['format'][] = <<<RULE
+[
+                ['{$columnName}'],
+                'date',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'timeZone' => Yii::\$app->timeZone,
+                'timestampAttribute' => '{$columnName}',
+                'timestampAttributeTimeZone' => 'UTC',
+                'when' => function (\$model) {
+                    return !is_numeric(\$model->{$columnName});
+                },
+            ]
+RULE;
+                }
+                continue;                                                                                           //--- added
+            }
             if ($type === 'date') {                                                                                 //--- added
                 $groups['format'][] = "[['".implode("', '", $columns)."'], 'date', 'format' => 'yyyy-MM-dd']";    //--- added
                 continue;                                                                                           //--- added
