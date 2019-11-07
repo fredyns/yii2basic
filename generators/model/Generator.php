@@ -153,7 +153,7 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
                  * create gii/[name]GiiantModel.json with actual form data
                  * only when customized
                  */
-                $suffix = str_replace(' ', '', $this->getName());
+                $suffix = '_'.str_replace(' ', '', $this->getName());
                 $formDataDir = Yii::getAlias('@'.str_replace('\\', '/', $this->ns));
                 $formDataFile = StringHelper::dirname($formDataDir).'/gii/'.$tableName.$suffix.'.json';
                 $generatorForm = (clone $this);
