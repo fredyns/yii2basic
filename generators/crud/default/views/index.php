@@ -256,6 +256,7 @@ $format = trim($generator->columnFormat($attribute, $model));
                         // using the column name as key, not mapping to 'id' like the standard generator
                         $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
                         $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id.'/'.$action : $action;
+                        $params['ru'] = ReturnUrl::getToken();
                         return Url::toRoute($params);
                     },
                     'contentOptions' => ['nowrap' => 'nowrap']
