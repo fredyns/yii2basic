@@ -91,6 +91,7 @@ class <?= $controllerClassName ?> extends \yii\rest\ActiveController
      */
     public function checkAccess($action, $model = null, $params = [])
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         <?= $acClassName ?>::catchError();
 
         $allow = <?= $acClassName ?>::can($action);
