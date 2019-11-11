@@ -111,9 +111,8 @@ foreach ($safeAttributes as $attribute) {
             </div>
         </div>
 
-        <?= '<?php' ?> ActiveForm::end(); ?>
-
     </div>
 
-</div>
+    <?= '<?php' ?> ActiveForm::end(); ?>
 
+</div>
