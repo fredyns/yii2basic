@@ -147,7 +147,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(Profile::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
+        return $this->hasOne(Profile::class, ['user_id' => 'created_by'])->alias(static::CREATEDBY);
     }
 
     /**
@@ -155,7 +155,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(Profile::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
+        return $this->hasOne(Profile::class, ['user_id' => 'updated_by'])->alias(static::UPDATEDBY);
     }
 
     /**
@@ -163,7 +163,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public function getDeletedBy()
     {
-        return $this->hasOne(Profile::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
+        return $this->hasOne(Profile::class, ['user_id' => 'deleted_by'])->alias(static::DELETEDBY);
     }
     ##
 

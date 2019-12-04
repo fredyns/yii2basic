@@ -217,7 +217,7 @@ foreach ($labels as $name => $label) {
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(Profile::class, ['id' => 'created_by'])->alias(static::CREATEDBY);
+        return $this->hasOne(Profile::class, ['user_id' => 'created_by'])->alias(static::CREATEDBY);
     }
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('updated_by') !== null): ?>
@@ -227,7 +227,7 @@ foreach ($labels as $name => $label) {
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(Profile::class, ['id' => 'updated_by'])->alias(static::UPDATEDBY);
+        return $this->hasOne(Profile::class, ['user_id' => 'updated_by'])->alias(static::UPDATEDBY);
     }
 <?php endif; ?>
 <?php if ($tableSchema->getColumn('deleted_by') !== null): ?>
@@ -237,7 +237,7 @@ foreach ($labels as $name => $label) {
      */
     public function getDeletedBy()
     {
-        return $this->hasOne(Profile::class, ['id' => 'deleted_by'])->alias(static::DELETEDBY);
+        return $this->hasOne(Profile::class, ['user_id' => 'deleted_by'])->alias(static::DELETEDBY);
     }
 <?php endif; ?>
 <?php if (isset($relations['hasOne']) && !empty($relations['hasOne'])): ?>
