@@ -55,9 +55,9 @@ abstract class EnumField
      * 
      * @return string[]
      */
-    public static function options()
+    public static function options($label_attr = 'label')
     {
-        return ArrayHelper::map(static::all(), 'value', 'label');
+        return ArrayHelper::map(static::all(), 'value', $label_attr);
     }
 
     /**
@@ -75,9 +75,9 @@ abstract class EnumField
      * 
      * @return int[]
      */
-    public static function labels()
+    public static function labels($label_attr = 'label')
     {
-        return ArrayHelper::getColumn(static::all(), 'label');
+        return ArrayHelper::getColumn(static::all(), $label_attr);
     }
 
     /**
@@ -86,9 +86,9 @@ abstract class EnumField
      * @param int $value
      * @return string
      */
-    public static function getLabel($value)
+    public static function getLabel($value, $label_attr = 'label')
     {
-        $options = static::options();
+        $options = static::options($label_attr);
 
         return ArrayHelper::getValue($options, $value, $value);
     }
@@ -99,9 +99,9 @@ abstract class EnumField
      * @param int $label
      * @return string
      */
-    public static function getValue($label)
+    public static function getValue($label, $label_attr = 'label')
     {
-        $options = ArrayHelper::map(static::all(), 'label', 'value');
+        $options = ArrayHelper::map(static::all(), $label_attr, 'value');
 
         return ArrayHelper::getValue($options, $label);
     }
