@@ -8,7 +8,7 @@ if (file_exists(__DIR__.'/host/mailer.php')) {
 }
 
 return [
-    'class' => 'yii\swiftmailer\Mailer',
+    'class' => \yii\swiftmailer\Mailer::class,
     // send all mails to a file by default. You have to set
     // 'useFileTransport' to false and configure a transport
     // for the mailer to send real emails.

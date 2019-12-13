@@ -14,7 +14,7 @@ return [
     'mdm' => [
         'admin' => [
             'configs' => [
-                'class' => 'mdm\admin\components\Configs',
+                'class' => \mdm\admin\components\Configs::class,
                 'authManager' => 'mdmAuthManager',
             ],
         ],

@@ -18,13 +18,13 @@ $config = [
     ],
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => \yii\caching\FileCache::class,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
@@ -35,7 +35,7 @@ $config = [
             'class' => \yii\rbac\PhpManager::class,
         ],
         'mdmAuthManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => \yii\rbac\DbManager::class,
         ],
     ],
     'params' => $params,

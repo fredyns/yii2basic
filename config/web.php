@@ -13,54 +13,48 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'zrJcHeL_E6us_zBGrmaa-kOd0F69FAyQ',
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
+                'application/json' => \yii\web\JsonParser::class,
             ],
         ],
         'session' => [
-            'class' => 'yii\web\DbSession',
+            'class' => \yii\web\DbSession::class,
             'sessionTable' => 'yii_session',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => \app\models\User::class,
             'enableAutoLogin' => true,
         ],
-        /* // uncomment to enable RBAC
-          'authManager' => [
-          'class' => 'yii\rbac\DbManager'
-          ],
-          // */
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'i18n' => [
             'translations' => [
                 '*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => \yii\i18n\PhpMessageSource::class,
                 ],
             ],
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
     ],
     'modules' => [
         'user' => [
-            'class' => 'dektrium\user\Module',
+            'class' => \dektrium\user\Module::class,
             'enableRegistration' => true,
             'admins' => ['admin', 'fredy.ns'],
             'modelMap' => [
-                'User' => 'app\models\User',
-                'Profile' => 'app\models\Profile',
+                'User' => \app\models\User::class,
+                'Profile' => \app\models\Profile::class,
             ],
         ],
         'admin' => [
-            'class' => 'mdm\admin\Module',
+            'class' => \mdm\admin\Module::class,
         ],
         'gridview' => [
-            'class' => '\kartik\grid\Module'
+            'class' => \kartik\grid\Module::class
         // enter optional module parameters below - only if you need to  
         // use your own export download action or custom translation 
         // message source
@@ -70,7 +64,7 @@ $config = [
     ],
     /* // uncomment to configure RBAC
       'as access' => [
-      'class' => 'mdm\admin\components\AccessControl',
+      'class' => \mdm\admin\components\AccessControl::class,
       'allowActions' => [
       // The actions listed here will be allowed to everyone including guests.
       // So, 'admin/*' should not appear here in the production, of course.
@@ -87,14 +81,14 @@ if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
+        'class' => \yii\debug\Module::class,
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
+        'class' => \yii\gii\Module::class,
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
         'generators' => [
@@ -105,7 +99,7 @@ if (YII_ENV_DEV) {
                 'class' => \app\generators\model\Generator::class,
             ],
             'my-crud' => [
-                'class' => 'app\generators\crud\Generator',
+                'class' => \app\generators\crud\Generator::class,
             ],
             'rbac' => [
                 'class' => \app\generators\rbac\Generator::class,

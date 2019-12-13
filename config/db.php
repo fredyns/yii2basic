@@ -8,7 +8,7 @@ if (file_exists(__DIR__.'/host/db.php')) {
 }
 
 return [
-    'class' => 'yii\db\Connection',
+    'class' => \yii\db\Connection::class,
     'dsn' => 'mysql:host=localhost;dbname=yii2basic',
     'username' => 'root',
     'password' => '',
