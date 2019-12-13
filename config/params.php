@@ -11,4 +11,12 @@ return [
     'adminEmail' => 'email@fredyns.net',
     'senderEmail' => 'email@fredyns.net',
     'senderName' => 'Fredy mailer',
+    'mdm' => [
+        'admin' => [
+            'configs' => [
+                'class' => 'mdm\admin\components\Configs',
+                'authManager' => 'mdmAuthManager',
+            ],
+        ],
+    ],
 ];

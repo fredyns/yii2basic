@@ -107,6 +107,9 @@ if (YII_ENV_DEV) {
             'my-crud' => [
                 'class' => 'app\generators\crud\Generator',
             ],
+            'rbac' => [
+                'class' => \app\generators\rbac\Generator::class,
+            ],
         ],
     ];
 

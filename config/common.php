@@ -31,6 +31,12 @@ $config = [
         ],
         'db' => $db,
         'mailer' => $mailer,
+        'authManager' => [
+            'class' => \yii\rbac\PhpManager::class,
+        ],
+        'mdmAuthManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
     ],
     'params' => $params,
 ];
