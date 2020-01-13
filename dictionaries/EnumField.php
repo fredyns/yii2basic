@@ -88,9 +88,7 @@ abstract class EnumField
      */
     public static function getLabel($value, $label_attr = 'label')
     {
-        $options = static::options($label_attr);
-
-        return ArrayHelper::getValue($options, $value, $value);
+        return static::searchAndGet($value, 'value', $label_attr);
     }
 
     /**
@@ -101,9 +99,26 @@ abstract class EnumField
      */
     public static function getValue($label, $label_attr = 'label')
     {
-        $options = ArrayHelper::map(static::all(), $label_attr, 'value');
+        return static::searchAndGet($label, $label_attr, 'value');
+    }
 
-        return ArrayHelper::getValue($options, $label);
+    /**
+     * search text on particular column and return value on coresponding column
+     * 
+     * @param string $search
+     * @param string $on_column
+     * @param string $get_column
+     * @return string
+     */
+    public static function searchAndGet($search, $on_column, $get_column = 'label')
+    {
+        foreach (static::all() as $item) {
+            if (isset($item[$on_column]) && isset($item[$get_column]) && $item[$on_column] == $search) {
+                return $item[$get_column];
+            }
+        }
+
+        return NULL;
     }
 
 }
