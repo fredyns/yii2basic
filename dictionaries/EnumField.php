@@ -55,9 +55,9 @@ abstract class EnumField
      * 
      * @return string[]
      */
-    public static function options($label_attr = 'label')
+    public static function options($label_attr = 'label', $group = null)
     {
-        return ArrayHelper::map(static::all(), 'value', $label_attr);
+        return ArrayHelper::map(static::all(), 'value', $label_attr, $group);
     }
 
     /**
