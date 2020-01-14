@@ -33,7 +33,7 @@ class Month extends EnumField
             return static::$all;
         }
 
-        $date = new \DateTime('first month');
+        $date = new \DateTime('first day');
 
         for ($i = 1; $i <= 12; $i++) {
             static::$all[] = [
