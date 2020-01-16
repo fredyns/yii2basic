@@ -63,9 +63,8 @@ use app\components\Tabs;
             </div>
         </div>
 
-        <?php ActiveForm::end(); ?>
-
     </div>
 
-</div>
+    <?php ActiveForm::end(); ?>
 
+</div>
