@@ -5,7 +5,6 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use cornernote\returnurl\ReturnUrl;
-use fredyns\nestednumbering\NestedNumbering;
 use app\lib\sample\person\PersonAC;
 use app\lib\sample\person\PersonSearch;
 use app\models\sample\Person;
@@ -86,7 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <div>
-        <?php NestedNumbering::start(['1','a'])  ?>
         <?=
         \kartik\grid\GridView::widget([
             'dataProvider' => $dataProvider,
@@ -104,13 +102,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => \kartik\grid\SerialColumn::class,
                 ],
                 'name',
-                [
-                    'label' => 'tes',
-                    'format' => 'html',
-                    'value' => function($model, $key, $index, $column) {
-                        return NestedNumbering::newItem(($index?2:1)).' lorem ipsum';
-                    },
-                ],
                 [
                     'class' => \kartik\grid\ActionColumn::class,
                     'template' => '{view} {update}',
