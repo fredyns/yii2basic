@@ -12,5 +12,9 @@ echo <<<PHP
 
 use yii\\rbac\\Item;
 
+/**
+ *  WARNING!
+ *  user ID in production & development could be different
+ */
 return {$content};
 PHP;
