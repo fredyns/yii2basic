@@ -17,6 +17,10 @@ $config = [
         '@npm' => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
+    //  uncomment these if using queue
+    //  'bootstrap' => [
+    //      'queue', // The component registers its own console commands
+    //  ],
     'components' => [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
@@ -33,6 +37,11 @@ $config = [
         'db' => $db,
         //  'redis' => $redis,  // uncomment if using redis
         'mailer' => $mailer,
+        //  uncomment these if using queue
+        //  'queue' => [
+        //      'class' => \yii\queue\redis\Queue::class,
+        //      'as log' => \yii\queue\LogBehavior::class,
+        //  ],
         'authManager' => [
             'class' => \yii\rbac\PhpManager::class,
         ],
