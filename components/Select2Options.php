@@ -94,12 +94,13 @@ class Select2Options extends \yii\rest\Action
 
     protected function conditions($q)
     {
+        $operator = (Yii::$app->db->driverName == 'pgsql') ? 'ilike' : 'like';
         if (is_array($this->search_field)) {
             $conditions = ['or'];
 
             foreach ($this->search_field as $field) {
                 if (is_string($field)) {
-                    $conditions[] = ['like', $field, $q];
+                    $conditions[] = [$operator, $field, $q];
                 }
             }
 
@@ -107,10 +108,10 @@ class Select2Options extends \yii\rest\Action
                 return $conditions;
             }
         } elseif (is_string($this->search_field)) {
-            return ['like', $this->search_field, $q];
+            return [$operator, $this->search_field, $q];
         }
 
-        return ['like', $this->text_field, $q];
+        return [$operator, $this->text_field, $q];
     }
 
 }
