@@ -5,6 +5,7 @@
 $db = require __DIR__.'/db.php';
 $mailer = require __DIR__.'/mailer.php';
 $params = require __DIR__.'/params.php';
+$redis = require __DIR__.'/redis.php';
 
 $config = [
     'id' => 'basic_app',
@@ -30,6 +31,7 @@ $config = [
             ],
         ],
         'db' => $db,
+        //  'redis' => $redis,  // uncomment if using redis
         'mailer' => $mailer,
         'authManager' => [
             'class' => \yii\rbac\PhpManager::class,
