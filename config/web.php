@@ -84,6 +84,11 @@ if (YII_ENV_DEV) {
         'class' => \yii\debug\Module::class,
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
+        //
+        //  uncomment these to ad queue to debug panel
+        //  'panels' => [
+        //      'queue' => \yii\queue\debug\Panel::class,
+        //  ],
     ];
 
     $config['bootstrap'][] = 'gii';
