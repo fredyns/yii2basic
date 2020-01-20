@@ -46,6 +46,38 @@ AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     [
+                        'label' => 'RBAC-DB',
+                        'visible' => YII_ENV_DEV,
+                        'items' => [
+                            [
+                                'label' => 'Rule',
+                                'url' => ['/admin/rule',],
+                            ],
+                            [
+                                'label' => 'Route',
+                                'url' => ['/admin/route',],
+                            ],
+                            [
+                                'label' => 'Permission',
+                                'url' => ['/admin/permission',],
+                            ],
+                            [
+                                'label' => 'Role',
+                                'url' => ['/admin/role',],
+                            ],
+                            [
+                                'label' => 'Assignment',
+                                'url' => ['/admin/assignment',],
+                            ],
+                            '<li class="divider"></li>',
+                            //  '<li class="dropdown-header">Dropdown Header</li>',
+                            //  [
+                            //      'label' => 'Menu',
+                            //      'url' => ['/admin/menu',],
+                            //  ],
+                        ],
+                    ],
+                    [
                         'label' => 'Gii',
                         'url' => ['/gii'],
                         'visible' => YII_ENV_DEV,
