@@ -5,6 +5,7 @@
 $db = require __DIR__.'/db.php';
 $mailer = require __DIR__.'/mailer.php';
 $params = require __DIR__.'/params.php';
+//$mongodb = require __DIR__.'/mongodb.php';
 $redis = require __DIR__.'/redis.php';
 
 $config = [
@@ -24,18 +25,21 @@ $config = [
     'components' => [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
+            //  'class' => \yii\mongodb\Cache::class,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
                     'class' => \yii\log\FileTarget::class,
+                    //  'class' => \yii\mongodb\log\MongoDbTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
         ],
         'db' => $db,
         //  'redis' => $redis,  // uncomment if using redis
+        //  'mongodb' => $mongodb,
         'mailer' => $mailer,
         //  uncomment these if using queue
         //  'queue' => [
