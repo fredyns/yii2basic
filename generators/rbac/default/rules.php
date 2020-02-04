@@ -1,17 +1,21 @@
 <?php
 
 use yii\helpers\VarDumper;
-use yii\rbac\DbManager;
-use yii\rbac\Item;
 
 /* @var $this yii\web\View  */
 /* @var $generator app\generators\rbac\Generator  */
 
-$content = VarDumper::export($generator->getRules());
+$map = [];
+foreach ($generator->getRules() as $key => $row) {
+    $data = $row['data'];
+    if (is_resource($data)) {
+        $map[$key] = stream_get_contents($data);
+    }
+}
+
+$content = VarDumper::export($map);
 echo <<<PHP
 <?php
-
-use yii\\rbac\\Item;
 
 return {$content};
 PHP;
