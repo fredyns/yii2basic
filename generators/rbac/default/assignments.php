@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\VarDumper;
-use yii\rbac\Item;
+use app\models\User;
 
 /* @var $this yii\web\View  */
 /* @var $generator app\generators\rbac\Generator  */
@@ -9,12 +9,39 @@ use yii\rbac\Item;
 $content = VarDumper::export($generator->getAssignments());
 echo <<<PHP
 <?php
-
-use yii\\rbac\\Item;
-
 /**
- *  WARNING!
- *  user ID in production & development could be different
+ * Warning!
+ * user ID could be different between development & production
  */
-return {$content};
+return [
+
+PHP;
+foreach ($generator->getAssignments() as $user_id => $roles) {
+    $user = User::findOne($user_id);
+    if ($user) {
+        echo <<<PHP
+    /**
+     * username : {$user->username}
+     * email    : {$user->email}
+     */
+PHP;
+    } else {
+        echo <<<PHP
+    /**
+     * user not found
+     */
+PHP;
+    }
+    $role_dumps = VarDumper::export($roles); // export variables
+    $role_dumps = str_replace("\n", "\n    ", $role_dumps); // add 4 space indent
+    echo <<<PHP
+
+    {$user_id} => {$role_dumps},
+PHP;
+}
+
+echo <<<PHP
+
+];
+
 PHP;
