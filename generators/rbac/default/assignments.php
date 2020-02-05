@@ -14,12 +14,12 @@ echo <<<PHP
  * user ID could be different between development & production
  */
 return [
-
 PHP;
 foreach ($generator->getAssignments() as $user_id => $roles) {
     $user = User::findOne($user_id);
     if ($user) {
         echo <<<PHP
+
     /**
      * username : {$user->username}
      * email    : {$user->email}
@@ -27,6 +27,7 @@ foreach ($generator->getAssignments() as $user_id => $roles) {
 PHP;
     } else {
         echo <<<PHP
+
     /**
      * user not found
      */

@@ -1,13 +1,12 @@
 <?php
 
 use yii\helpers\VarDumper;
-use yii\rbac\Item;
 
 /* @var $this yii\web\View  */
 /* @var $generator app\generators\rbac\Generator  */
 
 $content = VarDumper::export($generator->getRoles());
-$content = str_replace("'type' => '1',", "'type' => Item::TYPE_ROLE,", $content);
+$content = str_replace("'type' => 1,", "'type' => Item::TYPE_ROLE,", $content);
 
 echo <<<PHP
 <?php
