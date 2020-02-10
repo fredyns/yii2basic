@@ -205,7 +205,8 @@ $format = trim($generator->columnFormat($attribute, $model));
 <?php endforeach;?>
                 [
                     'class' => \kartik\grid\ActionColumn::class,
-                    'template' => '{view} {update}',
+                    'width' => '100px',
+                    'template' => '{view}&nbsp; {update}',
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
                             $label = '<span class="glyphicon glyphicon-eye-open"></span>';
