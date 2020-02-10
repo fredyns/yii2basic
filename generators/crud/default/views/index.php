@@ -231,9 +231,12 @@ $format = trim($generator->columnFormat($attribute, $model));
                             $label = '<span class="glyphicon glyphicon-trash"></span>';
                             $hover_text = Yii::t('cruds', 'delete this record');
                             $options = [
+                                'class' => 'text text-danger',
                                 'title' => $hover_text,
                                 'aria-label' => $hover_text,
                                 'data-pjax' => '0',
+                                'data-confirm' => Yii::t('cruds', 'Are you sure to delete this item?'),
+                                'data-method' => 'post',
                             ];
                             return Html::a($label, $url, $options);
                         },
