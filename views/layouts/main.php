@@ -106,7 +106,7 @@ AppAsset::register($this);
                 ?>
                 <?php
                 if (Yii::$app->controller->module->id != 'user') {
-                    Alert::widget();
+                    echo Alert::widget();
                 }
                 ?>
                 <?= $content ?>
