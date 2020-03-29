@@ -56,24 +56,6 @@
             "yii\\composer\\Installer::postInstall"
         ]
     },
-    "extra": {
-        "yii\\composer\\Installer::postCreateProject": {
-            "setPermission": [
-                {
-                    "runtime": "0775",
-                    "web/assets": "0775",
-                    "yii": "0775",
-                    "set-permission.sh": "0775",
-                    "set-permission-all.sh": "0775"
-                }
-            ]
-        },
-        "yii\\composer\\Installer::postInstall": {
-            "generateCookieValidationKey": [
-                "config/web.php"
-            ]
-        }
-    },
     "repositories": [
         {
             "type": "composer",
