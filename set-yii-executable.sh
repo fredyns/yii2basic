@@ -4,7 +4,7 @@
 git ls-files --stage
 
 # edit permission
-git update-index --chmod=+x '../yii'
+git update-index --chmod=+x 'yii'
 
 
 git commit -m "made yii executable" 
