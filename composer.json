@@ -29,7 +29,8 @@
         "kartik-v/yii2-widget-depdrop": "^1.0@dev",
         "kartik-v/yii2-mpdf": "^1.0@dev",
         "kartik-v/yii2-widgets": "^1.0@dev",
-        "fredyns/nested-numbering": "dev-master"
+        "fredyns/nested-numbering": "dev-master",
+        "yiisoft/yii2-redis": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
