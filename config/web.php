@@ -2,7 +2,7 @@
 /**
  * this file fully responsible for web app configuration
  */
-$common = require __DIR__.'/common.php';
+$common = require __DIR__ . '/common.php';
 
 $config = [
     'id' => 'basic',
@@ -29,6 +29,7 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
+                // fallback configuration. all unconfigured translation would fall to this setting
                 '*' => [
                     'class' => \yii\i18n\PhpMessageSource::class,
                 ],
@@ -50,31 +51,30 @@ $config = [
                 'Profile' => \app\models\Profile::class,
             ],
         ],
-        'admin' => [
-            'class' => \mdm\admin\Module::class,
-        ],
+        //  'admin' => [
+        //    'class' => \mdm\admin\Module::class,
+        //  ],
         'gridview' => [
             'class' => \kartik\grid\Module::class
-        // enter optional module parameters below - only if you need to  
-        // use your own export download action or custom translation 
-        // message source
-        // 'downloadAction' => 'gridview/export/download',
-        // 'i18n' => []
+            // enter optional module parameters below - only if you need to
+            // use your own export download action or custom translation
+            // message source
+            // 'downloadAction' => 'gridview/export/download',
+            // 'i18n' => []
         ],
     ],
-    /* // uncomment to configure RBAC
-      'as access' => [
-      'class' => \mdm\admin\components\AccessControl::class,
-      'allowActions' => [
-      // The actions listed here will be allowed to everyone including guests.
-      // So, 'admin/*' should not appear here in the production, of course.
-      // But in the earlier stages of your development, you may probably want to
-      // add a lot of actions here until you finally completed setting up rbac,
-      // otherwise you may not even take a first step.
-      'site/*',
-      ]
-      ],
-      // */
+    // uncomment to configure RBAC
+    // 'as access' => [
+    //    'class' => \mdm\admin\components\AccessControl::class,
+    //    'allowActions' => [
+    //          The actions listed here will be allowed to everyone including guests.
+    //          So, 'admin/*' should not appear here in the production, of course.
+    //          But in the earlier stages of your development, you may probably want to
+    //          add a lot of actions here until you finally completed setting up rbac,
+    //          otherwise you may not even take a first step.
+    //        'site/*',
+    //    ],
+    //  ],
 ];
 
 if (YII_ENV_DEV) {
@@ -106,9 +106,10 @@ if (YII_ENV_DEV) {
             'my-crud' => [
                 'class' => \app\generators\crud\Generator::class,
             ],
-            'rbac' => [
-                'class' => \app\generators\rbac\Generator::class,
-            ],
+            //  need to evaluate functionality before use this library
+            //  'rbac' => [
+            //    'class' => \app\generators\rbac\Generator::class,
+            // ],
         ],
     ];
 
