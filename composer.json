@@ -18,7 +18,6 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "yiisoft/yii2-queue": "^2.3",
         "fredyns/stringcleaner": "dev-master",
-        "schmunk42/yii2-giiant": "dev-master",
         "dektrium/yii2-user": "^0.9.0@dev",
         "mdmsoft/yii2-admin": "^2.0@dev",
         "yii2tech/ar-softdelete": "^1.0@dev",
@@ -30,7 +29,8 @@
         "kartik-v/yii2-mpdf": "^1.0@dev",
         "kartik-v/yii2-widgets": "^1.0@dev",
         "fredyns/nested-numbering": "dev-master",
-        "yiisoft/yii2-redis": "^2.0"
+        "yiisoft/yii2-redis": "^2.0",
+        "schmunk42/yii2-giiant": "@stable"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
