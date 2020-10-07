@@ -2,13 +2,13 @@
 /**
  * this file responsible for common configuration that used both in console or web app
  */
-$db = require __DIR__.'/db.php';
-$mailer = require __DIR__.'/mailer.php';
-$params = require __DIR__.'/params.php';
-//$mongodb = require __DIR__.'/mongodb.php';
-$redis = require __DIR__.'/redis.php';
+$db = require __DIR__ . '/db.php';
+$mailer = require __DIR__ . '/mailer.php';
+$params = require __DIR__ . '/params.php';
+//  $mongodb = require __DIR__.'/mongodb.php';
+//  $redis = require __DIR__.'/redis.php';
 
-$config = [
+return [
     'id' => 'basic_app',
     'name' => 'My Web-Application',
     'timeZone' => 'Asia/Jakarta',
@@ -46,14 +46,12 @@ $config = [
         //      'class' => \yii\queue\redis\Queue::class,
         //      'as log' => \yii\queue\LogBehavior::class,
         //  ],
-        'authManager' => [
-            'class' => \yii\rbac\PhpManager::class,
-        ],
-        'mdmAuthManager' => [
-            'class' => \yii\rbac\DbManager::class,
-        ],
+        //  'authManager' => [
+        //    'class' => \yii\rbac\PhpManager::class,
+        //  ],
+        //  'mdmAuthManager' => [
+        //    'class' => \yii\rbac\DbManager::class,
+        //  ],
     ],
     'params' => $params,
 ];
-
-return $config;
