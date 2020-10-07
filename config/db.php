@@ -4,9 +4,10 @@
  *
  * sample & doc can be found at https://www.yiiframework.com/doc/guide/2.0/en/db-dao#creating-db-connections
  */
-if (file_exists(__DIR__.'/host/db.php')) {
+$costum_db_host = str_replace('//', '/', __DIR__ . '/host/db.php');
+if (file_exists($costum_db_host)) {
     // use host configuration if any
-    return require __DIR__.'/host/db.php';
+    return require $costum_db_host;
 }
 
 return [
