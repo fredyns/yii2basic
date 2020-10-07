@@ -1,9 +1,11 @@
 <?php
 
+use yii\db\Migration;
+
 /**
  * Class m190917_023218_create_geo_address_tables
  */
-class m190917_023218_create_geo_address_tables extends \app\base\BaseMigration
+class m190917_023218_create_geo_address_tables extends Migration
 {
 
     /**
@@ -11,45 +13,48 @@ class m190917_023218_create_geo_address_tables extends \app\base\BaseMigration
      */
     public function safeUp()
     {
+        // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+        $table_options = $this->db->driverName === 'mysql' ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null;
+
         $this->createTable('{{%geo_address_country}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'code' => $this->string(8)->defaultValue(NULL),
-        ]);
+        ], $table_options);
         $this->createTable('{{%geo_address_type}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'description' => $this->text()->defaultValue(NULL),
-        ]);
+        ], $table_options);
         $this->createTable('{{%geo_address_region}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
-            'type_id' => $this->FKInteger(),
-            'country_id' => $this->FKInteger(),
-            'reg_number' => $this->FKInteger(),
-        ]);
+            'type_id' => $this->integer()->defaultValue(NULL),
+            'country_id' => $this->integer()->defaultValue(NULL),
+            'reg_number' => $this->integer()->defaultValue(NULL),
+        ], $table_options);
         $this->createTable('{{%geo_address_city}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
-            'type_id' => $this->FKInteger(),
-            'country_id' => $this->FKInteger(),
-            'region_id' => $this->FKInteger(),
-            'reg_number' => $this->FKInteger(),
-        ]);
+            'type_id' => $this->integer()->defaultValue(NULL),
+            'country_id' => $this->integer()->defaultValue(NULL),
+            'region_id' => $this->integer()->defaultValue(NULL),
+            'reg_number' => $this->integer()->defaultValue(NULL),
+        ], $table_options);
         $this->createTable('{{%geo_address_district}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
-            'type_id' => $this->FKInteger(),
-            'city_id' => $this->FKInteger(),
-            'reg_number' => $this->FKInteger(),
-        ]);
+            'type_id' => $this->integer()->defaultValue(NULL),
+            'city_id' => $this->integer()->defaultValue(NULL),
+            'reg_number' => $this->integer()->defaultValue(NULL),
+        ], $table_options);
         $this->createTable('{{%geo_address_subdistrict}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
-            'type_id' => $this->FKInteger(),
-            'district_id' => $this->FKInteger(),
-            'reg_number' => $this->FKBigInteger(),
-        ]);
+            'type_id' => $this->integer()->defaultValue(NULL),
+            'district_id' => $this->integer()->defaultValue(NULL),
+            'reg_number' => $this->bigInteger()->defaultValue(NULL),
+        ], $table_options);
 
         $this->createIndex('i_geoadr_ctry_code', '{{%geo_address_country}}', 'code', TRUE);
 
@@ -102,7 +107,7 @@ class m190917_023218_create_geo_address_tables extends \app\base\BaseMigration
         $this->dropForeignKey('fk_geoadr_region_type', '{{%geo_address_region}}');
         $this->dropForeignKey('fk_geoadr_region_country', '{{%geo_address_region}}');
 
-        $this->dropIndex('i_geoadr_ctry_code', '{{%geo_address_country}}', 'code', TRUE);
+        $this->dropIndex('i_geoadr_ctry_code', '{{%geo_address_country}}');
 
         $this->dropIndex('i_geoadr_rgn_type', '{{%geo_address_region}}');
         $this->dropIndex('i_geoadr_rgn_country', '{{%geo_address_region}}');
