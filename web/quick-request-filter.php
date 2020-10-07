@@ -7,6 +7,7 @@ $allowed_hosts = [
     'yii2basic.fredyns.net',
     'yii2basic.test',
     'localhost',
+    '127.0.0.1:8000',
 ];
 
 if (in_array($current_host, $allowed_hosts) == false) {
