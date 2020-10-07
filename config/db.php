@@ -13,6 +13,7 @@ if (file_exists($costum_db_host)) {
 return [
     'class' => \yii\db\Connection::class,
     'dsn' => 'pgsql:host=localhost;port=5432;dbname=yii2basic',
+    //  'dsn' => 'mysql:host=localhost;dbname=yii2basic', // sample for MySQL
     'username' => 'fredy',
     'password' => '',
     'charset' => 'utf8',
