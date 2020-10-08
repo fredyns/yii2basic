@@ -5,23 +5,27 @@
 $common = require __DIR__ . '/common.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'basic-app',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'zrJcHeL_E6us_zBGrmaa-kOd0F69FAyQ',
+            'cookieValidationKey' => 'zrJmaa-kOdcHeL_E6us_zBGr0F69FAyQ',
             'parsers' => [
-                'application/json' => \yii\web\JsonParser::class,
+                'application/json' => 'yii\web\JsonParser',
             ],
         ],
         'session' => [
-            'class' => \yii\web\DbSession::class,
-            'sessionTable' => 'yii_session',
+            'class' => 'yii\redis\Session',
+            'redis' => [
+                'hostname' => 'Redis',
+                'port' => 6379,
+                'database' => 0,
+            ],
         ],
         'user' => [
-            'identityClass' => \app\models\User::class,
+            'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -29,9 +33,9 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
-                // fallback configuration. all unconfigured translation would fall to this setting
+                // fallback configuration. all missing translation would fall to this setting
                 '*' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => 'yii\i18n\PhpMessageSource',
                 ],
             ],
         ],
@@ -43,29 +47,30 @@ $config = [
     ],
     'modules' => [
         'user' => [
-            'class' => \dektrium\user\Module::class,
+            'class' => 'dektrium\user\Module',
             'enableRegistration' => true,
             'admins' => ['admin', 'fredy.ns'],
             'modelMap' => [
-                'User' => \app\models\User::class,
-                'Profile' => \app\models\Profile::class,
+                'User' => 'app\models\User',
+                'Profile' => 'app\models\Profile',
             ],
         ],
-        //  'admin' => [
-        //    'class' => \mdm\admin\Module::class,
-        //  ],
         'gridview' => [
-            'class' => \kartik\grid\Module::class
+            'class' => 'kartik\grid\Module'
             // enter optional module parameters below - only if you need to
             // use your own export download action or custom translation
             // message source
             // 'downloadAction' => 'gridview/export/download',
             // 'i18n' => []
         ],
+        // uncomment if using yii2-admin for RBAC
+        //  'admin' => [
+        //    'class' => 'mdm\admin\Module',
+        //  ],
     ],
     // uncomment to configure RBAC
     // 'as access' => [
-    //    'class' => \mdm\admin\components\AccessControl::class,
+    //    'class' => 'mdm\admin\components\AccessControl',
     //    'allowActions' => [
     //          The actions listed here will be allowed to everyone including guests.
     //          So, 'admin/*' should not appear here in the production, of course.
@@ -81,34 +86,34 @@ if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
-        'class' => \yii\debug\Module::class,
+        'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
         //
         //  uncomment these to ad queue to debug panel
         //  'panels' => [
-        //      'queue' => \yii\queue\debug\Panel::class,
+        //      'queue' => 'yii\queue\debug\Panel',
         //  ],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
-        'class' => \yii\gii\Module::class,
+        'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
         'generators' => [
             'tableclass' => [
-                'class' => \app\generators\tableclass\Generator::class,
+                'class' => 'app\generators\tableclass\Generator',
             ],
             'my-model' => [
-                'class' => \app\generators\model\Generator::class,
+                'class' => 'app\generators\model\Generator',
             ],
             'my-crud' => [
-                'class' => \app\generators\crud\Generator::class,
+                'class' => 'app\generators\crud\Generator',
             ],
             //  need to evaluate functionality before use this library
             //  'rbac' => [
-            //    'class' => \app\generators\rbac\Generator::class,
+            //    'class' => 'app\generators\rbac\Generator',
             // ],
         ],
     ];

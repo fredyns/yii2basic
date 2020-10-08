@@ -4,18 +4,17 @@
  *
  * sample & doc can be found at https://www.yiiframework.com/doc/guide/2.0/en/db-dao#creating-db-connections
  */
-$costum_db_host = str_replace('//', '/', __DIR__ . '/host/db.php');
-if (file_exists($costum_db_host)) {
-    // use host configuration if any
-    return require $costum_db_host;
+if (file_exists(__DIR__ . '/host/db.php')) {
+    return require __DIR__ . '/host/db.php'; // use custom host configuration if any
 }
 
+// default DB config
 return [
-    'class' => \yii\db\Connection::class,
-    'dsn' => 'pgsql:host=localhost;port=5432;dbname=yii2basic',
+    'class' => 'yii\db\Connection',
+    'dsn' => 'pgsql:host=postgres_host;port=5432;dbname=yii2basic',
     //  'dsn' => 'mysql:host=localhost;dbname=yii2basic', // sample for MySQL
-    'username' => 'fredy',
-    'password' => '',
+    'username' => 'postgres_user',
+    'password' => 'postgres_secret',
     'charset' => 'utf8',
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,

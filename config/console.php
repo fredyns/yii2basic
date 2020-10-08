@@ -9,8 +9,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
-    'components' => [
-    ],
+    'components' => [],
     /*
       'controllerMap' => [
       'fixture' => [ // Fixture generation command line.
@@ -24,7 +23,7 @@ if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
-        'class' => \yii\gii\Module::class,
+        'class' => 'yii\gii\Module',
     ];
 }
 

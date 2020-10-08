@@ -3,20 +3,12 @@
  * this file responsible for app parameters
  */
 if (file_exists(__DIR__.'/host/params.php')) {
-    // use host configuration if any
-    return require __DIR__.'/host/params.php';
+    return require __DIR__.'/host/params.php'; // use custom host configuration if any
 }
 
+// default params
 return [
     'adminEmail' => 'email@fredyns.net',
     'senderEmail' => 'email@fredyns.net',
     'senderName' => 'Fredy mailer',
-    'mdm' => [
-        'admin' => [
-            'configs' => [
-                'class' => \mdm\admin\components\Configs::class,
-                'authManager' => 'mdmAuthManager',
-            ],
-        ],
-    ],
 ];
