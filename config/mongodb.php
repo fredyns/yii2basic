@@ -10,5 +10,5 @@ if (file_exists(__DIR__ . '/host/mongodb.php')) {
 return [
     'class' => 'yii\mongodb\Connection',
     // override mongoUser & mongoPassword with actual authentication
-    'dsn' => 'mongodb://mongoUser:mongoPassword@localhost:27017/yii2basic',
+    'dsn' => 'mongodb://mg_user:mg_secret@mongo:27017/yii2basic',
 ];

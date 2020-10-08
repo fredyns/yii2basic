@@ -9,7 +9,7 @@ if (file_exists(__DIR__ . '/host/redis.php')) {
 // default redis config
 return [
     'class' => 'yii\redis\Connection',
-    'hostname' => 'Redis',
+    'hostname' => 'redis',
     'port' => 6379,
     'database' => 0,
 ];

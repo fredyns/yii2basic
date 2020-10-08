@@ -5,5 +5,22 @@ services:
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
+    # access web app via http://127.0.0.1:8001
     ports:
-      - '8000:80'
+      - '8001:80'
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pg_secret
+      POSTGRES_DB: yii2basic
+  redis:
+    image: redis
+    restart: always
+  # uncomment to use mongodb
+  # mongo:
+  #  image: mongo
+  #  restart: always
+  #  environment:
+  #    MONGO_INITDB_ROOT_USERNAME: mg_user
+  #    MONGO_INITDB_ROOT_PASSWORD: mg_secret

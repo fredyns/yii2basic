@@ -11,10 +11,10 @@ if (file_exists(__DIR__ . '/host/db.php')) {
 // default DB config
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=postgres_host;port=5432;dbname=yii2basic',
+    'dsn' => 'pgsql:host=db;port=5432;dbname=yii2basic',
     //  'dsn' => 'mysql:host=localhost;dbname=yii2basic', // sample for MySQL
-    'username' => 'postgres_user',
-    'password' => 'postgres_secret',
+    'username' => 'postgres',
+    'password' => 'pg_secret',
     'charset' => 'utf8',
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,
